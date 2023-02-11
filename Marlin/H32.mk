@@ -30,6 +30,12 @@ C_FILES = $(call rwildcard,,*.c)
 CPP_FILES = $(call rwildcard,,*.cpp)
 ASM_FILES = $(call rwildcard,,*.S)
 LINKER_SCRIPT_FILE = $(realpath lib/h32_core/main/hdsc32core/hc32f46x_flash.ld)
+
+# excluded headers and source files to speed up compiles and reduce possible incompatibilities
+# excluded components:
+# - HALs other than H32
+# - lcd implementations (excluding DWIN, ofc)
+# - usb flash drive driver
 EXCLUDES = \
 	src/HAL/AVR/ \
 	src/HAL/DUE/ \
@@ -42,7 +48,14 @@ EXCLUDES = \
 	src/HAL/TEENSY31_32/ \
 	src/HAL/TEENSY35_36/ \
 	src/HAL/TEENSY35_41/ \
-	lib/h32_core/component/i2c.cpp
+	src/lcd/dogm/ \
+	src/lcd/extui/ \
+	src/lcd/HD44870/ \
+	src/lcd/tft/ \
+	src/lcd/tft_io/ \
+	src/lcd/TFTGLCD/ \
+	src/lcd/touch/ \
+	src/sd/usb_flashdrive/
 
 ## defines for compilation (-D) ##
 C_DEFINES = \
@@ -162,11 +175,9 @@ clean:
 	@rm -rf $(BUILD_DIR)
 
 # clean, clear console, build all
-rebuild: clean clearscreen all
-
-# clear console
-clearscreen:
+rebuild: clean
 	clear
+	@$(MAKE) -f $(realpath $(lastword $(MAKEFILE_LIST))) all
 
 # Print Resolved Files
 print-resolved:
@@ -179,4 +190,4 @@ print-resolved:
 	@printf ' == BUILD_DIR == \n $(addsuffix \n,$(BUILD_DIR)) \n\n'
 	@printf ' == OUTPUT_FILE_BASE == \n $(addsuffix \n,$(OUTPUT_FILE_BASE)) \n\n'
 
-.PHONY: all clean rebuild clearscreen print_resolved
+.PHONY: all clean rebuild print_resolved
