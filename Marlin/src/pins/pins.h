@@ -550,6 +550,8 @@
   #include "stm32f1/pins_CREALITY_V4.h"         // STM32F1                                env:STM32F103RET6_creality
 #elif MB(TRIGORILLA_PRO)
   #include "stm32f1/pins_TRIGORILLA_PRO.h"      // STM32F1                                env:trigorilla_pro
+#elif MB(AQUILA_X2_H32)
+  #include "hc32f46x/pins_Aquila_X2.h"          // HC32F46x                               non-platformio build
 
 //
 // ARM Cortex-M4F
@@ -909,6 +911,8 @@
   #define E7_ENABLE_PIN -1
 #endif
 
+//FIXME the following part does not compile on HC32f46x
+#ifndef HC32F46x
 //
 // Destroy unused CS pins
 //
@@ -945,6 +949,7 @@
 #if E_STEPPERS > 7 && !AXIS_HAS_SPI(E7)
   #undef E7_CS_PIN
 #endif
+#endif // HC32F46x
 
 #ifndef X_CS_PIN
   #define X_CS_PIN -1

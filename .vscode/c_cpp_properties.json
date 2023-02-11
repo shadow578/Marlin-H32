@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "HC32",
+            "includePath": [
+                "${workspaceFolder}/Marlin/**"
+            ],
+            "defines": [
+                "HC32F46x",
+                "USE_DEVICE_DRIVER_LIB",
+                "__TARGET_FPU_VFP",
+                "__FPU_PRESENT=1",
+                "ARM_MATH_CM4",
+                "ARM_MATH_MATRIX_CHECK",
+                "ARM_MATH_ROUNDING",
+                "_MPU_PRESENT=1",
+                "__STM32F1__",
+                "STM32_HIGH_DENSITY",
+                "ARDUINO_ARCH_STM32F1",
+                "ARDUINO=100",
+                "RDUINO_ARCH_STM32"
+            ],
+            "intelliSenseMode": "linux-gcc-arm",
+            "compilerPath": "/usr/bin/arm-none-eabi-g++",
+            "cStandard": "c99",
+            "cppStandard": "gnu++11"
+        }
+    ],
+    "version": 4
+}

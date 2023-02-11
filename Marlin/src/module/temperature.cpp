@@ -2364,7 +2364,12 @@ void Temperature::readings_ready() {
  *  - For ENDSTOP_INTERRUPTS_FEATURE check endstops if flagged
  *  - Call planner.tick to count down its "ignore" time
  */
+// TODO HC32F46x: GCC needs return type on the function
+#ifdef HC32F46x
+void HAL_TEMP_TIMER_ISR() {
+#else
 HAL_TEMP_TIMER_ISR() {
+#endif
   HAL_timer_isr_prologue(TEMP_TIMER_NUM);
 
   Temperature::tick();

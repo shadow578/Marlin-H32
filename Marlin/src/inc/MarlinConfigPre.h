@@ -30,6 +30,11 @@
 //
 #include <stdint.h>
 
+//TODO HC32F46x
+#ifdef HC32F46x
+  #include "../board/startup.h"
+#endif
+
 #include "../HAL/platforms.h"
 
 #include "../core/boards.h"
