@@ -58,6 +58,9 @@ EXCLUDES = \
 	src/sd/usb_flashdrive/
 
 ## defines for compilation (-D) ##
+#TODO: currently, the defines are basically a copy of what voxlab did
+# should probably check which of these are actually required... 
+# since voxlab's stuff doesn't exactly inspire confidence, maybe they messed this up too
 C_DEFINES = \
 	MOTHERBOARD=BOARD_AQUILA_X2_H32\
 	HC32F46x \
