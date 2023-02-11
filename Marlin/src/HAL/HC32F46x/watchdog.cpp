@@ -34,7 +34,7 @@
 #include "watchdog.h"
 
 void HAL_watchdog_refresh() {
-  iwdg_feed();
+  //iwdg_feed();
 }
 
 void watchdogSetup() {
@@ -49,7 +49,7 @@ void watchdogSetup() {
  * @details The watchdog clock is 40Khz. We need a 4 seconds interval, so use a /256 preescaler and 625 reload value (counts down to 0)
  */
 void watchdog_init() {
-  iwdg_init();
+  //iwdg_init();
 }
 
 #endif // USE_WATCHDOG

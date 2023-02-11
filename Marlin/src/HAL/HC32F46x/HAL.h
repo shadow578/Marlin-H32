@@ -20,7 +20,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#pragma once
+// #pragma once
 
 /**
  * HAL for stm32duino.com based on Libmaple and compatible (HC32F46x based on STM32F1)
@@ -34,15 +34,13 @@
 #include "../shared/HAL_SPI.h"
 
 #include "fastio.h"
-#include "watchdog.h"
+//#include "watchdog.h"
 
 #include "timers.h"
 
 #include <stdint.h>
 
-//TODO: not needed if full config included? 
 #include "../../inc/MarlinConfigPre.h"
-
 #include "../inc/MarlinConfig.h"
 #include "MarlinSerial.h"
 
@@ -67,7 +65,7 @@
 #elif SERIAL_PORT_2 == SERIAL_PORT
 #error "SERIAL_PORT_2 must be different than SERIAL_PORT"
 #endif
-//#define NUM_SERIAL 2
+// #define NUM_SERIAL 2
 
 // Set interrupt grouping for this MCU
 void HAL_init();
@@ -86,12 +84,12 @@ void HAL_idletask();
 #endif
 
 #define CRITICAL_SECTION_START        \
-  uint32_t primask = __get_primask(); \
+  uint32_t primask = __get_PRIMASK(); \
   (void)__iCliRetVal()
 #define CRITICAL_SECTION_END \
   if (!primask)              \
   (void)__iSeiRetVal()
-#define ISRS_ENABLED() (!__get_primask())
+#define ISRS_ENABLED() (!__get_PRIMASK())
 #define ENABLE_ISRS() (__enable_irq())   //__enable_irq((void)__iSeiRetVal())
 #define DISABLE_ISRS() (__disable_irq()) //__disable_irq((void)__iCliRetVal())
 
@@ -147,20 +145,7 @@ void HAL_clear_reset_source();
 uint8_t HAL_get_reset_source();
 
 void _delay_ms(const int delay);
-#ifdef GCC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
-#endif
 
-inline int freeMemory()
-{
-  volatile char top;
-  return top;
-}
-
-#ifdef GCC
-#pragma GCC diagnostic pop
-#endif
 //
 // EEPROM
 //
@@ -203,3 +188,8 @@ void HAL_analogWrite(pin_t pin, int pwm_val8); // PWM only! mul by 257 in maple!
 
 #define PLATFORM_M997_SUPPORT
 void flashFirmware(int16_t value);
+
+//
+// MarlinHAL class
+//
+#include "MarlinHAL.h"
