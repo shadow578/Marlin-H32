@@ -48,6 +48,7 @@
  */
 
 #include "../../module/endstops.h"
+#include "ExtInt_Z_MIN_PROBE.h"
 
 // One ISR for all EXT-Interrupts
 inline void endstop_ISR() { endstops.update(); }

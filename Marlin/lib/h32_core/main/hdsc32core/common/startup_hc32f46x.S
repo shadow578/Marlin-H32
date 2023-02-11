@@ -63,7 +63,7 @@
 ;  <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ;</h>
 */
-                .equ        Stack_Size, 0x00000800
+                .equ        Stack_Size, 0x00000400
 
                 .section    .stack
                 .align      3
@@ -81,7 +81,7 @@ __StackTop:
 ;  <o> Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ;</h>
 */
-                .equ        Heap_Size, 0x00001000
+                .equ        Heap_Size, 0x00000C00
 
                 .if         Heap_Size != 0                     /* Heap is provided */
                 .section    .heap
@@ -268,7 +268,6 @@ __Vectors:
                 .long       IRQ142_Handler
                 .long       IRQ143_Handler
 
-                .space      (80 * 4)                          /* Interrupts 144 .. 224 are left out */
 __Vectors_End:
                 .equ        __Vectors_Size, __Vectors_End - __Vectors
                 .size       __Vectors, . - __Vectors
@@ -309,9 +308,9 @@ CopyLoop:
                 blt         CopyLoop
 
 CopyData1:
-                ldr         r1, =__etext_ret_ram
-                ldr         r2, =__data_start_ret_ram__
-                ldr         r3, =__data_end_ret_ram__
+                ldr         r1, =__ram_ret_data_start
+                ldr         r2, =__data_start_ram_ret__
+                ldr         r3, =__data_end_ram_ret__
 CopyLoop1:
                 cmp         r2, r3
                 ittt        lt
@@ -350,8 +349,8 @@ ClearLoop:
                 blt         ClearLoop
 
 ClearBss1:
-                ldr         r1, =__bss_start_ret_ram__
-                ldr         r2, =__bss_end_ret_ram__
+                ldr         r1, =__bss_start_ram_ret__
+                ldr         r2, =__bss_end_ram_ret__
 
                 movs        r0, 0
 ClearLoop1:
@@ -360,29 +359,9 @@ ClearLoop1:
                 strlt       r0, [r1], #4
                 blt         ClearLoop1
 
-SetSRAM3Wait:
-                ldr         r0, =0x40050804
-                mov         r1, #0x77
-                str         r1, [r0]
-
-                ldr         r0, =0x4005080C
-                mov         r1, #0x77
-                str         r1, [r0]
-
-                ldr         r0, =0x40050800
-                mov         r1, #0x1100
-                str         r1, [r0]
-
-                ldr         r0, =0x40050804
-                mov         r1, #0x76
-                str         r1, [r0]
-
-                ldr         r0, =0x4005080C
-                mov         r1, #0x76
-                str         r1, [r0]
-
                 /* Call the clock system initialization function. */
                 bl          SystemInit
+                bl          __libc_init_array
                 /* Call the application's entry point. */
                 bl          main
                 bx          lr

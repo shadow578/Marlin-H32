@@ -38,10 +38,10 @@ EXCLUDES = \
 	src/HAL/LPC1768/ \
 	src/HAL/SAMD51/ \
 	src/HAL/STM32/ \
-	src/HAL/STM32_F4_F7/ \
 	src/HAL/STM32F1/ \
 	src/HAL/TEENSY31_32/ \
 	src/HAL/TEENSY35_36/ \
+	src/HAL/TEENSY35_41/ \
 	lib/h32_core/component/i2c.cpp
 
 ## defines for compilation (-D) ##
@@ -161,6 +161,13 @@ clean:
 	@echo 'Cleaning Project'
 	@rm -rf $(BUILD_DIR)
 
+# clean, clear console, build all
+rebuild: clean clearscreen all
+
+# clear console
+clearscreen:
+	clear
+
 # Print Resolved Files
 print-resolved:
 	@printf ' == C_FILES == \n $(addsuffix \n,$(C_FILES)) \n\n'
@@ -172,4 +179,4 @@ print-resolved:
 	@printf ' == BUILD_DIR == \n $(addsuffix \n,$(BUILD_DIR)) \n\n'
 	@printf ' == OUTPUT_FILE_BASE == \n $(addsuffix \n,$(OUTPUT_FILE_BASE)) \n\n'
 
-.PHONY: all clean print_resolved
+.PHONY: all clean rebuild clearscreen print_resolved

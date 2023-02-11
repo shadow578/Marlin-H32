@@ -2,6 +2,8 @@
 
 #include "startup.h"
 #include "fastio.h"
+#include "HardwareSerial.h"
+#include "../Marlin/src/pins/hc32f46x/pins_Aquila_X2.h"
 
 extern const cfg_pin_info PIN_MAP[BOARD_NR_GPIO_PINS] = {
 
@@ -112,16 +114,7 @@ extern void setup_gpio(void)
 	stcPortInit.enPullUp = Disable;
 	/* LED0 and LED1 Port/Pin initialization */
 	// PORT_InitMapp(LED, &stcPortInit);
-
-	// initialize serial ports
-	Serial2.init(USART2, BOARD_USART2_TX_PIN, BOARD_USART2_RX_PIN);
-	// Serial3.init(USART3, BOARD_USART3_TX_PIN, BOARD_USART3_RX_PIN);
-	Serial4.init(USART4, BOARD_USART4_TX_PIN, BOARD_USART4_RX_PIN);
 }
-
-DEFINE_HWSERIAL(Serial2, 2);
-DEFINE_HWSERIAL(Serial3, 3);
-DEFINE_HWSERIAL(Serial4, 4);
 
 #undef _BOARD_GPIO_C_
 /************end of file********************/

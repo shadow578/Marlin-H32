@@ -14,7 +14,6 @@
 
 #include "hc32_ddl.h"
 #include "../core/macros.h"
-#include "../core/boards.h"
 
 #include "board_tim0.h"
 #include "board_cfg.h"
@@ -24,7 +23,6 @@
 #include "../pins/hc32f46x/pins_Aquila_X2.h"
 #include "sdio_f1.h"
 #include "../cores/usart.h"
-#include "../cores/HardwareSerial.h"
 
 #include "../cores/libmaple_types.h"
 #include "../cores/wirish_types.h"
@@ -35,7 +33,6 @@ extern "C"
 #endif
 
     extern uint32_t F_CPU;
-#define CYCLES_PER_MICROSECOND (F_CPU / 1000000UL)
 
     typedef enum ExtIntTriggerMode
     {

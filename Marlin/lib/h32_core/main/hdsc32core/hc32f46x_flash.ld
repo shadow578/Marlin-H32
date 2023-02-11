@@ -52,10 +52,11 @@
 /* Use contiguous memory regions for simple. */
 MEMORY
 {
-    FLASH       (rx): ORIGIN = 0x0000C000, LENGTH = 512K
-    OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
+    FLASH_ISR   (rx): ORIGIN = 0x0000C000, LENGTH = 1024
+    FLASH_ICG   (rx): ORIGIN = 0x0000C400, LENGTH = 32
+    FLASH       (rx): ORIGIN = 0x0000C420, LENGTH = 208K
     RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
-    RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
+    RAM_RET    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
 }
 
 ENTRY(Reset_Handler)
@@ -64,19 +65,16 @@ SECTIONS
 {
     .vectors :
     {
-        . = ALIGN(4);
         KEEP(*(.vectors))
-        . = ALIGN(4);
-    } >FLASH
+    } >FLASH_ISR
 
-    .icg_sec 0x00000400 :
+    .icg_sec :
     {
         KEEP(*(.icg_sec))
-    } >FLASH
+    } >FLASH_ICG
 
     .text :
     {
-        . = ALIGN(4);
         *(.text)
         *(.text*)
         *(.glue_7)
@@ -85,7 +83,6 @@ SECTIONS
 
         KEEP(*(.init))
         KEEP(*(.fini))
-        . = ALIGN(4);
     } >FLASH
 
     .rodata :
@@ -110,48 +107,31 @@ SECTIONS
 
     .preinit_array :
     {
-        . = ALIGN(4);
         /* preinit data */
-        PROVIDE_HIDDEN (__preinit_array_start = .);
-        KEEP(*(.preinit_array))
-        PROVIDE_HIDDEN (__preinit_array_end = .);
-        . = ALIGN(4);
+		PROVIDE_HIDDEN (__preinit_array_start = .);
+		KEEP(*(.preinit_array))
+		PROVIDE_HIDDEN (__preinit_array_end = .);
     } >FLASH
 
     .init_array :
     {
-        . = ALIGN(4);
         /* init data */
-        PROVIDE_HIDDEN (__init_array_start = .);
-        KEEP(*(SORT(.init_array.*)))
-        KEEP(*(.init_array))
-        PROVIDE_HIDDEN (__init_array_end = .);
-        . = ALIGN(4);
+		PROVIDE_HIDDEN (__init_array_start = .);
+		KEEP(*(SORT(.init_array.*)))
+		KEEP(*(.init_array))
+		PROVIDE_HIDDEN (__init_array_end = .);
     } >FLASH
 
     .fini_array :
     {
-        . = ALIGN(4);
         /* finit data */
-        PROVIDE_HIDDEN (__fini_array_start = .);
-        KEEP(*(SORT(.fini_array.*)))
-        KEEP(*(.fini_array))
-        PROVIDE_HIDDEN (__fini_array_end = .);
-        . = ALIGN(4);
+		PROVIDE_HIDDEN (__fini_array_start = .);
+		KEEP(*(SORT(.fini_array.*)))
+		KEEP(*(.fini_array))
+		PROVIDE_HIDDEN (__fini_array_end = .);
     } >FLASH
 
-    __etext = ALIGN(4);
-
-    .otp_sec :
-    {
-        KEEP(*(.otp_sec))
-    } >OTP
-
-    .otp_lock_sec 0x03000FC0 :
-    {
-        KEEP(*(.otp_lock_sec))
-    } >OTP
-
+    /*__etext = ALIGN(4);
     .data : AT (__etext)
     {
         . = ALIGN(4);
@@ -160,75 +140,68 @@ SECTIONS
         *(.data)
         *(.data*)
         . = ALIGN(4);
-        *(.ramfunc)
-        *(.ramfunc*)
-        . = ALIGN(4);
         __data_end__ = .;
-    } >RAM
+    } >RAM*/
 
-    __etext_ret_ram = __etext + ALIGN (SIZEOF(.data), 4);
-    .ret_ram_data : AT (__etext_ret_ram)
+    __etext = LOADADDR(.data);
+    .data :
     {
         . = ALIGN(4);
-        __data_start_ret_ram__ = .;
-        *(.ret_ram_data)
-        *(.ret_ram_data*)
+        __data_start__ = .;
+        *(vtable)
+        *(.data)
+        *(.data*)
         . = ALIGN(4);
-        __data_end_ret_ram__ = .;
-    } >RET_RAM
+        __data_end__ = .;
+    } >RAM AT> FLASH
+
+    __ram_ret_data_start = LOADADDR(.ram_ret_data);
+    .ram_ret_data :
+    {
+        . = ALIGN(4);
+        __data_start_ram_ret__ = .;
+        *(.ram_ret_data)
+        *(.ram_ret_data*)
+        . = ALIGN(4);
+        __data_end_ram_ret__ = .;
+    } >RAM_RET AT> FLASH
 
     .bss :
     {
         . = ALIGN(4);
-        _sbss = .;
-        __bss_start__ = _sbss;
-        *(.bss)
+        __bss_start__ = .;
         *(.bss*)
         *(COMMON)
         . = ALIGN(4);
-        _ebss = .;
-        __bss_end__ = _ebss;
+        __bss_end__ = .;
     } >RAM
 
-    .ret_ram_bss :
+    .ram_ret_bss :
     {
         . = ALIGN(4);
-        __bss_start_ret_ram__ = .;
-        *(.ret_ram_bss)
-        *(.ret_ram_bss*)
+        __bss_start_ram_ret__ = .;
+        *(.ram_ret_bss)
+        *(.ram_ret_bss*)
         . = ALIGN(4);
-        __bss_end_ret_ram__ = .;
-    } >RET_RAM
+        __bss_end_ram_ret__ = .;
+    } >RAM_RET
 
-    .heap_stack (COPY) :
+    .heap (COPY) :
     {
-        . = ALIGN(8);
         __end__ = .;
         PROVIDE(end = .);
-        PROVIDE(_end = .);
         *(.heap*)
-        . = ALIGN(8);
         __HeapLimit = .;
-
-        __StackLimit = .;
-        *(.stack*)
-        . = ALIGN(8);
-        __StackTop = .;
     } >RAM
 
-    /DISCARD/ :
+    .stack_dummy (COPY) :
     {
-        libc.a (*)
-        libm.a (*)
-        libgcc.a (*)
-    }
+        *(.stack*)
+    } >RAM
 
-    .ARM.attributes 0 : { *(.ARM.attributes) }
-
+    __StackTop = ORIGIN(RAM) + LENGTH(RAM);
+    __StackLimit = __StackTop - SIZEOF(.stack_dummy);
     PROVIDE(_stack = __StackTop);
-    PROVIDE(_Min_Heap_Size = __HeapLimit - __HeapBase);
-    PROVIDE(_Min_Stack_Size = __StackTop - __StackLimit);
 
-    __RamEnd = ORIGIN(RAM) + LENGTH(RAM);
-    ASSERT(__StackTop <= __RamEnd, "region RAM overflowed with stack")
+    ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 }

@@ -30,7 +30,7 @@
 #include "../board/startup.h"
 
 #define READ(IO) (PORT_GetBitMapp(IO) ? HIGH : LOW)
-#define WRITE(IO, V) (V > 0 ? PORT_SetBitsMapp(IO) : PORT_ResetBitsMapp(IO))
+#define WRITE(IO, V) (((V) > 0) ? PORT_SetBitsMapp(IO) : PORT_ResetBitsMapp(IO))
 #define TOGGLE(IO) (PORT_ToggleMapp(IO))
 
 #define _GET_MODE(IO) gpio_get_mode(IO)
@@ -46,9 +46,11 @@
 
 #define SET_INPUT(IO) _SET_MODE(IO, INPUT_FLOATING)
 #define SET_INPUT_PULLUP(IO) _SET_MODE(IO, INPUT_PULLUP)
+#define SET_INPUT_PULLDOWN(IO) _SET_MODE(IO, INPUT_PULLDOWN)
 #define SET_OUTPUT(IO) OUT_WRITE(IO, LOW)
 
 #define PWM_PIN(IO) 0 //(PIN_MAP[IO].timer_device != nullptr)
+//TODO: #warning "PWM_PIN(IO) is not implemented"
 
 // digitalRead/Write wrappers
 #define extDigitalRead(IO) digitalRead(IO)

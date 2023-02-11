@@ -137,6 +137,7 @@ void HAL_adc_start_conversion(const uint8_t adc_pin)
   TEMP_PINS pin_index;
   switch (adc_pin)
   {
+  default:
   case TEMP_0_PIN:
     pin_index = TEMP_0;
     break;

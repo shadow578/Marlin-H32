@@ -37,6 +37,10 @@
 
 #define HAL_SERVO_LIB libServo
 
+#if defined(HC32F46x) && NUM_SERVOS > 1
+#error "I don't know how to handle more than one servo with the H32 chip yet, sorry!"
+#endif
+
 class libServo
 {
 public:
