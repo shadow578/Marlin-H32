@@ -62,6 +62,11 @@ typedef uint16_t hal_timer_t;
 #define TEMP_TIMER_NUM 1 // TIMER0 CHA
 #define PULSE_TIMER_NUM STEP_TIMER_NUM
 
+// timer aliases
+#define MF_TIMER_STEP STEP_TIMER_NUM
+#define MF_TIMER_TEMP TEMP_TIMER_NUM
+#define MF_TIMER_PULSE PULSE_TIMER_NUM
+
 #define TEMP_TIMER_FREQUENCY 1000 // temperature interrupt frequency
 #define TEMP_TIMER_PRESCALE 16ul  // prescaler for setting Temp timer, 72Khz
 
