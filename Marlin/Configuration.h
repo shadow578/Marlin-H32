@@ -21,61 +21,6 @@
  */
 #pragma once
 
-//TODO vox redefines things here...
-// if 'redefined' is defined this does stuff
-// added a #error in those cases to check it...
-// if no error while compiling, this can be removed
-#ifdef redefined
-#error "'redefined' is defined, so this stuff is needed ..."
-#define __STM32F1__
-#endif
-
-#ifdef redefined
-#define SERIAL_USB
-#endif
-
-#ifdef redefined
-#define __arm__
-#endif
-
-#ifdef redefined
-#define __thumb__
-#endif
-
-#ifdef redefined
-#define _usb_h_
-#endif
-
-#ifdef redefined
-#define ARDUINO_ARCH_STM32
-#endif
-
-#ifdef redefined
-#define ARDUINO_ARCH_STM32F1
-#endif
-
-#ifdef redefined
-#define STM32_HIGH_DENSITY
-#endif
-
-#ifndef __cplusplus
-#error "'__cplusplus' was not defined, so this stuff is needed ..."
-#define __cplusplus
-#endif
-
-#ifdef redefined
-#define MCU_STM32F103RC
-#endif
-
-#ifdef redefined
-#define __GNUC__
-#endif
-
-#ifndef ARDUINO
-//#error "'ARDUINO' was not defined, so this stuff is needed ..."
-#define ARDUINO 100
-#endif
-
 /**
  * Configuration.h
  *
@@ -1221,7 +1166,7 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-#define FILAMENT_RUNOUT_SENSOR
+//#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #define FIL_RUNOUT_STATE     LOW   // Pin state indicating that filament is NOT present.
