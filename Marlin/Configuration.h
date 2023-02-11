@@ -142,12 +142,6 @@
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH
 
-// Choose the name from boards.h that matches your setup
-//TODO: merging 2.0.9.3, Configuration.h does not have this entry?! Maybe mainboard is configured in another way?
-#ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_AQUILA_X2_H32
-#endif
-
 // Name displayed in the LCD "Ready" message and Info menu
 #define CUSTOM_MACHINE_NAME "Voxlab Aquila X2 H32"
 

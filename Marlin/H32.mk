@@ -59,6 +59,7 @@ EXCLUDES = \
 
 ## defines for compilation (-D) ##
 C_DEFINES = \
+	MOTHERBOARD=BOARD_AQUILA_X2_H32\
 	HC32F46x \
 	USE_DEVICE_DRIVER_LIB \
 	__TARGET_FPU_VFP \
