@@ -25,7 +25,7 @@
 #if HAS_STEALTHCHOP
 
 #if AXIS_COLLISION('I')
-  #error "M569 parameter collision with axis name."
+  #error "M569 parameter 'I' collision with axis name."
 #endif
 
 #include "../../gcode.h"
@@ -53,7 +53,7 @@ static void set_stealth_status(const bool enable, const int8_t eindex) {
     constexpr int8_t index = -1;
   #endif
 
-  LOOP_LOGICAL_AXES(i) if (parser.seen(axis_codes[i])) {
+  LOOP_LOGICAL_AXES(i) if (parser.seen(AXIS_CHAR(i))) {
     switch (i) {
       case X_AXIS:
         TERN_(X_HAS_STEALTHCHOP,  if (index < 0 || index == 0) TMC_SET_STEALTH(X));
@@ -161,7 +161,7 @@ void GcodeSuite::M569_report(const bool forReplay/*=true*/) {
 
   if (chop_x || chop_y || chop_z || chop_i || chop_j || chop_k) {
     say_M569(forReplay);
-    LINEAR_AXIS_CODE(
+    NUM_AXIS_CODE(
       if (chop_x) SERIAL_ECHOPGM_P(SP_X_STR),
       if (chop_y) SERIAL_ECHOPGM_P(SP_Y_STR),
       if (chop_z) SERIAL_ECHOPGM_P(SP_Z_STR),
@@ -186,11 +186,15 @@ void GcodeSuite::M569_report(const bool forReplay/*=true*/) {
 
   if (TERN0(Z3_HAS_STEALTHCHOP, stepperZ3.get_stored_stealthChop())) { say_M569(forReplay, F("I2 Z"), true); }
   if (TERN0(Z4_HAS_STEALTHCHOP, stepperZ4.get_stored_stealthChop())) { say_M569(forReplay, F("I3 Z"), true); }
-
-  if (TERN0( I_HAS_STEALTHCHOP, stepperI.get_stored_stealthChop()))  { say_M569(forReplay, FPSTR(SP_I_STR), true); }
-  if (TERN0( J_HAS_STEALTHCHOP, stepperJ.get_stored_stealthChop()))  { say_M569(forReplay, FPSTR(SP_J_STR), true); }
-  if (TERN0( K_HAS_STEALTHCHOP, stepperK.get_stored_stealthChop()))  { say_M569(forReplay, FPSTR(SP_K_STR), true); }
-
+  #if HAS_I_AXIS
+    if (TERN0(I_HAS_STEALTHCHOP, stepperI.get_stored_stealthChop()))  { say_M569(forReplay, FPSTR(SP_I_STR), true); }
+  #endif
+  #if HAS_J_AXIS
+    if (TERN0(J_HAS_STEALTHCHOP, stepperJ.get_stored_stealthChop()))  { say_M569(forReplay, FPSTR(SP_J_STR), true); }
+  #endif
+  #if HAS_K_AXIS
+    if (TERN0(K_HAS_STEALTHCHOP, stepperK.get_stored_stealthChop()))  { say_M569(forReplay, FPSTR(SP_K_STR), true); }
+  #endif
   if (TERN0(E0_HAS_STEALTHCHOP, stepperE0.get_stored_stealthChop())) { say_M569(forReplay, F("T0 E"), true); }
   if (TERN0(E1_HAS_STEALTHCHOP, stepperE1.get_stored_stealthChop())) { say_M569(forReplay, F("T1 E"), true); }
   if (TERN0(E2_HAS_STEALTHCHOP, stepperE2.get_stored_stealthChop())) { say_M569(forReplay, F("T2 E"), true); }

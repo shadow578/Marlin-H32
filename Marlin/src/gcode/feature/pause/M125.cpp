@@ -64,7 +64,7 @@ void GcodeSuite::M125() {
   xyz_pos_t park_point = NOZZLE_PARK_POINT;
 
   // Move to filament change position or given position
-  LINEAR_AXIS_CODE(
+  NUM_AXIS_CODE(
     if (parser.seenval('X')) park_point.x = RAW_X_POSITION(parser.linearval('X')),
     if (parser.seenval('Y')) park_point.y = RAW_Y_POSITION(parser.linearval('Y')),
     NOOP,
@@ -74,7 +74,9 @@ void GcodeSuite::M125() {
   );
 
   // Lift Z axis
-  if (parser.seenval('Z')) park_point.z = parser.linearval('Z');
+  #if HAS_Z_AXIS
+    if (parser.seenval('Z')) park_point.z = parser.linearval('Z');
+  #endif
 
   #if HAS_HOTEND_OFFSET && NONE(DUAL_X_CARRIAGE, DELTA)
     park_point += hotend_offset[active_extruder];

@@ -48,7 +48,7 @@
   #include "delta.h"
 #endif
 
-#if ANY(HAS_QUIET_PROBING, USE_SENSORLESS)
+#if EITHER(HAS_QUIET_PROBING, USE_SENSORLESS)
   #include "stepper/indirection.h"
   #if BOTH(HAS_QUIET_PROBING, PROBING_ESTEPPERS_OFF)
     #include "stepper.h"
@@ -274,14 +274,14 @@ xyz_pos_t Probe::offset; // Initialized by settings.load()
     #if ENABLED(PROBING_STEPPERS_OFF) && DISABLED(DELTA)
       static uint8_t old_trusted;
       if (dopause) {
-        old_trusted = axis_trusted;
+        old_trusted = axes_trusted;
         stepper.disable_axis(X_AXIS);
         stepper.disable_axis(Y_AXIS);
       }
       else {
         if (TEST(old_trusted, X_AXIS)) stepper.enable_axis(X_AXIS);
         if (TEST(old_trusted, Y_AXIS)) stepper.enable_axis(Y_AXIS);
-        axis_trusted = old_trusted;
+        axes_trusted = old_trusted;
       }
     #endif
     if (dopause) safe_delay(_MAX(DELAY_BEFORE_PROBING, 25));
@@ -343,7 +343,7 @@ FORCE_INLINE void probe_specific_action(const bool deploy) {
 
   #elif HAS_Z_SERVO_PROBE
 
-    MOVE_SERVO(Z_PROBE_SERVO_NR, servo_angles[Z_PROBE_SERVO_NR][deploy ? 0 : 1]);
+    servo[Z_PROBE_SERVO_NR].move(servo_angles[Z_PROBE_SERVO_NR][deploy ? 0 : 1]);
 
   #elif EITHER(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY)
 
@@ -809,7 +809,7 @@ float Probe::probe_at_point(const_float_t rx, const_float_t ry, const ProbePtRai
   #endif
 
   // On delta keep Z below clip height or do_blocking_move_to will abort
-  xyz_pos_t npos = LINEAR_AXIS_ARRAY(
+  xyz_pos_t npos = NUM_AXIS_ARRAY(
     rx, ry, TERN(DELTA, _MIN(delta_clip_start_height, current_position.z), current_position.z),
     current_position.i, current_position.j, current_position.k
   );

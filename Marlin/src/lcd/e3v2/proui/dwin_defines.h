@@ -28,51 +28,22 @@
  * Date: 2022/02/28
  */
 
+#define HAS_GCODE_PREVIEW 1
+#define HAS_PIDPLOT 1
+#define HAS_ESDIAG 1
+#define HAS_LOCKSCREEN 1
 //#define DEBUG_DWIN 1
 //#define NEED_HEX_PRINT 1
 
 #include "../../../inc/MarlinConfigPre.h"
-#include <stddef.h>
-
-#define HAS_ESDIAG 1
-#if defined(__STM32F1__) || defined(STM32F1)
-  #define DASH_REDRAW 1
-#endif
-
-#if DISABLED(LIMITED_MAX_FR_EDITING)
-  #error "LIMITED_MAX_FR_EDITING is required with ProUI."
-#endif
-#if DISABLED(LIMITED_MAX_ACCEL_EDITING)
-  #error "LIMITED_MAX_ACCEL_EDITING is required with ProUI."
-#endif
-#if ENABLED(CLASSIC_JERK) && DISABLED(LIMITED_JERK_EDITING)
-  #error "LIMITED_JERK_EDITING is required with ProUI."
-#endif
-#if DISABLED(FILAMENT_RUNOUT_SENSOR)
-  #error "FILAMENT_RUNOUT_SENSOR is required with ProUI."
-#endif
-#if DISABLED(INDIVIDUAL_AXIS_HOMING_SUBMENU)
-  #error "INDIVIDUAL_AXIS_HOMING_SUBMENU is required with ProUI."
-#endif
-#if DISABLED(LCD_SET_PROGRESS_MANUALLY)
-  #error "LCD_SET_PROGRESS_MANUALLY is required with ProUI."
-#endif
-#if DISABLED(STATUS_MESSAGE_SCROLLING)
-  #error "STATUS_MESSAGE_SCROLLING is required with ProUI."
-#endif
-#if DISABLED(BAUD_RATE_GCODE)
-  #error "BAUD_RATE_GCODE is required with ProUI."
-#endif
-#if DISABLED(SOUND_MENU_ITEM)
-  #error "SOUND_MENU_ITEM is required with ProUI."
-#endif
-#if DISABLED(PRINTCOUNTER)
-  #error "PRINTCOUNTER is required with ProUI."
-#endif
-
 #include "../common/dwin_color.h"
 #if ENABLED(LED_CONTROL_MENU)
   #include "../../../feature/leds/leds.h"
+#endif
+#include <stddef.h>
+
+#if defined(__STM32F1__) || defined(STM32F1)
+  #define DASH_REDRAW 1
 #endif
 
 #define Def_Background_Color  RGB( 1, 12,  8)
@@ -94,14 +65,8 @@
 #define Def_Indicator_Color   Color_White
 #define Def_Coordinate_Color  Color_White
 #define Def_Button_Color      RGB( 0, 23, 16)
-
-#define HAS_ESDIAG 1
-
 #if BOTH(LED_CONTROL_MENU, HAS_COLOR_LEDS)
-  #define Def_Leds_Color 0xFFFFFFFF
-#endif
-#if ENABLED(CASELIGHT_USES_BRIGHTNESS)
-  #define Def_CaseLight_Brightness 255
+  #define Def_Leds_Color      LEDColorWhite()
 #endif
 
 typedef struct {
@@ -144,12 +109,12 @@ typedef struct {
     bool Baud115K = false;
   #endif
   bool FullManualTramming = false;
-  // Led
   #if ENABLED(MESH_BED_LEVELING)
     float ManualZOffset = 0;
   #endif
+  // Led
   #if BOTH(LED_CONTROL_MENU, HAS_COLOR_LEDS)
-    uint32_t LED_Color = Def_Leds_Color;
+    LEDColor Led_Color = Def_Leds_Color;
   #endif
 } HMI_data_t;
 

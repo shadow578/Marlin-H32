@@ -50,9 +50,9 @@
  *  W[linear]     0/1 Enable park & Z Raise
  *  X[linear]     Park X (Requires TOOLCHANGE_PARK)
  *  Y[linear]     Park Y (Requires TOOLCHANGE_PARK)
- *  I[linear]     Park I (Requires TOOLCHANGE_PARK and LINEAR_AXES >= 4)
- *  J[linear]     Park J (Requires TOOLCHANGE_PARK and LINEAR_AXES >= 5)
- *  K[linear]     Park K (Requires TOOLCHANGE_PARK and LINEAR_AXES >= 6)
+ *  I[linear]     Park I (Requires TOOLCHANGE_PARK and NUM_AXES >= 4)
+ *  J[linear]     Park J (Requires TOOLCHANGE_PARK and NUM_AXES >= 5)
+ *  K[linear]     Park K (Requires TOOLCHANGE_PARK and NUM_AXES >= 6)
  *  Z[linear]     Z Raise
  *  F[speed]      Fan Speed 0-255
  *  D[seconds]    Fan time
@@ -174,14 +174,12 @@ void GcodeSuite::M217_report(const bool forReplay/*=true*/) {
         #if HAS_Y_AXIS
           , SP_Y_STR, LINEAR_UNIT(toolchange_settings.change_point.y)
         #endif
-        #if HAS_I_AXIS
-          , SP_I_STR, LINEAR_UNIT(toolchange_settings.change_point.i)
-        #endif
-        #if HAS_J_AXIS
-          , SP_J_STR, LINEAR_UNIT(toolchange_settings.change_point.j)
-        #endif
-        #if HAS_K_AXIS
-          , SP_K_STR, LINEAR_UNIT(toolchange_settings.change_point.k)
+        #if SECONDARY_AXES >= 1
+          , LIST_N(DOUBLE(SECONDARY_AXES),
+              SP_I_STR, I_AXIS_UNIT(toolchange_settings.change_point.i),
+              SP_J_STR, J_AXIS_UNIT(toolchange_settings.change_point.j),
+              SP_K_STR, K_AXIS_UNIT(toolchange_settings.change_point.k)
+            )
         #endif
       );
     }

@@ -22,7 +22,6 @@
 
 #include "../gcode.h"
 #include "../../module/motion.h"
-#include "../../module/stepper.h"
 
 #if ENABLED(I2C_POSITION_ENCODERS)
   #include "../../feature/encoder_i2c.h"
@@ -64,7 +63,7 @@ void GcodeSuite::G92() {
 
     #if ENABLED(CNC_COORDINATE_SYSTEMS) && !IS_SCARA
       case 1:                                                         // G92.1 - Zero the Workspace Offset
-        LOOP_LINEAR_AXES(i) if (position_shift[i]) {
+        LOOP_NUM_AXES(i) if (position_shift[i]) {
           position_shift[i] = 0;
           update_workspace_offset((AxisEnum)i);
         }
@@ -74,7 +73,7 @@ void GcodeSuite::G92() {
     #if ENABLED(POWER_LOSS_RECOVERY)
       case 9:                                                         // G92.9 - Set Current Position directly (like Marlin 1.0)
         LOOP_LOGICAL_AXES(i) {
-          if (parser.seenval(axis_codes[i])) {
+          if (parser.seenval(AXIS_CHAR(i))) {
             if (TERN1(HAS_EXTRUDERS, i != E_AXIS))
               sync_XYZE = true;
             else {
@@ -88,7 +87,7 @@ void GcodeSuite::G92() {
 
     case 0:
       LOOP_LOGICAL_AXES(i) {
-        if (parser.seenval(axis_codes[i])) {
+        if (parser.seenval(AXIS_CHAR(i))) {
           const float l = parser.value_axis_units((AxisEnum)i),       // Given axis coordinate value, converted to millimeters
                       v = TERN0(HAS_EXTRUDERS, i == E_AXIS) ? l : LOGICAL_TO_NATIVE(l, i),  // Axis position in NATIVE space (applying the existing offset)
                       d = v - current_position[i];                    // How much is the current axis position altered by?
