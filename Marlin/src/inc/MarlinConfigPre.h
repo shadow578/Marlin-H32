@@ -35,7 +35,9 @@
   #include "../board/startup.h"
 #endif
 
-#include "../HAL/platforms.h"
+#ifndef __MARLIN_DEPS__
+  #include "../HAL/platforms.h"
+#endif
 
 #include "../core/boards.h"
 #include "../core/macros.h"
@@ -50,10 +52,16 @@
 #include "Version.h"
 
 #include "Conditionals_LCD.h"
-#include HAL_PATH(../HAL, inc/Conditionals_LCD.h)
+
+#ifndef __MARLIN_DEPS__
+  #include HAL_PATH(../HAL, inc/Conditionals_LCD.h)
+#endif
 
 #include "../core/drivers.h"
 #include "../../Configuration_adv.h"
 
 #include "Conditionals_adv.h"
-#include HAL_PATH(../HAL, inc/Conditionals_adv.h)
+
+#ifndef __MARLIN_DEPS__
+  #include HAL_PATH(../HAL, inc/Conditionals_adv.h)
+#endif
