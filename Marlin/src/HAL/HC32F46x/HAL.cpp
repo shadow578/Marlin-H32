@@ -66,6 +66,15 @@ namespace wirish
 void HAL_init()
 {
   NVIC_SetPriorityGrouping(0x3);
+
+  // increase WDT timeout, see https://github.com/alexqzd/Marlin-H32/commit/d8483fdff9d582e6773b002a1730052718787c3a
+  stc_wdt_init_t wdt_config;
+  wdt_config.enCountCycle = WdtCountCycle65536;      ///< Count cycle
+  wdt_config.enClkDiv = WdtPclk3Div8192;             ///< Count clock division
+  wdt_config.enRefreshRange = WdtRefresh100Pct;      ///< Allow refresh percent range
+  wdt_config.enSleepModeCountEn = Disable;           ///< Enable/disable count in the sleep mode
+  wdt_config.enRequsetType = WdtTriggerResetRequest; ///< Refresh error or count underflow trigger event type
+  WDT_Init(&wdt_config);
 }
 
 // HAL idle task
