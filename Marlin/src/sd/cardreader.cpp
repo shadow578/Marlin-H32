@@ -384,7 +384,10 @@ void CardReader::mount() {
   if (flag.mounted)
     cdroot();
   else {
+    //TODO HC32F46x: symbol missing, but hopefully its not too bad...
+    #ifndef HC32F46x
     spiInit(SPI_SPEED); // Return to base SPI speed
+    #endif
     ui.set_status_P(GET_TEXT(MSG_SD_INIT_FAIL), -1);
   }
   ui.refresh();
