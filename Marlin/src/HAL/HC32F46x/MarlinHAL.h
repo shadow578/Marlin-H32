@@ -39,7 +39,7 @@ public:
     // ADC Methods
     //
 
-    // static uint16_t adc_result;
+    static uint16_t adc_result;
 
     // Called by Temperature::init once at startup
     static void adc_init();

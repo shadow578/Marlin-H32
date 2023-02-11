@@ -20,7 +20,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-// #pragma once
 
 /**
  * HAL for stm32duino.com based on Libmaple and compatible (HC32F46x based on STM32F1)
@@ -34,8 +33,6 @@
 #include "../shared/HAL_SPI.h"
 
 #include "fastio.h"
-//#include "watchdog.h"
-
 #include "timers.h"
 
 #include <stdint.h>
@@ -44,11 +41,9 @@
 #include "../inc/MarlinConfig.h"
 #include "MarlinSerial.h"
 
-// ------------------------
-// Defines
-// ------------------------
-
-#define STM32_FLASH_SIZE 256
+//
+// Serial Ports
+//
 
 #define _MSERIAL(X) MSerial##X
 #define MSERIAL(X) _MSERIAL(X)
@@ -65,12 +60,21 @@
 #elif SERIAL_PORT_2 == SERIAL_PORT
 #error "SERIAL_PORT_2 must be different than SERIAL_PORT"
 #endif
-// #define NUM_SERIAL 2
 
-// Set interrupt grouping for this MCU
-void HAL_init();
-#define HAL_IDLETASK 1
-void HAL_idletask();
+//
+// Misc. Defines
+//
+
+#define STM32_FLASH_SIZE 256
+#define square(x) ((x) * (x))
+
+#ifndef strncpy_P
+#define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+#endif
+
+//
+// Misc. Functions
+//
 
 /**
  * TODO: review this to return 1 for pins that are not analog input
@@ -86,48 +90,14 @@ void HAL_idletask();
 #define CRITICAL_SECTION_START        \
   uint32_t primask = __get_PRIMASK(); \
   (void)__iCliRetVal()
+
 #define CRITICAL_SECTION_END \
   if (!primask)              \
   (void)__iSeiRetVal()
-#define ISRS_ENABLED() (!__get_PRIMASK())
-#define ENABLE_ISRS() (__enable_irq())   //__enable_irq((void)__iSeiRetVal())
-#define DISABLE_ISRS() (__disable_irq()) //__disable_irq((void)__iCliRetVal())
-
-// On AVR this is in math.h?
-#define square(x) ((x) * (x))
-
-#ifndef strncpy_P
-#define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
-#endif
 
 // Fix bug in pgm_read_ptr
 #undef pgm_read_ptr
 #define pgm_read_ptr(addr) (*(addr))
-
-#define RST_POWER_ON 1
-#define RST_EXTERNAL 2
-#define RST_BROWN_OUT 4
-#define RST_WATCHDOG 8
-#define RST_JTAG 16
-#define RST_SOFTWARE 32
-#define RST_BACKUP 64
-
-// ------------------------
-// Types
-// ------------------------
-
-typedef int8_t pin_t;
-
-// ------------------------
-// Public Variables
-// ------------------------
-
-// Result of last ADC conversion
-extern uint16_t HAL_adc_result;
-
-// ------------------------
-// Public functions
-// ------------------------
 
 // Disable interrupts
 #define cli() noInterrupts()
@@ -137,14 +107,6 @@ extern uint16_t HAL_adc_result;
 
 // Memory related
 #define __bss_end __bss_end__
-
-// Clear reset reason
-void HAL_clear_reset_source();
-
-// Reset reason
-uint8_t HAL_get_reset_source();
-
-void _delay_ms(const int delay);
 
 //
 // EEPROM
@@ -163,21 +125,8 @@ void eeprom_update_block(const void *__src, void *__dst, size_t __n);
 // ADC
 //
 
-#define HAL_ANALOG_SELECT(pin) pinMode(pin, INPUT_ANALOG);
-
-void HAL_adc_init();
-
-#define HAL_START_ADC(pin) HAL_adc_start_conversion(pin)
 #define HAL_ADC_VREF 3.3
 #define HAL_ADC_RESOLUTION 10
-#define HAL_READ_ADC() HAL_adc_result
-#define HAL_ADC_READY() true
-
-void HAL_adc_start_conversion(const uint8_t adc_pin);
-uint16_t HAL_adc_get_result();
-
-uint16_t HAL_analogRead(pin_t pin);            // need HAL_ANALOG_SELECT() first
-void HAL_analogWrite(pin_t pin, int pwm_val8); // PWM only! mul by 257 in maple!?
 
 #define GET_PIN_MAP_PIN(index) index
 #define GET_PIN_MAP_INDEX(pin) pin
@@ -186,10 +135,8 @@ void HAL_analogWrite(pin_t pin, int pwm_val8); // PWM only! mul by 257 in maple!
 #define JTAG_DISABLE()    // afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY)
 #define JTAGSWD_DISABLE() // afio_cfg_debug_ports(AFIO_DEBUG_NONE)
 
-#define PLATFORM_M997_SUPPORT
-void flashFirmware(int16_t value);
+//
+// MarlinHAL implementation
+//
 
-//
-// MarlinHAL class
-//
 #include "MarlinHAL.h"
