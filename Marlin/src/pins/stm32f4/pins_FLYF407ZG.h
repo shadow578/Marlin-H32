@@ -50,11 +50,11 @@
   // the 128kB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
 #elif ENABLED(I2C_EEPROM)
-  #define MARLIN_EEPROM_SIZE              0x2000  // 8KB
+  #define MARLIN_EEPROM_SIZE              0x2000  // 8K
 #endif
 
 #ifndef MARLIN_EEPROM_SIZE
-  #define MARLIN_EEPROM_SIZE              0x1000  // 4KB
+  #define MARLIN_EEPROM_SIZE              0x1000  // 4K
 #endif
 
 //
@@ -181,7 +181,7 @@
  *  PE14 | 8  7 | PE12    PC5  | 8  7 | PF11
  *  PE10   6  5 | PE9     PC4    6  5 | PB15
  *  PE8  | 4  3 | PE7     PB2  | 4  3 | RESET
- *  GND  | 2  1 | 5V      GND  | 2  1 | NC
+ *   GND | 2  1 | 5V       GND | 2  1 | --
  *        ------                ------
  *         EXP1                  EXP2
  */
