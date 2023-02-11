@@ -96,7 +96,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 		$(COMMON_GCC_ARGS) \
 		$(addprefix -D,$(C_DEFINES)) \
 		$(addprefix -I,$(INCLUDE_PATHS)) \
-		-std=gnu++11 \
+		-std=gnu++14 \
 		-fabi-version=0 \
 		-MMD \
 		-MP \
