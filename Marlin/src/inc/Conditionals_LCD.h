@@ -99,7 +99,7 @@
   #define IS_ULTIPANEL 1
   #define STD_ENCODER_PULSES_PER_STEP 2
 
-#elif ANY(miniVIKI, VIKI2, WYH_L12864, ELB_FULL_GRAPHIC_CONTROLLER, AZSMZ_12864)
+#elif ANY(miniVIKI, VIKI2, WYH_L12864, ELB_FULL_GRAPHIC_CONTROLLER, AZSMZ_12864, EMOTION_TECH_LCD)
 
   #define DOGLCD
   #define IS_DOGM_12864 1
@@ -116,6 +116,9 @@
     #define IS_U8GLIB_LM6059_AF 1
   #elif ENABLED(AZSMZ_12864)
     #define IS_U8GLIB_ST7565_64128N 1
+  #elif ENABLED(EMOTION_TECH_LCD)
+    #define IS_U8GLIB_ST7565_64128N 1
+    #define ST7565_VOLTAGE_DIVIDER_VALUE 0x07
   #endif
 
 #elif ENABLED(OLED_PANEL_TINYBOY2)
@@ -665,16 +668,47 @@
   #define E_MANUAL EXTRUDERS
 #endif
 
-/**
- * Number of Linear Axes (e.g., XYZIJK)
- * All the logical axes except for the tool (E) axis
- */
-#ifdef LINEAR_AXES
-  #undef LINEAR_AXES
-  #define LINEAR_AXES_WARNING 1
+#if E_STEPPERS <= 7
+  #undef INVERT_E7_DIR
+  #if E_STEPPERS <= 6
+    #undef INVERT_E6_DIR
+    #if E_STEPPERS <= 5
+      #undef INVERT_E5_DIR
+      #if E_STEPPERS <= 4
+        #undef INVERT_E4_DIR
+        #if E_STEPPERS <= 3
+          #undef INVERT_E3_DIR
+          #if E_STEPPERS <= 2
+            #undef INVERT_E2_DIR
+            #if E_STEPPERS <= 1
+              #undef INVERT_E1_DIR
+              #if E_STEPPERS == 0
+                #undef INVERT_E0_DIR
+              #endif
+            #endif
+          #endif
+        #endif
+      #endif
+    #endif
+  #endif
 #endif
 
-#ifdef K_DRIVER_TYPE
+/**
+ * Number of Linear Axes (e.g., XYZIJKUVW)
+ * All the logical axes except for the tool (E) axis
+ */
+#ifdef NUM_AXES
+  #undef NUM_AXES
+  #define NUM_AXES_WARNING 1
+#endif
+
+#ifdef W_DRIVER_TYPE
+  #define NUM_AXES 9
+#elif defined(V_DRIVER_TYPE)
+  #define NUM_AXES 8
+#elif defined(U_DRIVER_TYPE)
+  #define NUM_AXES 7
+#elif defined(K_DRIVER_TYPE)
   #define NUM_AXES 6
 #elif defined(J_DRIVER_TYPE)
   #define NUM_AXES 5
@@ -706,6 +740,15 @@
         #define HAS_J_AXIS 1
         #if NUM_AXES >= 6
           #define HAS_K_AXIS 1
+          #if NUM_AXES >= 7
+            #define HAS_U_AXIS 1
+            #if NUM_AXES >= 8
+              #define HAS_V_AXIS 1
+              #if NUM_AXES >= 9
+                #define HAS_W_AXIS 1
+              #endif
+            #endif
+          #endif
         #endif
       #endif
     #endif
@@ -750,6 +793,9 @@
   #undef Y_MIN_POS
   #undef Y_MAX_POS
   #undef MANUAL_Y_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_Y
+  #undef MAX_SOFTWARE_ENDSTOP_Y
+  #undef SAFE_BED_LEVELING_START_Y
 #endif
 
 #if !HAS_Z_AXIS
@@ -767,6 +813,9 @@
   #undef Z_MIN_POS
   #undef Z_MAX_POS
   #undef MANUAL_Z_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_Z
+  #undef MAX_SOFTWARE_ENDSTOP_Z
+  #undef SAFE_BED_LEVELING_START_Z
 #endif
 
 #if !HAS_I_AXIS
@@ -781,6 +830,9 @@
   #undef I_MIN_POS
   #undef I_MAX_POS
   #undef MANUAL_I_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_I
+  #undef MAX_SOFTWARE_ENDSTOP_I
+  #undef SAFE_BED_LEVELING_START_I
 #endif
 
 #if !HAS_J_AXIS
@@ -795,6 +847,9 @@
   #undef J_MIN_POS
   #undef J_MAX_POS
   #undef MANUAL_J_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_J
+  #undef MAX_SOFTWARE_ENDSTOP_J
+  #undef SAFE_BED_LEVELING_START_J
 #endif
 
 #if !HAS_K_AXIS
@@ -809,6 +864,60 @@
   #undef K_MIN_POS
   #undef K_MAX_POS
   #undef MANUAL_K_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_K
+  #undef MAX_SOFTWARE_ENDSTOP_K
+  #undef SAFE_BED_LEVELING_START_K
+#endif
+
+#if !HAS_U_AXIS
+  #undef ENDSTOPPULLUP_UMIN
+  #undef ENDSTOPPULLUP_UMAX
+  #undef U_MIN_ENDSTOP_INVERTING
+  #undef U_MAX_ENDSTOP_INVERTING
+  #undef U_ENABLE_ON
+  #undef DISABLE_U
+  #undef INVERT_U_DIR
+  #undef U_HOME_DIR
+  #undef U_MIN_POS
+  #undef U_MAX_POS
+  #undef MANUAL_U_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_U
+  #undef MAX_SOFTWARE_ENDSTOP_U
+  #undef SAFE_BED_LEVELING_START_U
+#endif
+
+#if !HAS_V_AXIS
+  #undef ENDSTOPPULLUP_VMIN
+  #undef ENDSTOPPULLUP_VMAX
+  #undef V_MIN_ENDSTOP_INVERTING
+  #undef V_MAX_ENDSTOP_INVERTING
+  #undef V_ENABLE_ON
+  #undef DISABLE_V
+  #undef INVERT_V_DIR
+  #undef V_HOME_DIR
+  #undef V_MIN_POS
+  #undef V_MAX_POS
+  #undef MANUAL_V_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_V
+  #undef MAX_SOFTWARE_ENDSTOP_V
+  #undef SAFE_BED_LEVELING_START_V
+#endif
+
+#if !HAS_W_AXIS
+  #undef ENDSTOPPULLUP_WMIN
+  #undef ENDSTOPPULLUP_WMAX
+  #undef W_MIN_ENDSTOP_INVERTING
+  #undef W_MAX_ENDSTOP_INVERTING
+  #undef W_ENABLE_ON
+  #undef DISABLE_W
+  #undef INVERT_W_DIR
+  #undef W_HOME_DIR
+  #undef W_MIN_POS
+  #undef W_MAX_POS
+  #undef MANUAL_W_HOME_POS
+  #undef MIN_SOFTWARE_ENDSTOP_W
+  #undef MAX_SOFTWARE_ENDSTOP_W
+  #undef SAFE_BED_LEVELING_START_W
 #endif
 
 #ifdef X2_DRIVER_TYPE
@@ -831,14 +940,42 @@
 #endif
 
 /**
- * Number of Secondary Axes (e.g., IJK)
+ * Number of Secondary Axes (e.g., IJKUVW)
  * All linear/rotational axes between XYZ and E.
  */
 #define SECONDARY_AXES SUB3(NUM_AXES)
 
 /**
- * Number of Logical Axes (e.g., XYZIJKE)
- * All the logical axes that can be commanded directly by G-code.
+ * Number of Rotational Axes (e.g., IJK)
+ * All axes for which AXIS*_ROTATES is defined.
+ * For these axes, positions are specified in angular degrees.
+ */
+#if ENABLED(AXIS9_ROTATES)
+  #define ROTATIONAL_AXES 6
+#elif ENABLED(AXIS8_ROTATES)
+  #define ROTATIONAL_AXES 5
+#elif ENABLED(AXIS7_ROTATES)
+  #define ROTATIONAL_AXES 4
+#elif ENABLED(AXIS6_ROTATES)
+  #define ROTATIONAL_AXES 3
+#elif ENABLED(AXIS5_ROTATES)
+  #define ROTATIONAL_AXES 2
+#elif ENABLED(AXIS4_ROTATES)
+  #define ROTATIONAL_AXES 1
+#else
+  #define ROTATIONAL_AXES 0
+#endif
+
+/**
+ * Number of Secondary Linear Axes (e.g., UVW)
+ * All secondary axes for which AXIS*_ROTATES is not defined.
+ * Excluding primary axes and excluding duplicate axes (X2, Y2, Z2, Z3, Z4)
+ */
+#define SECONDARY_LINEAR_AXES (NUM_AXES - PRIMARY_LINEAR_AXES - ROTATIONAL_AXES)
+
+/**
+ * Number of Logical Axes (e.g., XYZIJKUVWE)
+ * All logical axes that can be commanded directly by G-code.
  * Delta maps stepper-specific values to ABC steppers.
  */
 #if HAS_EXTRUDERS
@@ -963,7 +1100,10 @@
 /**
  * Set flags for any form of bed probe
  */
-#if ANY(HAS_Z_SERVO_PROBE, FIX_MOUNTED_PROBE, NOZZLE_AS_PROBE, TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, Z_PROBE_SLED, SOLENOID_PROBE, SENSORLESS_PROBING, RACK_AND_PINION_PROBE, MAGLEV4)
+#if ANY(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, SOLENOID_PROBE, Z_PROBE_SLED, RACK_AND_PINION_PROBE, SENSORLESS_PROBING, MAGLEV4, MAG_MOUNTED_PROBE)
+  #define HAS_STOWABLE_PROBE 1
+#endif
+#if ANY(HAS_STOWABLE_PROBE, HAS_Z_SERVO_PROBE, FIX_MOUNTED_PROBE, BD_SENSOR, NOZZLE_AS_PROBE)
   #define HAS_BED_PROBE 1
 #endif
 
@@ -1092,6 +1232,21 @@
 #elif K_HOME_DIR < 0
   #define K_HOME_TO_MIN 1
 #endif
+#if U_HOME_DIR > 0
+  #define U_HOME_TO_MAX 1
+#elif U_HOME_DIR < 0
+  #define U_HOME_TO_MIN 1
+#endif
+#if V_HOME_DIR > 0
+  #define V_HOME_TO_MAX 1
+#elif V_HOME_DIR < 0
+  #define V_HOME_TO_MIN 1
+#endif
+#if W_HOME_DIR > 0
+  #define W_HOME_TO_MAX 1
+#elif W_HOME_DIR < 0
+  #define W_HOME_TO_MIN 1
+#endif
 
 /**
  * Conditionals based on the type of Bed Probe
@@ -1112,7 +1267,7 @@
   #ifndef Z_PROBE_LOW_POINT
     #define Z_PROBE_LOW_POINT -5
   #endif
-  #if ENABLED(Z_PROBE_ALLEN_KEY)
+  #if EITHER(Z_PROBE_ALLEN_KEY, MAG_MOUNTED_PROBE)
     #define PROBE_TRIGGERED_WHEN_STOWED_TEST 1 // Extra test for Allen Key Probe
   #endif
   #if MULTIPLE_PROBING > 1
@@ -1290,6 +1445,10 @@
  */
 #ifndef EXTRUDE_MINTEMP
   #define EXTRUDE_MINTEMP 170
+#endif
+
+#if ANY(PID_DEBUG, PID_BED_DEBUG, PID_CHAMBER_DEBUG)
+  #define HAS_PID_DEBUG 1
 #endif
 
 /**

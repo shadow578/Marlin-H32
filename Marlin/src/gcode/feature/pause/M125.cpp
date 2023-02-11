@@ -52,6 +52,9 @@
  *    A<pos>    = Override park position A (requires AXIS*_NAME 'A')
  *    B<pos>    = Override park position B (requires AXIS*_NAME 'B')
  *    C<pos>    = Override park position C (requires AXIS*_NAME 'C')
+ *    U<pos>    = Override park position U (requires AXIS*_NAME 'U')
+ *    V<pos>    = Override park position V (requires AXIS*_NAME 'V')
+ *    W<pos>    = Override park position W (requires AXIS*_NAME 'W')
  *    Z<linear> = Override Z raise
  *
  *  With an LCD menu:
@@ -70,7 +73,10 @@ void GcodeSuite::M125() {
     NOOP,
     if (parser.seenval(AXIS4_NAME)) park_point.i = RAW_I_POSITION(parser.linearval(AXIS4_NAME)),
     if (parser.seenval(AXIS5_NAME)) park_point.j = RAW_J_POSITION(parser.linearval(AXIS5_NAME)),
-    if (parser.seenval(AXIS6_NAME)) park_point.k = RAW_K_POSITION(parser.linearval(AXIS6_NAME))
+    if (parser.seenval(AXIS6_NAME)) park_point.k = RAW_K_POSITION(parser.linearval(AXIS6_NAME)),
+    if (parser.seenval(AXIS7_NAME)) park_point.u = RAW_U_POSITION(parser.linearval(AXIS7_NAME)),
+    if (parser.seenval(AXIS8_NAME)) park_point.v = RAW_V_POSITION(parser.linearval(AXIS8_NAME)),
+    if (parser.seenval(AXIS9_NAME)) park_point.w = RAW_W_POSITION(parser.linearval(AXIS9_NAME))
   );
 
   // Lift Z axis

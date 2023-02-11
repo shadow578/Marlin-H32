@@ -132,7 +132,7 @@
       constexpr int16_t sns_angles[2] = SWITCHING_NOZZLE_SERVO_ANGLES;
       planner.synchronize();
       servo[sns_index[e]].move(sns_angles[angle_index]);
-      safe_delay(500);
+      safe_delay(SWITCHING_NOZZLE_SERVO_DWELL);
     }
 
     void lower_nozzle(const uint8_t e) { _move_nozzle_servo(e, 0); }
@@ -143,7 +143,7 @@
     void move_nozzle_servo(const uint8_t angle_index) {
       planner.synchronize();
       servo[SWITCHING_NOZZLE_SERVO_NR].move(servo_angles[SWITCHING_NOZZLE_SERVO_NR][angle_index]);
-      safe_delay(500);
+      safe_delay(SWITCHING_NOZZLE_SERVO_DWELL);
     }
 
   #endif
@@ -1056,7 +1056,10 @@ void fast_line_to_current(const AxisEnum fr_axis) { _line_to_current(fr_axis, 0.
             SECONDARY_AXIS_CODE(
               current_position.i = toolchange_settings.change_point.i,
               current_position.j = toolchange_settings.change_point.j,
-              current_position.k = toolchange_settings.change_point.k
+              current_position.k = toolchange_settings.change_point.k,
+              current_position.u = toolchange_settings.change_point.u,
+              current_position.v = toolchange_settings.change_point.v,
+              current_position.w = toolchange_settings.change_point.w
             );
           #endif
           planner.buffer_line(current_position, MMM_TO_MMS(TOOLCHANGE_PARK_XY_FEEDRATE), active_extruder);
@@ -1238,7 +1241,10 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
             SECONDARY_AXIS_CODE(
               current_position.i = toolchange_settings.change_point.i,
               current_position.j = toolchange_settings.change_point.j,
-              current_position.k = toolchange_settings.change_point.k
+              current_position.k = toolchange_settings.change_point.k,
+              current_position.u = toolchange_settings.change_point.u,
+              current_position.v = toolchange_settings.change_point.v,
+              current_position.w = toolchange_settings.change_point.w
             );
           #endif
           planner.buffer_line(current_position, MMM_TO_MMS(TOOLCHANGE_PARK_XY_FEEDRATE), old_tool);

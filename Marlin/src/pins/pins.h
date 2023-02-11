@@ -590,7 +590,7 @@
 #elif MB(CREALITY_V25S1)
   #include "stm32f1/pins_CREALITY_V25S1.h"      // STM32F1                                env:STM32F103RE_creality_smartPro env:STM32F103RE_creality_smartPro_maple
 #elif MB(TRIGORILLA_PRO)
-  #include "stm32f1/pins_TRIGORILLA_PRO.h"      // STM32F1                                env:trigorilla_pro env:trigorilla_pro_maple
+  #include "stm32f1/pins_TRIGORILLA_PRO.h"      // STM32F1                                env:trigorilla_pro env:trigorilla_pro_maple env:trigorilla_pro_disk
 #elif MB(FLY_MINI)
   #include "stm32f1/pins_FLY_MINI.h"            // STM32F1                                env:FLY_MINI env:FLY_MINI_maple
 #elif MB(FLSUN_HISPEED)
@@ -635,8 +635,6 @@
   #include "stm32f4/pins_RUMBA32_BTT.h"         // STM32F4                                env:rumba32
 #elif MB(BLACK_STM32F407VE)
   #include "stm32f4/pins_BLACK_STM32F407VE.h"   // STM32F4                                env:STM32F407VE_black
-#elif MB(STEVAL_3DP001V1)
-  #include "stm32f4/pins_STEVAL_3DP001V1.h"     // STM32F4                                env:STM32F401VE_STEVAL
 #elif MB(BTT_SKR_PRO_V1_1)
   #include "stm32f4/pins_BTT_SKR_PRO_V1_1.h"    // STM32F4                                env:BIGTREE_SKR_PRO env:BIGTREE_SKR_PRO_usb_flash_drive
 #elif MB(BTT_SKR_PRO_V1_2)
@@ -792,6 +790,7 @@
   #define BOARD_STM32F103R              99906
   #define BOARD_ESP32                   99907
   #define BOARD_STEVAL                  99908
+  #define BOARD_STEVAL_3DP001V1         99908
   #define BOARD_BIGTREE_SKR_V1_1        99909
   #define BOARD_BIGTREE_SKR_V1_3        99910
   #define BOARD_BIGTREE_SKR_V1_4        99911
@@ -847,7 +846,7 @@
   #elif MOTHERBOARD == BOARD_ESP32
     #error "BOARD_ESP32 has been renamed BOARD_ESPRESSIF_ESP32. Please update your configuration."
   #elif MB(STEVAL)
-    #error "BOARD_STEVAL has been renamed BOARD_STEVAL_3DP001V1. Please update your configuration."
+    #error "BOARD_STEVAL_3DP001V1 (BOARD_STEVAL) is no longer supported in Marlin."
   #elif MB(RUMBA32)
     #error "BOARD_RUMBA32 is now BOARD_RUMBA32_MKS or BOARD_RUMBA32_V1_0. Please update your configuration."
   #elif MB(RUMBA32_AUS3D)
@@ -879,6 +878,7 @@
   #undef BOARD_STM32F103R
   #undef BOARD_ESP32
   #undef BOARD_STEVAL
+  #undef BOARD_STEVAL_3DP001V1
   #undef BOARD_BIGTREE_SKR_V1_1
   #undef BOARD_BIGTREE_SKR_V1_3
   #undef BOARD_BIGTREE_SKR_V1_4

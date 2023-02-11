@@ -29,7 +29,7 @@ Usage: $SELF [-b|--branch=<branch>] [-d|--debug] [-i|--ini] [-r|--resume=<path>]
 }
 
 # Assume the most recent configs
-BRANCH=import-2.0.x
+BRANCH=import-2.1.x
 unset FIRST_CONF
 EXIT_USAGE=
 LIMIT=1000
