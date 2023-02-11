@@ -27,10 +27,15 @@
  */
 
 #include "BL24CXX.h"
-
+#ifdef __STM32F1__
+  
 //TODO HC32F46x
 #ifndef HC32F46x
   #include <libmaple/gpio.h>
+#else
+  #include "../HAL/shared/Delay.h"
+  #define delay_us(n) DELAY_US(n)
+#endif
 #endif
 
 #ifndef EEPROM_WRITE_DELAY
@@ -42,12 +47,12 @@
 
 // IO direction setting
 //TODO HC32F46x
-#ifdef HC32F46x
-  #define SDA_IN()  SET_INPUT(IIC_EEPROM_SDA)
-  #define SDA_OUT() SET_OUTPUT(IIC_EEPROM_SDA)
-#else
+#if defined(__STM32F1__) && !defined(HC32F46x)
   #define SDA_IN()  do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH &= 0XFFFF0FFF; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH |= 8 << 12; }while(0)
   #define SDA_OUT() do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH &= 0XFFFF0FFF; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH |= 3 << 12; }while(0)
+#elif defined(STM32F1) || defined(HC32F46x)
+  #define SDA_IN()  SET_INPUT(IIC_EEPROM_SDA)
+  #define SDA_OUT() SET_OUTPUT(IIC_EEPROM_SDA)
 #endif
 
 // IO ops
