@@ -25,11 +25,18 @@ not-containing = $(foreach v,$2,$(if $(call findany,$1,$v),,$v))
 
 ## File path configuration ##
 BUILD_DIR_NAME = build
-LIB_FILES = $(realpath lib/h32_core/main/hdsc32core/common/hdsc.a)
 C_FILES = $(call rwildcard,,*.c)
 CPP_FILES = $(call rwildcard,,*.cpp)
 ASM_FILES = $(call rwildcard,,*.S)
 LINKER_SCRIPT_FILE = $(realpath lib/h32_core/main/hdsc32core/hc32f46x_flash.ld)
+
+# library files (.a and .o)
+LIB_FILES = \
+	$(realpath $(wildcard lib/h32_core/main/hdsc32core/lib/*.o))
+
+# excluded library files
+EXCLUDE_LIB_OBJ_FILES = \
+	lib/h32_core/main/hdsc32core/lib/dtostrf.o
 
 # excluded headers and source files to speed up compiles and reduce possible incompatibilities
 # excluded components:
@@ -101,6 +108,9 @@ DEP_FILES = $(OBJ_FILES:.o=.d)
 INCLUDE_PATHS = $(realpath $(sort $(foreach d,$(call not-containing,$(EXCLUDES),$(call rwildcard,,*.h)),$(dir $d))))
 OUTPUT_FILE_BASE = $(abspath $(BUILD_DIR)/firmware)
 
+# resolve library files (object and library)
+LIB_FILES_RESOLVED = $(call not-containing,$(EXCLUDE_LIB_OBJ_FILES),$(LIB_FILES))
+
 ### TARGETS ###
 # All
 all: $(OUTPUT_FILE_BASE).bin
@@ -165,7 +175,7 @@ $(OUTPUT_FILE_BASE).elf: $(OBJ_FILES)
 		-Wl,-Map,$(OUTPUT_FILE_BASE).map \
 		--specs=nano.specs \
 		--specs=nosys.specs \
-		-o $(OUTPUT_FILE_BASE).elf $(OBJ_FILES) $(LIB_FILES)
+		-o $(OUTPUT_FILE_BASE).elf $(OBJ_FILES) $(LIB_FILES_RESOLVED)
 
 # Create Flash Image
 $(OUTPUT_FILE_BASE).bin: $(OUTPUT_FILE_BASE).elf
@@ -189,6 +199,7 @@ print-resolved:
 	@printf ' == CPP_FILES == \n $(addsuffix \n,$(CPP_FILES)) \n\n'
 	@printf ' == ASM_FILES == \n $(addsuffix \n,$(ASM_FILES)) \n\n'
 	@printf ' == OBJ_FILES == \n $(addsuffix \n,$(OBJ_FILES)) \n\n'
+	@printf ' == LIB_FILES_RESOLVED == \n $(addsuffix \n,$(LIB_FILES_RESOLVED)) \n\n'
 	@printf ' == DEP_FILES == \n $(addsuffix \n,$(DEP_FILES)) \n\n'
 	@printf ' == INCLUDE_PATHS == \n $(addsuffix \n,$(INCLUDE_PATHS)) \n\n'
 	@printf ' == BUILD_DIR == \n $(addsuffix \n,$(BUILD_DIR)) \n\n'
