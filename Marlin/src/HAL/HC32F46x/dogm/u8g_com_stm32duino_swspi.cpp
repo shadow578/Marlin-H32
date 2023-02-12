@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "../../../inc/MarlinConfig.h"
 
@@ -185,4 +185,4 @@ uint8_t u8g_com_HAL_STM32F1_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, 
 }
 
 #endif // HAS_GRAPHICAL_LCD
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

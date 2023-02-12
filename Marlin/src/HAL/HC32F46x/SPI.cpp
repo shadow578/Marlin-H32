@@ -29,7 +29,7 @@
  * @brief Wirish SPI implementation.
  */
 
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #ifdef USE_SPI
 #include "SPI.h"
@@ -830,4 +830,4 @@ static spi_baud_rate determine_baud_rate(spi_dev *dev, uint32_t freq)
 
 SPIClass SPI(1);
 #endif
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

@@ -24,8 +24,8 @@
  * Voxlab Aqula X2 (HC32F46x) board pin assignments
  */
 
-#ifndef HC32F46x
-#error "Oops! the aquila X2 is a HC32F46x board and requires HC32F46x to be defined"
+#ifndef TARGET_HC32F46x
+#error "Oops! the aquila X2 is a HC32F46x board and requires TARGET_HC32F46x to be defined"
 #endif
 
 #ifndef TARGET_STM32F1

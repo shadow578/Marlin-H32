@@ -20,7 +20,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "../../inc/MarlinConfig.h"
 
@@ -43,7 +43,7 @@ uint8_t ServoCount = 0;
 
 #include <boards.h>
 #include <io.h>
-#ifndef HC32F46x
+#ifndef TARGET_HC32F46x
 #include <pwm.h>
 #endif
 #include <wirish_math.h>
@@ -81,7 +81,7 @@ void libServo::servoWrite(uint8_t inPin, uint16_t duty_cycle)
     return;
   }
 #endif
-#ifndef HC32F46x
+#ifndef TARGET_HC32F46x
   timer_dev *tdev = PIN_MAP[inPin].timer_device;
   uint8_t tchan = PIN_MAP[inPin].timer_channel;
   if (tdev)
@@ -94,12 +94,12 @@ void libServo::servoWrite(uint8_t inPin, uint16_t duty_cycle)
 libServo::libServo()
 {
   servoIndex = ServoCount < MAX_SERVOS ? ServoCount++ : INVALID_SERVO;
-#ifndef HC32F46x
+#ifndef TARGET_HC32F46x
   timer_set_interrupt_priority(SERVO0_TIMER_NUM, SERVO0_TIMER_IRQ_PRIO);
 #endif
 }
 
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 void TimeraUnit1_IrqCallback(void)
 {
   TIMERA_ClearFlag(TIMERA_UNIT1, TimeraFlagOverflow);
@@ -125,7 +125,7 @@ bool libServo::attach(const int32_t inPin, const int32_t inMinAngle, const int32
   }
 #endif
 
-#ifndef HC32F46x
+#ifndef TARGET_HC32F46x
 
   if (!PWM_PIN(inPin))
     return false;
@@ -230,7 +230,7 @@ int32_t libServo::read() const
     if (servoIndex == 0)
       return angle;
 #endif
-#ifndef HC32F46x
+#ifndef TARGET_HC32F46x
     timer_dev *tdev = PIN_MAP[pin].timer_device;
     uint8_t tchan = PIN_MAP[pin].timer_channel;
     return US_TO_ANGLE(COMPARE_TO_US(timer_get_compare(tdev, tchan)));
@@ -349,4 +349,4 @@ void libServo::pauseSoftPWM() {}
 
 #endif // HAS_SERVOS
 
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

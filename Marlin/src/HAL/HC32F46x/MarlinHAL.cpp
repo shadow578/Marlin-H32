@@ -1,7 +1,7 @@
 /**
  * HAL for HC32F46x, based heavily on the legacy implementation and STM32F1
  */
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "HAL.h"
 #include "../../inc/MarlinConfig.h"
@@ -132,4 +132,4 @@ void MarlinHAL::set_pwm_frequency(const pin_t pin, const uint16_t f_desired)
     // TODO stub
 }
 
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

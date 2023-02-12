@@ -27,7 +27,7 @@
  * Implementation of EEPROM settings in SDCard
  */
 
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "../../inc/MarlinConfig.h"
 
@@ -126,4 +126,4 @@ bool PersistentStore::read_data(int &pos, uint8_t *value, const size_t size, uin
 }
 
 #endif // FLASH_EEPROM_EMULATION
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

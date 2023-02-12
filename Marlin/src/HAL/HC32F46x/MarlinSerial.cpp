@@ -20,7 +20,7 @@
  *
  */
 
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "../../inc/MarlinConfig.h"
 #include "MarlinSerial.h"
@@ -148,4 +148,4 @@ CHECK_AXIS_SERIAL(E6);
 CHECK_AXIS_SERIAL(E7);
 #endif
 
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

@@ -30,7 +30,7 @@
  * Adapted to the STM32F1 HAL
  */
 
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "../../inc/MarlinConfig.h"
 #ifdef USE_SPI
@@ -194,4 +194,4 @@ void spiSend(uint32_t chan, const uint8_t *buf, size_t n)
 
 #endif // SOFTWARE_SPI
 #endif
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#if defined(HC32F46x) && !defined(HAVE_SW_SERIAL)
+#if defined(TARGET_HC32F46x) && !defined(HAVE_SW_SERIAL)
 
 /**
  * Empty class for Software Serial implementation (Custom RX/TX pins)
@@ -63,4 +63,4 @@ void SoftwareSerial::stopListening()
   listening = false;
 }
 
-#endif // HC32F46x
+#endif // TARGET_HC32F46x

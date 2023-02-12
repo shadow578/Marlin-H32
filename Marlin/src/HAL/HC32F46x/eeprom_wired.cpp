@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#ifdef HC32F46x
+#ifdef TARGET_HC32F46x
 
 #include "../../inc/MarlinConfig.h"
 
@@ -92,4 +92,4 @@ bool PersistentStore::read_data(int &pos, uint8_t *value, size_t size, uint16_t 
 }
 
 #endif // USE_WIRED_EEPROM
-#endif // HC32F46x
+#endif // TARGET_HC32F46x
