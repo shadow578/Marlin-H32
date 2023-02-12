@@ -30,15 +30,14 @@
  */
 
 #include "BL24CXX.h"
-#ifdef __STM32F1__
-  
-//TODO HC32F46x
-#ifndef HC32F46x
+//HC32F46x: include like non-maple boards, but without re-defining delay_us 
+#if defined(HC32F46x)
+  #include "../HAL/shared/Delay.h"
+#elif defined(__STM32F1__)
   #include <libmaple/gpio.h>
 #else
   #include "../HAL/shared/Delay.h"
   #define delay_us(n) DELAY_US(n)
-#endif
 #endif
 
 #ifndef EEPROM_WRITE_DELAY
@@ -49,7 +48,7 @@
 #endif
 
 // IO direction setting
-//TODO HC32F46x
+//HC32F46x: use HAL functions for H32
 #if defined(__STM32F1__) && !defined(HC32F46x)
   #define SDA_IN()  do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH &= 0XFFFF0FFF; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH |= 8 << 12; }while(0)
   #define SDA_OUT() do{ PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH &= 0XFFFF0FFF; PIN_MAP[IIC_EEPROM_SDA].gpio_device->regs->CRH |= 3 << 12; }while(0)

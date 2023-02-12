@@ -2462,9 +2462,6 @@
  */
 #define SDSUPPORT
 
-//TODO HC32F46x: unsure if SDIO_SUPPORT has to be defined in Configuration.h or pins_Aqula_X2.h
-#define SDIO_SUPPORT
-
 /**
  * SD CARD: ENABLE CRC
  *

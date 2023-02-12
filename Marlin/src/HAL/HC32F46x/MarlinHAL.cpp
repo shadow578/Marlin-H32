@@ -7,6 +7,8 @@
 #include "../../inc/MarlinConfig.h"
 #include "../cores/iwdg.h"
 
+extern "C" char *_sbrk(int incr);
+
 enum TEMP_PINS
 {
     TEMP_BED = 14,
@@ -81,8 +83,9 @@ void MarlinHAL::clear_reset_source() {}
 
 int MarlinHAL::freeMemory()
 {
+    //TODO HC32F46x: untested, taken from STM32F1 HAL
     volatile char top;
-    return top;
+    return &top - _sbrk(0);
 }
 
 void MarlinHAL::adc_init() {}

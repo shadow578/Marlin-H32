@@ -64,7 +64,7 @@
   void calibrate_delay_loop() {
     // Check if we have a working DWT implementation in the CPU (see https://developer.arm.com/documentation/ddi0439/b/Data-Watchpoint-and-Trace-Unit/DWT-Programmers-Model)
     if (!HW_REG(_DWT_CTRL)) {
-      //TODO HC32F46x: i really hope the HC32F46x has DWT
+      //TODO HC32F46x: the HC32F46x seems to have DWT
 #ifndef HC32F46x
       // No DWT present, so fallback to plain old ASM nop counting
       // Unfortunately, we don't exactly know how many iteration it'll take to decrement a counter in a loop

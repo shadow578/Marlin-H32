@@ -1445,12 +1445,8 @@ void Stepper::set_directions() {
  *
  * Directly pulses the stepper motors at high frequency.
  */
-//TODO HC32F46x: GCC needs return type on the function
-#ifdef HC32F46x
-void HAL_STEP_TIMER_ISR() {
-#else
-HAL_STEP_TIMER_ISR() {
-#endif
+//HC32F46x: gcc requires the ISR function to have a return type
+TERN_(HC32F46x, void) HAL_STEP_TIMER_ISR() {
   HAL_timer_isr_prologue(MF_TIMER_STEP);
 
   Stepper::isr();

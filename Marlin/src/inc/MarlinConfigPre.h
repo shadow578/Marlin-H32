@@ -30,11 +30,6 @@
 //
 #include <stdint.h>
 
-//TODO HC32F46x
-#ifdef HC32F46x
-  #include "../board/startup.h"
-#endif
-
 #ifndef __MARLIN_DEPS__
   #include "../HAL/platforms.h"
 #endif

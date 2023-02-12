@@ -65,25 +65,21 @@ EXCLUDES = \
 	src/sd/usb_flashdrive/
 
 ## defines for compilation (-D) ##
-#TODO: currently, the defines are basically a copy of what voxlab did
-# should probably check which of these are actually required... 
-# since voxlab's stuff doesn't exactly inspire confidence, maybe they messed this up too
+
 C_DEFINES = \
-	MOTHERBOARD=BOARD_AQUILA_X2_H32\
+	MOTHERBOARD=BOARD_AQUILA_X2_H32 \
 	HC32F46x \
+	TARGET_STM32F1 \
+	ARDUINO_ARCH_STM32F1 \
+	ARDUINO=100 \
+	STM32_HIGH_DENSITY \
 	USE_DEVICE_DRIVER_LIB \
 	__TARGET_FPU_VFP \
 	__FPU_PRESENT=1 \
+	_MPU_PRESENT=1 \
 	ARM_MATH_CM4 \
 	ARM_MATH_MATRIX_CHECK \
-	ARM_MATH_ROUNDING \
-	_MPU_PRESENT=1 \
-	__STM32F1__ \
-	STM32_HIGH_DENSITY \
-	ARDUINO_ARCH_STM32F1 \
-	ARDUINO=100 \
-	RDUINO_ARCH_STM32 #TODO: does this define do anything? Looks like a typo to me...
-
+	ARM_MATH_ROUNDING
 
 ## Compiler Arguments ##
 COMMON_GCC_ARGS = \
@@ -150,7 +146,7 @@ $(BUILD_DIR)/%.c.o: %.c
 
 # ASM Compile
 $(BUILD_DIR)/%.S.o: %.S
-	@echo 'Compile: $<'
+	@echo 'Compile $<'
 	@mkdir -p $(dir $@)
 	@arm-none-eabi-gcc \
 		$(COMMON_GCC_ARGS) \
