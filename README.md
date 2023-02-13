@@ -1,3 +1,7 @@
+Note: this is the original development branch. i messed up with git tho... see the aquila branch for the up-to-date version (changes of this branch were incorporated into that branch in one of the first commits)
+
+---
+
 <p align="center"><img src="buildroot/share/pixmaps/logo/marlin-outrun-nf-500.png" height="250" alt="MarlinFirmware's logo" /></p>
 
 <h1 align="center">Marlin 3D Printer Firmware</h1>
