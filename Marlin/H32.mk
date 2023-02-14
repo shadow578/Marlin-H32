@@ -8,7 +8,7 @@
 
 # run builds in parallel
 # good for speed, but harder to debug...
-MAKEFLAGS += -j8
+MAKEFLAGS += -j12
 
 ## Util Functions ##
 # recursive wildcard, see https://stackoverflow.com/a/12959764
@@ -35,8 +35,19 @@ LIB_FILES = \
 	$(realpath $(wildcard lib/h32_core/main/hdsc32core/lib/*.o))
 
 # excluded library files
-EXCLUDE_LIB_OBJ_FILES = \
-	lib/h32_core/main/hdsc32core/lib/dtostrf.o
+EXCLUDE_LIB_OBJ_FILES = $(foreach f,\
+	dtostrf \
+	startup \
+	new \
+	spi \
+	debug \
+	spi_f1 \
+	cxxabi-compat \
+	hooks \
+	itoa \
+	wirish_math \
+, lib/h32_core/main/hdsc32core/lib/$(f).o)
+
 
 # excluded headers and source files to speed up compiles and reduce possible incompatibilities
 # excluded components:
@@ -218,5 +229,6 @@ print-resolved:
 	@printf ' == INCLUDE_PATHS == \n $(addsuffix \n,$(INCLUDE_PATHS)) \n\n'
 	@printf ' == BUILD_DIR == \n $(addsuffix \n,$(BUILD_DIR)) \n\n'
 	@printf ' == OUTPUT_FILE_BASE == \n $(addsuffix \n,$(OUTPUT_FILE_BASE)) \n\n'
+	@printf ' == EXCLUDE_LIB_OBJ_FILES == \n $(addsuffix \n,$(EXCLUDE_LIB_OBJ_FILES)) \n\n'
 
 .PHONY: all clean rebuild print-segments print-resolved

@@ -15,7 +15,7 @@ static inline int32_t map(int32_t value, int32_t fromStart, int32_t fromEnd,
          toStart;
 }
 
-// #define PI          3.1415926535897932384626433832795
+#define PI          3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
 #define TWO_PI 6.283185307179586476925286766559
 #define DEG_TO_RAD 0.017453292519943295769236907684886
@@ -42,9 +42,9 @@ double tan(double x);
 double sqrt(double x);
 double pow(double x, double y);
 #endif
-extern uint16_t makeWord(uint16_t w);
-extern uint16_t makeWord(uint8_t h, uint8_t l);
+//uint16_t makeWord(uint16_t w);
+//uint16_t makeWord(uint8_t h, uint8_t l);
 
-#define word(...) makeWord(__VA_ARGS__)
+//#define word(...) makeWord(__VA_ARGS__)
 
 #endif
