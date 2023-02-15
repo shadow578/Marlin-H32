@@ -195,7 +195,7 @@ en_result_t SDCARD_Init(stc_sd_handle_t *handle,
         enRet = SdCardPowerON(handle);
         if (enRet != Ok)
         {
-            printf("SdCardPowerON fail,%u,0x%x !\n", (uint8_t)enRet, handle->u32ErrorCode);
+            printf("SdCardPowerON fail,%u,0x%lx !\n", (uint8_t)enRet, handle->u32ErrorCode);
             return enRet;
         }
 
