@@ -2,24 +2,20 @@
 
 void *operator new(size_t size)
 {
-    void *pvVar1 = malloc(size);
-    return pvVar1;
+    return malloc(size);
 }
 
 void *operator new[](size_t size)
 {
-    void *pvVar1 = malloc(size);
-    return pvVar1;
+    return malloc(size);
 }
 
 void operator delete(void *ptr)
 {
     free(ptr);
-    return;
 }
 
 void operator delete[](void *ptr)
 {
     free(ptr);
-    return;
 }
