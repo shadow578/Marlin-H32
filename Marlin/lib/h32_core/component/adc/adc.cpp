@@ -1,6 +1,6 @@
 #define _ADC_HAL_C_
 #include "startup.h"
-#include "watchdog.h"
+#include "../MarlinHAL.h"
 
 
 adc_dev adc1 = {
@@ -32,7 +32,7 @@ extern void adc_main(void)
 	  } 	  
 }
 
-uint16_t _O0 adc_read(adc_dev *dev, uint8_t channel) {
+uint16_t __O0 adc_read(adc_dev *dev, uint8_t channel) {
         static uint16_t adc_results=0;
 	do{
 		if(dev->HAL_AdcDmaIrqFlag & ADC1_SA_DMA_IRQ_BIT)break;
@@ -42,7 +42,7 @@ uint16_t _O0 adc_read(adc_dev *dev, uint8_t channel) {
                     	cnt3 = 0;
                	 	return(adc_results);
            	 }
-           	 HAL_watchdog_refresh();
+			 MarlinHAL::watchdog_refresh();
 	}
 	while(1);
 	dev->HAL_AdcDmaIrqFlag &= ~ADC1_SA_DMA_IRQ_BIT;
@@ -54,7 +54,7 @@ uint16_t _O0 adc_read(adc_dev *dev, uint8_t channel) {
 	return (uint16_t)(dev->HAL_adc_results[channel]);
 }
 
-static void _O0 adc_setclk(void)
+static void __O0 adc_setclk(void)
 {
         #ifdef use_default_clk
 	CLK_SetPeriClkSource(ClkPeriSrcPclk);
@@ -86,7 +86,7 @@ static void _O0 adc_setclk(void)
 	#endif
 }
 
-static void _O0 adc_initconfig(adc_dev *dev)
+static void __O0 adc_initconfig(adc_dev *dev)
 {
     stc_adc_init_t stcAdcInit;
     MEM_ZERO_STRUCT(stcAdcInit);
@@ -189,7 +189,7 @@ static void adc_SetPinMode(uint8_t u8AdcPin, en_pin_mode_t enMode)
 }
 
 
-static void _O0 adc_SetChannelPinMode(const M4_ADC_TypeDef *ADCx,uint32_t u32Channel,en_pin_mode_t enMode)
+static void __O0 adc_SetChannelPinMode(const M4_ADC_TypeDef *ADCx,uint32_t u32Channel,en_pin_mode_t enMode)
 {
     uint8_t u8ChIndex;
     uint8_t u8ChOffset = 0u;
@@ -217,7 +217,7 @@ static void _O0 adc_SetChannelPinMode(const M4_ADC_TypeDef *ADCx,uint32_t u32Cha
     }
 }
 
-static void _O0 adc_channelchonfig(adc_dev *dev,en_pin_mode_t enMode)/* onay ADC_SEQ_A and ADC1*/
+static void __O0 adc_channelchonfig(adc_dev *dev,en_pin_mode_t enMode)/* onay ADC_SEQ_A and ADC1*/
 {
         stc_adc_ch_cfg_t stcChCfg;
         #define ADC1_SA_CHANNEL_SAMPLE_TIME { 50,50}
@@ -234,7 +234,7 @@ static void _O0 adc_channelchonfig(adc_dev *dev,en_pin_mode_t enMode)/* onay ADC
 	/* 2. Add ADC channel. */
 	ADC_AddAdcChannel(dev->regs, &stcChCfg);
 }
-static void _O0 adc_TriggerConfig(adc_dev *dev,uint32_t u32Fcg0Periph)
+static void __O0 adc_TriggerConfig(adc_dev *dev,uint32_t u32Fcg0Periph)
 {
 	stc_adc_trg_cfg_t stcTrgCfg;
 	MEM_ZERO_STRUCT(stcTrgCfg);
@@ -252,7 +252,7 @@ static void _O0 adc_TriggerConfig(adc_dev *dev,uint32_t u32Fcg0Periph)
 
 }
 
-static void _O0 adc_DMAInitConfig(adc_dev *dev)
+static void __O0 adc_DMAInitConfig(adc_dev *dev)
 {
     stc_dma_config_t stcDmaCfg;
 
@@ -293,7 +293,7 @@ static void _O0 adc_DMAInitConfig(adc_dev *dev)
 	DMA_SetTriggerSrc(dev->DMARegs, dev->DMAChannel, dev->DMAenSrc);
 }
 
-static void _O0 adc_DmaIrqRegister(stc_irq_regi_conf_t *pstcCfg, uint32_t u32Priority)
+static void __O0 adc_DmaIrqRegister(stc_irq_regi_conf_t *pstcCfg, uint32_t u32Priority)
 {
     int16_t s16Vnum = pstcCfg->enIRQn;
 
@@ -329,7 +329,7 @@ void Dma1Btc3_IrqHandler(void)
 	ADC1->HAL_AdcDmaIrqFlag |= ADC1_SA_DMA_IRQ_BIT;
 }
 
-static void _O0 adc_DMAIrqConfig(void)
+static void __O0 adc_DMAIrqConfig(void)
 {
 	stc_irq_regi_conf_t stcAdcIrqCfg;
 	MEM_ZERO_STRUCT(stcAdcIrqCfg);
@@ -339,7 +339,7 @@ static void _O0 adc_DMAIrqConfig(void)
 	adc_DmaIrqRegister(&stcAdcIrqCfg, DDL_IRQ_PRIORITY_DEFAULT);
 }
 
-static void _O0 adc_default_config(adc_dev *dev)
+static void __O0 adc_default_config(adc_dev *dev)
 {
 	adc_initconfig(dev);
 	adc_channelchonfig(dev,Pin_Mode_Ana);
@@ -354,7 +354,7 @@ static void adc_foreach(void (*fn)(adc_dev*)) {
     fn(ADC1);
 }
 
-extern void _O0 setup_adcs(void) {
+extern void __O0 setup_adcs(void) {
 	/* Default clock is MRC(8MHz). */
 	adc_setclk();
 	/* Config ADCs. */

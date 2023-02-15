@@ -1,7 +1,7 @@
 #define _BOARD_EXTINT_C_
 
 #include "startup.h"
-#include "../../HAL/STM32F1/endstop_interrupts.h"
+#include "../../HAL/HC32F46x/endstop_interrupts.h"
 
 void ExtInt05_Callback(void)
 {
@@ -22,7 +22,7 @@ void ExtInt06_Callback(void)
 	}
 }
 
-static  void _O0 set_extinterrupt(uint8_t PinNum,en_exti_ch_t ExitCh,en_exti_lvl_t edge,
+static  void __O0 set_extinterrupt(uint8_t PinNum,en_exti_ch_t ExitCh,en_exti_lvl_t edge,
 en_int_src_t IntSrc,IRQn_Type IRQn,func_ptr_t Callback)
 {	
     stc_exint_config_t stcExtiConfig;
@@ -178,7 +178,7 @@ static inline IRQn_Type exti_out_IRQn_Type(uint8 number) {
 	return (IRQn_Type)(Int010_IRQn+number);
 }
 
-extern void _O0 attachInterrupt(uint8 pin, voidFuncPtr handler, uint8 irqNum,ExtIntTriggerMode mode) {
+extern void __O0 attachInterrupt(uint8 pin, voidFuncPtr handler, uint8 irqNum,ExtIntTriggerMode mode) {
 	if (pin >= BOARD_NR_GPIO_PINS || !handler) {
 		return;
 	}

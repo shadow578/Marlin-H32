@@ -1,10 +1,13 @@
 #define _BSP_TIM0_C_
 
 #include "startup.h"
-#include "../STM32F1/timers.h"
+#include "../HAL/HC32F46x/timers.h"
 #include "../module/temperature.h"
 #include "../module/stepper.h"
-#include "../../HAL/STM32F1/endstop_interrupts.h"
+#include "../../HAL/HC32F46x/endstop_interrupts.h"
+
+extern void HAL_STEP_TIMER_ISR(void);
+extern void HAL_TEMP_TIMER_ISR(void);
 
 /***************************************************/
 extern void setup_systick(void)
@@ -129,7 +132,7 @@ void tempTC_Handler(void)
 	HAL_TEMP_TIMER_ISR();
 }
 /***************************************************/
-extern void _O0 setup_time2A(const uint32_t frequency)
+extern void __O0 setup_time2A(const uint32_t frequency)
 {
 	stc_tim0_base_init_t stcTimerCfg;
 	stc_irq_regi_conf_t stcIrqRegiConf;
@@ -173,7 +176,7 @@ extern void _O0 setup_time2A(const uint32_t frequency)
 	//TIMER0_Cmd(TMR_UNIT,Tim0_ChannelA,Enable);    
 }
 
-extern void _O0 setup_time2B(const uint32_t frequency)
+extern void __O0 setup_time2B(const uint32_t frequency)
 {
 	stc_tim0_base_init_t stcTimerCfg;
 	stc_irq_regi_conf_t stcIrqRegiConf;

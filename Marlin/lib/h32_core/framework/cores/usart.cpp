@@ -123,7 +123,7 @@ void Usart3TxCmpltIrqCallback(void)
 /******************************************************/
 /******************************************************/
 
-void _O0 usart_init(usart_dev *dev) {
+void __O0 usart_init(usart_dev *dev) {
 	rb_init(dev->rb, USART_RX_BUF_SIZE, dev->rx_buf);
 	rb_init(dev->wb, USART_TX_BUF_SIZE, dev->tx_buf);
 
@@ -138,7 +138,7 @@ void usart_set_baud_rate(usart_dev *dev, uint32 baud) {
 	USART_SetBaudrate(dev->regs, baud);
 }
 
-void _O0 usart_enable(usart_dev *dev) {
+void __O0 usart_enable(usart_dev *dev) {
 	 stc_irq_regi_conf_t stcIrqRegiCfg;
 
 	/* Set USART RX IRQ */
@@ -243,7 +243,7 @@ void usart_disable(usart_dev *dev) {
     usart_reset_tx(dev);
 }
 
-uint32 _O0 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len) {
+uint32 __O0 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len) {
 	uint32 txed = 0;
 	uint32 errcnt=0;
 	while (!rb_is_empty(dev->wb))
@@ -275,7 +275,7 @@ uint32 _O0 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len) {
 	return txed;
 }
 
-uint32 _O0 usart_rx(usart_dev *dev, uint8 *buf, uint32 len) {
+uint32 __O0 usart_rx(usart_dev *dev, uint8 *buf, uint32 len) {
     uint32 rxed = 0;
     uint32 errcnt=0;
     while (usart_data_available(dev) && rxed < len) {
