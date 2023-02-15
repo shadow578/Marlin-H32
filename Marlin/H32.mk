@@ -31,12 +31,10 @@ ASM_FILES = $(call rwildcard,,*.S)
 LINKER_SCRIPT_FILE = $(realpath lib/h32_core/main/hdsc32core/hc32f46x_flash.ld)
 
 # library files (.a and .o)
-LIB_FILES = \
-	$(realpath $(wildcard lib/h32_core/main/hdsc32core/lib/*.o))
+LIB_FILES = 
 
 # excluded library files
-EXCLUDE_LIB_OBJ_FILES = \
-	lib/h32_core/main/hdsc32core/lib/dtostrf.o
+EXCLUDE_LIB_OBJ_FILES = 
 
 # excluded headers and source files to speed up compiles and reduce possible incompatibilities
 # excluded components:
