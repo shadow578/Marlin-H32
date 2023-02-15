@@ -42,9 +42,9 @@ double tan(double x);
 double sqrt(double x);
 double pow(double x, double y);
 #endif
-//uint16_t makeWord(uint16_t w);
-//uint16_t makeWord(uint8_t h, uint8_t l);
+uint16_t makeWord(uint16_t w);
+uint16_t makeWord(uint8_t h, uint8_t l);
 
-//#define word(...) makeWord(__VA_ARGS__)
+#define word(...) makeWord(__VA_ARGS__)
 
 #endif

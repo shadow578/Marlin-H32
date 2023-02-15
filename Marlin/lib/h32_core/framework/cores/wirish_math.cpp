@@ -1,49 +1,38 @@
 #include "wirish_math.h"
 
-void randomSeed(uint32_t seed)
+void randomSeed(uint32_t dwSeed)
 {
-  if (seed != 0) {
-    srand(seed);
+  if (dwSeed != 0) {
+    srand(dwSeed) ;
   }
-  return;
 }
 
 long random(long howbig)
 {
-  uint32_t uVar1;
-  long lVar2;
-  
   if (howbig == 0) {
-    lVar2 = 0;
+    return 0 ;
   }
-  else {
-    uVar1 = rand();
-    lVar2 = uVar1 - howbig * (uVar1 / howbig);
-  }
-  return lVar2;
+
+  return rand() % howbig;
 }
 
-long random(long howsmall,long howbig)
+long random(long howsmall, long howbig)
 {
-  long lVar1;
-  long diff;
-  
-  if (howsmall < howbig) {
-    lVar1 = random(howbig - howsmall);
-    howsmall = howsmall + lVar1;
+  if (howsmall >= howbig) {
+    return howsmall;
   }
-  return howsmall;
+
+  long diff = howbig - howsmall;
+
+  return random(diff) + howsmall;
 }
 
-//uint16_t makeWord(uint16_t w)
-//{
-//  return w;
-//}
-//
-//uint16_t makeWord(uint8_t h,uint8_t l)
-//{
-//  uint16_t local_a;
-//  
-//  local_a = CONCAT11(h,l);
-//  return local_a;
-//}
+uint16_t makeWord(uint16_t w)
+{
+  return w ;
+}
+
+uint16_t makeWord(uint8_t h, uint8_t l)
+{
+  return (h << 8) | l ;
+}
