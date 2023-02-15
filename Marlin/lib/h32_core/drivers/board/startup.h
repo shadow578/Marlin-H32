@@ -18,7 +18,6 @@
 #include "board_tim0.h"
 #include "board_cfg.h"
 #include "board_gpio.h"
-#include "i2c.h"
 #include "adc.h"
 #include "../pins/hc32f46x/pins_Aquila_X2.h"
 #include "sdio_f1.h"
