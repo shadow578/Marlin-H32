@@ -3,7 +3,6 @@
 #include "libmaple_types.h"
 #include "hc32f46x_utility.h"
 
-
 void delay(unsigned long ms)
 {
     volatile uint32_t i = 0ul;
@@ -22,12 +21,13 @@ void delay(unsigned long ms)
     }
 }
 
-void delayMicroseconds(uint32 us) {
+void delayMicroseconds(uint32 us)
+{
     Ddl_Delay1us(us);
 }
 
-static void __empty() {
-	// Empty
+static void __empty()
+{
+    // Empty
 }
-void yield(void) {}//__attribute__ ((weak, alias("__empty")));
-
+void yield(void) {} //__attribute__ ((weak, alias("__empty")));

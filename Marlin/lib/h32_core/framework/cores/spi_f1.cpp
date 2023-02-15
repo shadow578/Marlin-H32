@@ -57,13 +57,17 @@ void spi_config_gpios(spi_dev *ignored __attribute__((unused)),
                       gpio_dev *comm_dev,
                       uint8 sck_bit,
                       uint8 miso_bit,
-                      uint8 mosi_bit) {
-    if (as_master) {
-     //   gpio_set_mode(nss_dev, nss_bit, GPIO_AF_OUTPUT_PP);// Roger Clark. Commented out, so that NSS can be driven as a normal GPIO pin during SPI use
+                      uint8 mosi_bit)
+{
+    if (as_master)
+    {
+        //   gpio_set_mode(nss_dev, nss_bit, GPIO_AF_OUTPUT_PP);// Roger Clark. Commented out, so that NSS can be driven as a normal GPIO pin during SPI use
         gpio_set_mode(comm_dev, sck_bit, GPIO_AF_OUTPUT_PP);
         gpio_set_mode(comm_dev, miso_bit, GPIO_INPUT_FLOATING);
         gpio_set_mode(comm_dev, mosi_bit, GPIO_AF_OUTPUT_PP);
-    } else {
+    }
+    else
+    {
         gpio_set_mode(nss_dev, nss_bit, GPIO_INPUT_FLOATING);
         gpio_set_mode(comm_dev, sck_bit, GPIO_INPUT_FLOATING);
         gpio_set_mode(comm_dev, miso_bit, GPIO_AF_OUTPUT_PP);
@@ -71,7 +75,8 @@ void spi_config_gpios(spi_dev *ignored __attribute__((unused)),
     }
 }
 
-void spi_foreach(void (*fn)(spi_dev*)) {
+void spi_foreach(void (*fn)(spi_dev *))
+{
     fn(SPI1);
     fn(SPI2);
 }

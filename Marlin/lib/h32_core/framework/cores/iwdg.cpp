@@ -33,7 +33,7 @@
 #include "iwdg.h"
 
 /* WDT count cycle definition */
-#define WDT_COUNT_CYCLE                 (16384u)
+#define WDT_COUNT_CYCLE (16384u)
 
 void iwdg_init(void)
 {
@@ -51,9 +51,10 @@ void iwdg_init(void)
     /* First refresh to start WDT */
     WDT_RefreshCounter();
     /* Wait for WDT module to complete initial load */
-     Ddl_Delay1ms(200u);
+    Ddl_Delay1ms(200u);
 }
 
-void iwdg_feed(void) {
-	WDT_RefreshCounter();
+void iwdg_feed(void)
+{
+    WDT_RefreshCounter();
 }

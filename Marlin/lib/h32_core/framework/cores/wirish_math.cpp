@@ -24,22 +24,28 @@
 #include "stdlib.h"
 #include "wirish_math.h"
 
-void randomSeed(unsigned int seed) {
-    if (seed != 0) {
+void randomSeed(unsigned int seed)
+{
+    if (seed != 0)
+    {
         srand(seed);
     }
 }
 
-long random(long howbig) {
-    if (howbig == 0) {
+long random(long howbig)
+{
+    if (howbig == 0)
+    {
         return 0;
     }
 
     return rand() % howbig;
 }
 
-long random(long howsmall, long howbig) {
-    if (howsmall >= howbig) {
+long random(long howsmall, long howbig)
+{
+    if (howsmall >= howbig)
+    {
         return howsmall;
     }
 
@@ -47,12 +53,12 @@ long random(long howsmall, long howbig) {
     return random(diff) + howsmall;
 }
 
-extern uint16_t makeWord( uint16_t w )
+extern uint16_t makeWord(uint16_t w)
 {
-  return w ;
+    return w;
 }
 
-extern uint16_t makeWord( uint8_t h, uint8_t l )
+extern uint16_t makeWord(uint8_t h, uint8_t l)
 {
-  return (h << 8) | l ;
+    return (h << 8) | l;
 }

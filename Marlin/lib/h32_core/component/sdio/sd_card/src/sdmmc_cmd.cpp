@@ -69,61 +69,60 @@
  ******************************************************************************/
 
 /*!< Parameter valid check for SDIOC Instances. */
-#define IS_VALID_SDIOC(__SDIOCx__)                                             \
-(   (M4_SDIOC1 == (__SDIOCx__))             ||                                 \
-    (M4_SDIOC2 == (__SDIOCx__)))
+#define IS_VALID_SDIOC(__SDIOCx__)  \
+    ((M4_SDIOC1 == (__SDIOCx__)) || \
+     (M4_SDIOC2 == (__SDIOCx__)))
 
 /*!< Parameter valid check for SDIOC Instances. */
-#define IS_VALID_SD_TYPE(x)                                                    \
-(   (SdmmcHighCapacity     == (x))          ||                                 \
-    (SdmmcStanderdCapacity == (x)))
+#define IS_VALID_SD_TYPE(x)        \
+    ((SdmmcHighCapacity == (x)) || \
+     (SdmmcStanderdCapacity == (x)))
 
 /*!< CMDBSY bit loop count */
-#define SDIOC_FLAG_CMDBUSY_LOOPS            (200000ul)
+#define SDIOC_FLAG_CMDBUSY_LOOPS (200000ul)
 
 /*!< Command send and response timeout */
-#define SDMMC_CMD_TIMEOUT                   (10000ul)
+#define SDMMC_CMD_TIMEOUT (10000ul)
 
 /*!< OCR register bit */
-#define SDMMC_SD_OCR_HCS                    (0x40000000ul)   /* High Capacity Support */
-#define SDMMC_SD_OCR_BUSY                   (0x80000000ul)   /* Card power up status bit (busy) */
+#define SDMMC_SD_OCR_HCS (0x40000000ul)  /* High Capacity Support */
+#define SDMMC_SD_OCR_BUSY (0x80000000ul) /* Card power up status bit (busy) */
 
+#define SDMMC_BUS_WIDTH_1BIT (0x00000000ul)
+#define SDMMC_BUS_WIDTH_4BIT (0x00000002ul)
 
-#define SDMMC_BUS_WIDTH_1BIT                (0x00000000ul)
-#define SDMMC_BUS_WIDTH_4BIT                (0x00000002ul)
-
-#define SDMMC_CMD8_CHECK_PATTERN            (0x000000AAul)
-#define SDMMC_CMD8_VOLTAGE_SUPPLIED         (0x00000100ul)   /* 2.7 - 3.6v*/
-#define SDMMC_CMD8_ARGUEMENT                (SDMMC_CMD8_VOLTAGE_SUPPLIED | SDMMC_CMD8_CHECK_PATTERN)
-#define SDMMC_ACMD41_VOLTAGE                (SDMMC_SD_VOLT_3_3)
-#define SDMMC_ACMD41_HCS                    (1ul << 30u)
+#define SDMMC_CMD8_CHECK_PATTERN (0x000000AAul)
+#define SDMMC_CMD8_VOLTAGE_SUPPLIED (0x00000100ul) /* 2.7 - 3.6v*/
+#define SDMMC_CMD8_ARGUEMENT (SDMMC_CMD8_VOLTAGE_SUPPLIED | SDMMC_CMD8_CHECK_PATTERN)
+#define SDMMC_ACMD41_VOLTAGE (SDMMC_SD_VOLT_3_3)
+#define SDMMC_ACMD41_HCS (1ul << 30u)
 
 /*!< Masks for R1 Response (SD Card Status Register) */
-#define SDMMC_R1_AKE_SEQ_ERROR              (0x1ul << 3u )
-#define SDMMC_R1_ERASE_RESET                (0x1ul << 13u)
-#define SDMMC_R1_CARD_ECC_DISABLED          (0x1ul << 14u)
-#define SDMMC_R1_WP_ERASE_SKIP              (0x1ul << 15u)
-#define SDMMC_R1_CID_CSD_OVERWRITE          (0x1ul << 16u)
-#define SDMMC_R1_STREAM_WRITE_OVERRUN       (0x1ul << 17u)
-#define SDMMC_R1_STREAM_READ_UNDERRUN       (0x1ul << 18u)
-#define SDMMC_R1_GENERAL_UNKNOWN_ERROR      (0x1ul << 19u)
-#define SDMMC_R1_CC_ERROR                   (0x1ul << 20u)
-#define SDMMC_R1_CARD_ECC_FAILED            (0x1ul << 21u)
-#define SDMMC_R1_ILLEGAL_COMMAND            (0x1ul << 22u)
-#define SDMMC_R1_COM_CRC_ERROR              (0x1ul << 23u)
-#define SDMMC_R1_LOCK_UNLOCK_FAILED         (0x1ul << 24u)
-#define SDMMC_R1_WP_VIOLATION               (0x1ul << 26u)
-#define SDMMC_R1_ERASE_PARAM_ERROR          (0x1ul << 27u)
-#define SDMMC_R1_ERASE_SEQ_ERROR            (0x1ul << 28u)
-#define SDMMC_R1_BLOCK_LEN_ERROR            (0x1ul << 29u)
-#define SDMMC_R1_ADDRESS_ERROR              (0x1ul << 30u)
-#define SDMMC_R1_OUT_OF_RANGE               (0x1ul << 31u)
-#define SDMMC_R1_ERRORS                     (0xFDFFE008ul)
+#define SDMMC_R1_AKE_SEQ_ERROR (0x1ul << 3u)
+#define SDMMC_R1_ERASE_RESET (0x1ul << 13u)
+#define SDMMC_R1_CARD_ECC_DISABLED (0x1ul << 14u)
+#define SDMMC_R1_WP_ERASE_SKIP (0x1ul << 15u)
+#define SDMMC_R1_CID_CSD_OVERWRITE (0x1ul << 16u)
+#define SDMMC_R1_STREAM_WRITE_OVERRUN (0x1ul << 17u)
+#define SDMMC_R1_STREAM_READ_UNDERRUN (0x1ul << 18u)
+#define SDMMC_R1_GENERAL_UNKNOWN_ERROR (0x1ul << 19u)
+#define SDMMC_R1_CC_ERROR (0x1ul << 20u)
+#define SDMMC_R1_CARD_ECC_FAILED (0x1ul << 21u)
+#define SDMMC_R1_ILLEGAL_COMMAND (0x1ul << 22u)
+#define SDMMC_R1_COM_CRC_ERROR (0x1ul << 23u)
+#define SDMMC_R1_LOCK_UNLOCK_FAILED (0x1ul << 24u)
+#define SDMMC_R1_WP_VIOLATION (0x1ul << 26u)
+#define SDMMC_R1_ERASE_PARAM_ERROR (0x1ul << 27u)
+#define SDMMC_R1_ERASE_SEQ_ERROR (0x1ul << 28u)
+#define SDMMC_R1_BLOCK_LEN_ERROR (0x1ul << 29u)
+#define SDMMC_R1_ADDRESS_ERROR (0x1ul << 30u)
+#define SDMMC_R1_OUT_OF_RANGE (0x1ul << 31u)
+#define SDMMC_R1_ERRORS (0xFDFFE008ul)
 
 /*!< Masks for R6 Response. */
-#define SDMMC_R6_GENERAL_UNKNOWN_ERROR      (0x1ul << 13u)
-#define SDMMC_R6_ILLEGAL_CMD                (0x1ul << 14u)
-#define SDMMC_R6_COM_CRC_ERROR              (0x1ul << 15u)
+#define SDMMC_R6_GENERAL_UNKNOWN_ERROR (0x1ul << 13u)
+#define SDMMC_R6_ILLEGAL_CMD (0x1ul << 14u)
+#define SDMMC_R6_COM_CRC_ERROR (0x1ul << 15u)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -133,22 +132,22 @@
  * Local function prototypes ('static')
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp1(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32CmdResp1,
-                                uint32_t u32Timeout);
+                                     uint32_t *pu32CmdResp1,
+                                     uint32_t u32Timeout);
 static en_result_t SDMMC_GetCmdResp1b(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32CmdResp1,
-                                uint32_t u32Timeout);
+                                      uint32_t *pu32CmdResp1,
+                                      uint32_t u32Timeout);
 static en_result_t SDMMC_GetCmdResp2(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t u32CID_CSD[4]);
+                                     uint32_t u32CID_CSD[4]);
 static en_result_t SDMMC_GetCmdResp3(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32OCR);
+                                     uint32_t *pu32OCR);
 static en_result_t SDMMC_GetCmdResp6(M4_SDIOC_TypeDef *SDIOx,
-                                uint32_t *pu32RCA);
+                                     uint32_t *pu32RCA);
 static en_result_t SDMMC_GetCmdResp7(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32IfCond);
+                                     uint32_t *pu32IfCond);
 static en_result_t SDMMC_WaitBusIdle(M4_SDIOC_TypeDef *SDIOCx);
 static en_result_t SDMMC_WaitResponse(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t u32Timeout);
+                                      uint32_t u32Timeout);
 static bool SDMMC_GetCardDetection(M4_SDIOC_TypeDef *SDIOCx);
 
 /*******************************************************************************
@@ -446,14 +445,14 @@ en_result_t SDMMC_Cmd8_SendIfCond(M4_SDIOC_TypeDef *SDIOCx, uint32_t *pu32IfCond
             stcCmdCfg.enRspIndex = SdiocCmdRspR7;
             stcCmdCfg.enDataPresentEnable = Disable;
             stcCmdCfg.enCmdType = SdiocCmdNormal;
-            enRet = SDIOC_SendCommand(SDIOCx, &stcCmdCfg);  /* Set command and argument. */
+            enRet = SDIOC_SendCommand(SDIOCx, &stcCmdCfg); /* Set command and argument. */
             if (enRet == Ok)
             {
                 /* Check for error conditions */
                 enRet = SDMMC_GetCmdResp7(SDIOCx, pu32IfCond);
                 if (enRet == Ok)
                 {
-                    if((*pu32IfCond & 0xFFu) != SDMMC_CMD8_CHECK_PATTERN)
+                    if ((*pu32IfCond & 0xFFu) != SDMMC_CMD8_CHECK_PATTERN)
                     {
                         enRet = Error;
                     }
@@ -1295,8 +1294,8 @@ en_result_t SDMMC_Acmd51_SendSCR(M4_SDIOC_TypeDef *SDIOCx, uint32_t *pu32Resp1)
  **
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp1(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32CmdResp1,
-                                uint32_t u32Timeout)
+                                     uint32_t *pu32CmdResp1,
+                                     uint32_t u32Timeout)
 {
     uint32_t u32R1 = 0u;
     en_result_t enRet = ErrorInvalidParameter;
@@ -1338,8 +1337,8 @@ static en_result_t SDMMC_GetCmdResp1(M4_SDIOC_TypeDef *SDIOCx,
  **
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp1b(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32CmdResp1,
-                                uint32_t u32Timeout)
+                                      uint32_t *pu32CmdResp1,
+                                      uint32_t u32Timeout)
 {
     uint32_t u32R1 = 0u;
     en_result_t enRet = ErrorInvalidParameter;
@@ -1394,7 +1393,7 @@ static en_result_t SDMMC_GetCmdResp1b(M4_SDIOC_TypeDef *SDIOCx,
  **
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp2(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t u32CID_CSD[4])
+                                     uint32_t u32CID_CSD[4])
 {
     en_result_t enRet = ErrorInvalidParameter;
 
@@ -1430,11 +1429,11 @@ static en_result_t SDMMC_GetCmdResp2(M4_SDIOC_TypeDef *SDIOCx,
  **
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp3(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32OCR)
+                                     uint32_t *pu32OCR)
 {
     en_result_t enRet = ErrorInvalidParameter;
 
-    if((IS_VALID_SDIOC(SDIOCx)) && (NULL != pu32OCR))
+    if ((IS_VALID_SDIOC(SDIOCx)) && (NULL != pu32OCR))
     {
         enRet = SDMMC_WaitResponse(SDIOCx, SDMMC_CMD_TIMEOUT);
         if (enRet == Ok)
@@ -1463,7 +1462,7 @@ static en_result_t SDMMC_GetCmdResp3(M4_SDIOC_TypeDef *SDIOCx,
  **
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp6(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32RCA)
+                                     uint32_t *pu32RCA)
 {
     uint32_t u32R6 = 0ul;
     en_result_t enRet = ErrorInvalidParameter;
@@ -1477,7 +1476,7 @@ static en_result_t SDMMC_GetCmdResp6(M4_SDIOC_TypeDef *SDIOCx,
             u32R6 = SDIOC_GetResponse(SDIOCx, SdiocRegResp01);
             if (!(u32R6 & (SDMMC_R6_GENERAL_UNKNOWN_ERROR | SDMMC_R6_ILLEGAL_CMD | SDMMC_R6_COM_CRC_ERROR)))
             {
-                *pu32RCA =  (u32R6 >> 16);
+                *pu32RCA = (u32R6 >> 16);
             }
             else
             {
@@ -1505,7 +1504,7 @@ static en_result_t SDMMC_GetCmdResp6(M4_SDIOC_TypeDef *SDIOCx,
  **
  ******************************************************************************/
 static en_result_t SDMMC_GetCmdResp7(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t *pu32IfCond)
+                                     uint32_t *pu32IfCond)
 {
     en_result_t enRet = ErrorInvalidParameter;
 
@@ -1575,11 +1574,11 @@ static en_result_t SDMMC_WaitBusIdle(M4_SDIOC_TypeDef *SDIOCx)
  **
  ******************************************************************************/
 static en_result_t SDMMC_WaitResponse(M4_SDIOC_TypeDef *SDIOCx,
-                                uint32_t u32Timeout)
+                                      uint32_t u32Timeout)
 {
     /* 8 is the number of required instructions cycles for the below loop statement.
     The Timeout is expressed in ms */
-    __IO uint32_t u32Count = u32Timeout * (SystemCoreClock / 8u /1000u);
+    __IO uint32_t u32Count = u32Timeout * (SystemCoreClock / 8u / 1000u);
     en_flag_status_t enErrorInt = Set;
     en_flag_status_t enCommandComplete = Set;
     en_result_t enRet = ErrorInvalidParameter;
@@ -1646,7 +1645,7 @@ static en_result_t SDMMC_WaitResponse(M4_SDIOC_TypeDef *SDIOCx,
 static bool SDMMC_GetCardDetection(M4_SDIOC_TypeDef *SDIOCx)
 {
     bool bRet = false;
-    __IO uint32_t u32Count = 5000ul * (SystemCoreClock / 8ul /1000ul);
+    __IO uint32_t u32Count = 5000ul * (SystemCoreClock / 8ul / 1000ul);
 
     /* Wait until card is stable */
     do

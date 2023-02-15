@@ -66,9 +66,9 @@
  ******************************************************************************/
 typedef enum en_sd_card_type
 {
-    SdCardSdsc     = 0u,
+    SdCardSdsc = 0u,
     SdCardSdhcSdxc = 1u,
-    SdCardSecured  = 3u,
+    SdCardSecured = 3u,
 } en_sd_card_type_t;
 
 /*******************************************************************************
@@ -76,56 +76,56 @@ typedef enum en_sd_card_type
  ******************************************************************************/
 
 /*!< Card Command Class supported. */
-#define SDMMC_CARD_CCCC_ERASE               (0x00000020u)
+#define SDMMC_CARD_CCCC_ERASE (0x00000020u)
 
 /*!< Card locked */
-#define SDMMC_CARD_LOCKED                   (0x02000000u)
+#define SDMMC_CARD_LOCKED (0x02000000u)
 
 /*!< Voltage trial times */
-#define SD_CARD_MAX_VOLT_TRIAL              (0x0000FFFFu)
+#define SD_CARD_MAX_VOLT_TRIAL (0x0000FFFFu)
 
 /*!< High speed */
-#define SD_CHECK_FUNCTION_HIGH_SPEED        (0x00FFFF01u)
-#define SD_SET_FUNCTION_HIGH_SPEED          (0x80FFFF01u)
+#define SD_CHECK_FUNCTION_HIGH_SPEED (0x00FFFF01u)
+#define SD_SET_FUNCTION_HIGH_SPEED (0x80FFFF01u)
 
 /*!< Block size is 512 bytes */
-#define SD_CARD_BLOCK_SIZE                  (512u)
+#define SD_CARD_BLOCK_SIZE (512u)
 
 /*!< SDIOC buffer align size */
-#define SDIOC_BUF_ALIGN_SIZE                (4ul)
+#define SDIOC_BUF_ALIGN_SIZE (4ul)
 
 /*!< Log Block Number for 2G bytes Cards */
-#define SD_CARD_CAPACITY                    (0x400000u)
+#define SD_CARD_CAPACITY (0x400000u)
 
 /*!< Card power up status bit (busy) */
-#define SD_CARD_OCR_BUSY                    (0x80000000ul)
+#define SD_CARD_OCR_BUSY (0x80000000ul)
 
-#define SD_CARD_OP_NONE                     (0x00000000u)  /*!< None                             */
-#define SD_CARD_OP_READ_SINGLE_BLOCK        (0x00000001u)  /*!< Read single block operation      */
-#define SD_CARD_OP_READ_MULTIPLE_BLOCK      (0x00000002u)  /*!< Read multiple blocks operation   */
-#define SD_CARD_OP_WRITE_SINGLE_BLOCK       (0x00000010u)  /*!< Write single block operation     */
-#define SD_CARD_OP_WRITE_MULTIPLE_BLOCK     (0x00000020u)  /*!< Write multiple blocks operation  */
-#define SD_CARD_OP_IT                       (0x00000008u)  /*!< Process in Interrupt mode        */
-#define SD_CARD_OP_DMA                      (0x00000080u)  /*!< Process in DMA mode              */
+#define SD_CARD_OP_NONE (0x00000000u)                 /*!< None                             */
+#define SD_CARD_OP_READ_SINGLE_BLOCK (0x00000001u)    /*!< Read single block operation      */
+#define SD_CARD_OP_READ_MULTIPLE_BLOCK (0x00000002u)  /*!< Read multiple blocks operation   */
+#define SD_CARD_OP_WRITE_SINGLE_BLOCK (0x00000010u)   /*!< Write single block operation     */
+#define SD_CARD_OP_WRITE_MULTIPLE_BLOCK (0x00000020u) /*!< Write multiple blocks operation  */
+#define SD_CARD_OP_IT (0x00000008u)                   /*!< Process in Interrupt mode        */
+#define SD_CARD_OP_DMA (0x00000080u)                  /*!< Process in DMA mode              */
 
 /*!< the SD card relative card address. */
-#define RelCardAddress(handle)              ((handle)->stcSdCardInfo.u32RelCardAddr)
-#define IsCardProgramming(handle)           ((SdmmcCardStatePgm == (handle)->stcCardStatus.CURRENT_STATE) ? true : false)
-#define IsCardReadyForData(handle)          ((1u == (handle)->stcCardStatus.READY_FOR_DATA) ? true : false)
+#define RelCardAddress(handle) ((handle)->stcSdCardInfo.u32RelCardAddr)
+#define IsCardProgramming(handle) ((SdmmcCardStatePgm == (handle)->stcCardStatus.CURRENT_STATE) ? true : false)
+#define IsCardReadyForData(handle) ((1u == (handle)->stcCardStatus.READY_FOR_DATA) ? true : false)
 
-#define IS_DMA_CFG_VALID(handle)                                               \
-(   (NULL != (handle)->pstcDmaInitCfg)      &&                                 \
-    (NULL != (handle)->pstcDmaInitCfg->DMAx))
+#define IS_DMA_CFG_VALID(handle)           \
+    ((NULL != (handle)->pstcDmaInitCfg) && \
+     (NULL != (handle)->pstcDmaInitCfg->DMAx))
 
 /*!< the SD card use DMA unit && channel. */
-#define DMA_Unit(handle)                    ((handle)->pstcDmaInitCfg->DMAx)
-#define DMA_CH(handle)                      ((handle)->pstcDmaInitCfg->enDmaCh)
+#define DMA_Unit(handle) ((handle)->pstcDmaInitCfg->DMAx)
+#define DMA_CH(handle) ((handle)->pstcDmaInitCfg->enDmaCh)
 
 /*!< Parameter valid check for buffer address. */
-#define IS_VALID_TRANSFER_BUF_ALIGN(x)      (!((SDIOC_BUF_ALIGN_SIZE-1ul) & ((uint32_t)(x))))
+#define IS_VALID_TRANSFER_BUF_ALIGN(x) (!((SDIOC_BUF_ALIGN_SIZE - 1ul) & ((uint32_t)(x))))
 
 /*!< Parameter valid check for SDIOC command value. */
-#define IS_VALID_TRANSFER_BUF_LEN(x)        (!((SD_CARD_BLOCK_SIZE - 1u) & (x)))
+#define IS_VALID_TRANSFER_BUF_LEN(x) (!((SD_CARD_BLOCK_SIZE - 1u) & (x)))
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -140,17 +140,17 @@ static en_result_t SdCardInitHost(const stc_sd_handle_t *handle);
 static en_result_t SdCardSetSpeed(stc_sd_handle_t *handle);
 static en_result_t SdCardSetBusWidth(stc_sd_handle_t *handle);
 static en_result_t SdCardCheckReayForData(stc_sd_handle_t *handle,
-                                uint32_t u32Timeout);
-static en_result_t DmaSdiocTxConfig(M4_DMA_TypeDef* DMAx,
-                                en_dma_channel_t enCh,
-                                M4_SDIOC_TypeDef *SDIOCx,
-                                uint8_t *pu8TxBuf,
-                                uint16_t u16len);
-static en_result_t DmaSdiocRxConfig(M4_DMA_TypeDef* DMAx,
-                                en_dma_channel_t enCh,
-                                M4_SDIOC_TypeDef *SDIOCx,
-                                uint8_t *pu8RxBuf,
-                                uint16_t u16len);
+                                          uint32_t u32Timeout);
+static en_result_t DmaSdiocTxConfig(M4_DMA_TypeDef *DMAx,
+                                    en_dma_channel_t enCh,
+                                    M4_SDIOC_TypeDef *SDIOCx,
+                                    uint8_t *pu8TxBuf,
+                                    uint16_t u16len);
+static en_result_t DmaSdiocRxConfig(M4_DMA_TypeDef *DMAx,
+                                    en_dma_channel_t enCh,
+                                    M4_SDIOC_TypeDef *SDIOCx,
+                                    uint8_t *pu8RxBuf,
+                                    uint16_t u16len);
 
 /*******************************************************************************
  * Local variable definitions ('static')
@@ -177,7 +177,7 @@ static en_result_t DmaSdiocRxConfig(M4_DMA_TypeDef* DMAx,
  **
  ******************************************************************************/
 en_result_t SDCARD_Init(stc_sd_handle_t *handle,
-                                const stc_sdcard_init_t *pstcInitCfg)
+                        const stc_sdcard_init_t *pstcInitCfg)
 {
     en_result_t enRet = ErrorInvalidParameter;
 
@@ -188,35 +188,35 @@ en_result_t SDCARD_Init(stc_sd_handle_t *handle,
         enRet = SdCardInitHost(handle);
         if (enRet != Ok)
         {
-	    printf("SdCardInitHost fail,%u !\n",(uint8_t)enRet);   
+            printf("SdCardInitHost fail,%u !\n", (uint8_t)enRet);
             return enRet;
         }
 
         enRet = SdCardPowerON(handle);
         if (enRet != Ok)
         {
-	    printf("SdCardPowerON fail,%u,0x%x !\n",(uint8_t)enRet,handle->u32ErrorCode);	
+            printf("SdCardPowerON fail,%u,0x%x !\n", (uint8_t)enRet, handle->u32ErrorCode);
             return enRet;
         }
 
         enRet = SdCardInitSd(handle);
         if (enRet != Ok)
         {
-	    printf("SdCardInitSd fail,%u !\n",(uint8_t)enRet);	
+            printf("SdCardInitSd fail,%u !\n", (uint8_t)enRet);
             return enRet;
         }
 
         enRet = SdCardSetBusWidth(handle);
         if (enRet != Ok)
         {
-	    printf("SdCardSetBusWidth fail,%u !\n",(uint8_t)enRet); 
+            printf("SdCardSetBusWidth fail,%u !\n", (uint8_t)enRet);
             return enRet;
         }
 
         enRet = SdCardSetSpeed(handle);
         if (enRet != Ok)
         {
-	    printf("SdCardSetSpeed fail,%u !\n",(uint8_t)enRet); 
+            printf("SdCardSetSpeed fail,%u !\n", (uint8_t)enRet);
             return enRet;
         }
     }
@@ -239,7 +239,7 @@ en_result_t SDCARD_Init(stc_sd_handle_t *handle,
  **
  ******************************************************************************/
 en_result_t SDCARD_SetDeviceMode(stc_sd_handle_t *handle,
-                                en_sd_card_device_mode_t enDevMode)
+                                 en_sd_card_device_mode_t enDevMode)
 {
     en_result_t enRet = ErrorInvalidParameter;
 
@@ -297,22 +297,18 @@ en_result_t SDCARD_GetCardCSD(stc_sd_handle_t *handle)
         if ((handle->CSD[3] & 0x00FF0000ul) == 0x00400000ul)
         {
             pstcCsdSdHc = (stc_sdcard_csd_v2_t *)&handle->CSD[0];
-            u32Csize = ((unsigned int)pstcCsdSdHc->C_SIZE3 << 16ul)
-                     + ((unsigned int)pstcCsdSdHc->C_SIZE2 << 8ul)
-                     + pstcCsdSdHc->C_SIZE1;
+            u32Csize = ((unsigned int)pstcCsdSdHc->C_SIZE3 << 16ul) + ((unsigned int)pstcCsdSdHc->C_SIZE2 << 8ul) + pstcCsdSdHc->C_SIZE1;
 
             u32NumSector = (u32Csize + 1ul) << 10ul;
 
             handle->stcSdCardInfo.u32Class = (((uint32_t)pstcCsdSdHc->CCC2) << 4u) | ((uint32_t)pstcCsdSdHc->CCC1);
             handle->stcSdCardInfo.u32BlockSize = 1ul << (pstcCsdSdHc->READ_BL_LEN);
         }
-        else  /* Standard Capacity     CSD Version 1.xx */
+        else /* Standard Capacity     CSD Version 1.xx */
         {
             pstcCsdSd = (stc_sdcard_csd_v1_t *)&handle->CSD[0];
 
-            u32Csize = ((unsigned int)pstcCsdSd->C_SIZE3 << 10)
-                       + ((unsigned int)pstcCsdSd->C_SIZE2 << 2)
-                       + pstcCsdSd->C_SIZE1;
+            u32Csize = ((unsigned int)pstcCsdSd->C_SIZE3 << 10) + ((unsigned int)pstcCsdSd->C_SIZE2 << 2) + pstcCsdSd->C_SIZE1;
 
             u32CsizeMulti = ((uint32_t)(pstcCsdSd->C_SIZE_MULTI2) << 1) + (uint32_t)pstcCsdSd->C_SIZE_MULTI1;
             u32NumSector = (u32Csize + 1ul) << (u32CsizeMulti + 2ul);
@@ -362,15 +358,15 @@ en_result_t SDCARD_GetCardCSD(stc_sd_handle_t *handle)
  **
  ******************************************************************************/
 en_result_t SDCARD_Erase(stc_sd_handle_t *handle,
-                                uint32_t u32BlkStartAddr,
-                                uint32_t u32BlkEndAddr,
-                                uint32_t u32Timeout)
+                         uint32_t u32BlkStartAddr,
+                         uint32_t u32BlkEndAddr,
+                         uint32_t u32Timeout)
 {
     en_result_t enCmdRet = Error;
     __IO uint32_t u32TimeCount = u32Timeout * (SystemCoreClock / 8u / 1000u);
 
-    if ((NULL == handle)                     ||
-        (u32BlkStartAddr > u32BlkEndAddr)    ||
+    if ((NULL == handle) ||
+        (u32BlkStartAddr > u32BlkEndAddr) ||
         (u32BlkEndAddr > handle->stcSdCardInfo.u32BlockNbr))
     {
         return ErrorInvalidParameter;
@@ -391,7 +387,7 @@ en_result_t SDCARD_Erase(stc_sd_handle_t *handle,
     if (handle->stcSdCardInfo.u32CardType != SdCardSdhcSdxc)
     {
         u32BlkStartAddr *= SD_CARD_BLOCK_SIZE;
-        u32BlkEndAddr   *= SD_CARD_BLOCK_SIZE;
+        u32BlkEndAddr *= SD_CARD_BLOCK_SIZE;
     }
 
     /* Send CMD35 ERASE_GRP_START with argument as address */
@@ -440,10 +436,10 @@ en_result_t SDCARD_Erase(stc_sd_handle_t *handle,
  **
  ******************************************************************************/
 en_result_t SDCARD_ReadBlocks(stc_sd_handle_t *handle,
-                                uint32_t u32BlockAddr,
-                                uint16_t u16BlockCnt,
-                                uint8_t *pu8Data,
-                                uint32_t u32Timeout)
+                              uint32_t u32BlockAddr,
+                              uint16_t u16BlockCnt,
+                              uint8_t *pu8Data,
+                              uint32_t u32Timeout)
 {
     en_result_t enCmdRet;
     stc_sdioc_data_cfg_t stcDataCfg;
@@ -456,14 +452,14 @@ en_result_t SDCARD_ReadBlocks(stc_sd_handle_t *handle,
 
     if (NULL == handle)
     {
-	printf("SD ErrorInvalidParameter->(NULL)\n");	 
+        printf("SD ErrorInvalidParameter->(NULL)\n");
         return ErrorInvalidParameter;
     }
 
     if ((NULL == pu8Data) || (0u == u16BlockCnt))
     {
         handle->u32ErrorCode |= SD_CARD_ERROR_PARAM;
-	printf("SD ErrorInvalidParameter->(SD_CARD_ERROR_PARAM)\n");	 
+        printf("SD ErrorInvalidParameter->(SD_CARD_ERROR_PARAM)\n");
         return ErrorInvalidParameter;
     }
 
@@ -472,7 +468,7 @@ en_result_t SDCARD_ReadBlocks(stc_sd_handle_t *handle,
     if ((u32BlockAddr + u16BlockCnt) > (handle->stcSdCardInfo.u32LogBlockNbr))
     {
         handle->u32ErrorCode |= SD_CARD_ERROR_ADDR_OUT_OF_RANGE;
-	printf("SD ErrorInvalidParameter->(SD_CARD_ERROR_ADDR_OUT_OF_RANGE)\n");	 
+        printf("SD ErrorInvalidParameter->(SD_CARD_ERROR_ADDR_OUT_OF_RANGE)\n");
         return ErrorInvalidParameter;
     }
 
@@ -492,8 +488,8 @@ en_result_t SDCARD_ReadBlocks(stc_sd_handle_t *handle,
     stcDataCfg.u16BlkSize = SD_CARD_BLOCK_SIZE;
     stcDataCfg.enDataTimeOut = SdiocDtoSdclk_2_27;
     stcDataCfg.enTransferDir = SdiocTransferToHost;
-    stcDataCfg.enAutoCmd12Enable = (u16BlockCnt > 1u) ? Enable:Disable;
-    stcDataCfg.enTransferMode = (u16BlockCnt > 1u) ? SdiocTransferMultiple:SdiocTransferSingle;
+    stcDataCfg.enAutoCmd12Enable = (u16BlockCnt > 1u) ? Enable : Disable;
+    stcDataCfg.enTransferMode = (u16BlockCnt > 1u) ? SdiocTransferMultiple : SdiocTransferSingle;
     enCmdRet = SDIOC_ConfigData(handle->SDIOCx, &stcDataCfg);
     if (enCmdRet != Ok)
     {
@@ -597,10 +593,10 @@ en_result_t SDCARD_ReadBlocks(stc_sd_handle_t *handle,
  **
  ******************************************************************************/
 en_result_t SDCARD_WriteBlocks(stc_sd_handle_t *handle,
-                                uint32_t u32BlockAddr,
-                                uint16_t u16BlockCnt,
-                                uint8_t *pu8Data,
-                                uint32_t u32Timeout)
+                               uint32_t u32BlockAddr,
+                               uint16_t u16BlockCnt,
+                               uint8_t *pu8Data,
+                               uint32_t u32Timeout)
 {
     en_result_t enCmdRet;
     stc_sdioc_data_cfg_t stcDataCfg;
@@ -641,8 +637,8 @@ en_result_t SDCARD_WriteBlocks(stc_sd_handle_t *handle,
     stcDataCfg.u16BlkSize = SD_CARD_BLOCK_SIZE;
     stcDataCfg.enDataTimeOut = SdiocDtoSdclk_2_27;
     stcDataCfg.enTransferDir = SdiocTransferToCard;
-    stcDataCfg.enAutoCmd12Enable = (u16BlockCnt > 1u) ? Enable:Disable;
-    stcDataCfg.enTransferMode = (u16BlockCnt > 1u) ? SdiocTransferMultiple:SdiocTransferSingle;
+    stcDataCfg.enAutoCmd12Enable = (u16BlockCnt > 1u) ? Enable : Disable;
+    stcDataCfg.enTransferMode = (u16BlockCnt > 1u) ? SdiocTransferMultiple : SdiocTransferSingle;
     enCmdRet = SDIOC_ConfigData(handle->SDIOCx, &stcDataCfg);
     if (enCmdRet != Ok)
     {
@@ -729,7 +725,7 @@ en_result_t SDCARD_WriteBlocks(stc_sd_handle_t *handle,
     }
 
     /* check whether Data transfer stops */
-    if(Set == SDIOC_GetNormalIrqFlag(handle->SDIOCx, SdiocErrorInt))
+    if (Set == SDIOC_GetNormalIrqFlag(handle->SDIOCx, SdiocErrorInt))
     {
         return Error;
     }
@@ -766,15 +762,15 @@ static en_result_t SdCardSetBusWidth(stc_sd_handle_t *handle)
 
     switch (handle->pstcCardInitCfg->enBusWidth)
     {
-        case SdiocBusWidth1Bit:
-            u32CmdArg = 0u;
-            break;
-        case SdiocBusWidth4Bit:
-            u32CmdArg = 2u;
-            break;
-        default:
-            enCmdRet = ErrorInvalidParameter;
-            break;
+    case SdiocBusWidth1Bit:
+        u32CmdArg = 0u;
+        break;
+    case SdiocBusWidth4Bit:
+        u32CmdArg = 2u;
+        break;
+    default:
+        enCmdRet = ErrorInvalidParameter;
+        break;
     }
 
     if (Ok != enCmdRet)
@@ -962,7 +958,7 @@ static en_result_t SdCardInitSd(stc_sd_handle_t *handle)
 {
     en_result_t enCmdRet = Ok;
 
-    if(NULL == handle)
+    if (NULL == handle)
     {
         return ErrorInvalidParameter;
     }
@@ -1179,19 +1175,19 @@ static en_result_t SdCardCheckReayForData(stc_sd_handle_t *handle, uint32_t u32T
  ** \retval ErrorInvalidParameter       Set unsuccessfully.
  **
  ******************************************************************************/
-static en_result_t DmaSdiocTxConfig(M4_DMA_TypeDef* DMAx,
-                                en_dma_channel_t enCh,
-                                M4_SDIOC_TypeDef *SDIOCx,
-                                uint8_t *pu8TxBuf,
-                                uint16_t u16len)
+static en_result_t DmaSdiocTxConfig(M4_DMA_TypeDef *DMAx,
+                                    en_dma_channel_t enCh,
+                                    M4_SDIOC_TypeDef *SDIOCx,
+                                    uint8_t *pu8TxBuf,
+                                    uint16_t u16len)
 {
     stc_dma_config_t stcDmaInit;
     uint32_t u32Fcg0Periph = (M4_DMA1 == DMAx) ? PWC_FCG0_PERIPH_DMA1 : PWC_FCG0_PERIPH_DMA2;
     en_event_src_t enEvtSrc = (M4_SDIOC1 == SDIOCx) ? EVT_SDIOC1_DMAW : EVT_SDIOC2_DMAW;
     en_result_t enRet = ErrorInvalidParameter;
 
-    if ((NULL != pu8TxBuf)                      && \
-        (IS_VALID_TRANSFER_BUF_LEN(u16len))     && \
+    if ((NULL != pu8TxBuf) &&
+        (IS_VALID_TRANSFER_BUF_LEN(u16len)) &&
         (IS_VALID_TRANSFER_BUF_ALIGN(pu8TxBuf)))
     {
         /* Enable peripheral clock */
@@ -1202,13 +1198,13 @@ static en_result_t DmaSdiocTxConfig(M4_DMA_TypeDef* DMAx,
 
         /* Initialize DMA. */
         MEM_ZERO_STRUCT(stcDmaInit);
-        stcDmaInit.u16BlockSize = SD_CARD_BLOCK_SIZE/4u;        /* Set data block size. */
-        stcDmaInit.u16TransferCnt = u16len/SD_CARD_BLOCK_SIZE;  /* Set transfer count. */
-        stcDmaInit.u32SrcAddr = (uint32_t)(&pu8TxBuf[0]);       /* Set source address. */
-        stcDmaInit.u32DesAddr = (uint32_t)(&SDIOCx->BUF0);      /* Set destination address. */
-        stcDmaInit.stcDmaChCfg.enSrcInc = AddressIncrease;      /* Set source address mode. */
-        stcDmaInit.stcDmaChCfg.enDesInc = AddressFix;           /* Set destination address mode. */
-        stcDmaInit.stcDmaChCfg.enTrnWidth = Dma32Bit;           /* Set data width 8bit. */
+        stcDmaInit.u16BlockSize = SD_CARD_BLOCK_SIZE / 4u;       /* Set data block size. */
+        stcDmaInit.u16TransferCnt = u16len / SD_CARD_BLOCK_SIZE; /* Set transfer count. */
+        stcDmaInit.u32SrcAddr = (uint32_t)(&pu8TxBuf[0]);        /* Set source address. */
+        stcDmaInit.u32DesAddr = (uint32_t)(&SDIOCx->BUF0);       /* Set destination address. */
+        stcDmaInit.stcDmaChCfg.enSrcInc = AddressIncrease;       /* Set source address mode. */
+        stcDmaInit.stcDmaChCfg.enDesInc = AddressFix;            /* Set destination address mode. */
+        stcDmaInit.stcDmaChCfg.enTrnWidth = Dma32Bit;            /* Set data width 8bit. */
         DMA_InitChannel(DMAx, enCh, &stcDmaInit);
 
         /* Enable the specified DMA channel. */
@@ -1252,36 +1248,36 @@ static en_result_t DmaSdiocTxConfig(M4_DMA_TypeDef* DMAx,
  ** \retval ErrorInvalidParameter       Set unsuccessfully.
  **
  ******************************************************************************/
-static en_result_t DmaSdiocRxConfig(M4_DMA_TypeDef* DMAx,
-                                en_dma_channel_t enCh,
-                                M4_SDIOC_TypeDef *SDIOCx,
-                                uint8_t *pu8RxBuf,
-                                uint16_t u16len)
+static en_result_t DmaSdiocRxConfig(M4_DMA_TypeDef *DMAx,
+                                    en_dma_channel_t enCh,
+                                    M4_SDIOC_TypeDef *SDIOCx,
+                                    uint8_t *pu8RxBuf,
+                                    uint16_t u16len)
 {
     stc_dma_config_t stcDmaInit;
     uint32_t u32Fcg0Periph = (M4_DMA1 == DMAx) ? PWC_FCG0_PERIPH_DMA1 : PWC_FCG0_PERIPH_DMA2;
     en_event_src_t enEvtSrc = (M4_SDIOC1 == SDIOCx) ? EVT_SDIOC1_DMAR : EVT_SDIOC2_DMAR;
     en_result_t enRet = ErrorInvalidParameter;
 
-    if ((NULL != pu8RxBuf)                      && \
-        (IS_VALID_TRANSFER_BUF_LEN(u16len))     && \
+    if ((NULL != pu8RxBuf) &&
+        (IS_VALID_TRANSFER_BUF_LEN(u16len)) &&
         (IS_VALID_TRANSFER_BUF_ALIGN(pu8RxBuf)))
     {
         /* Enable peripheral clock */
-        PWC_Fcg0PeriphClockCmd(u32Fcg0Periph,Enable);
+        PWC_Fcg0PeriphClockCmd(u32Fcg0Periph, Enable);
 
         /* Enable DMA. */
         DMA_Cmd(DMAx, Enable);
 
         /* Initialize DMA. */
         MEM_ZERO_STRUCT(stcDmaInit);
-        stcDmaInit.u16BlockSize = SD_CARD_BLOCK_SIZE/4u;        /* Set data block size. */
-        stcDmaInit.u16TransferCnt = u16len/SD_CARD_BLOCK_SIZE;  /* Set transfer count. */
-        stcDmaInit.u32SrcAddr = (uint32_t)(&SDIOCx->BUF0);      /* Set source address. */
-        stcDmaInit.u32DesAddr = (uint32_t)(&pu8RxBuf[0]);       /* Set destination address. */
-        stcDmaInit.stcDmaChCfg.enSrcInc = AddressFix;           /* Set source address mode. */
-        stcDmaInit.stcDmaChCfg.enDesInc = AddressIncrease;      /* Set destination address mode. */
-        stcDmaInit.stcDmaChCfg.enTrnWidth = Dma32Bit;           /* Set data width 8bit. */
+        stcDmaInit.u16BlockSize = SD_CARD_BLOCK_SIZE / 4u;       /* Set data block size. */
+        stcDmaInit.u16TransferCnt = u16len / SD_CARD_BLOCK_SIZE; /* Set transfer count. */
+        stcDmaInit.u32SrcAddr = (uint32_t)(&SDIOCx->BUF0);       /* Set source address. */
+        stcDmaInit.u32DesAddr = (uint32_t)(&pu8RxBuf[0]);        /* Set destination address. */
+        stcDmaInit.stcDmaChCfg.enSrcInc = AddressFix;            /* Set source address mode. */
+        stcDmaInit.stcDmaChCfg.enDesInc = AddressIncrease;       /* Set destination address mode. */
+        stcDmaInit.stcDmaChCfg.enTrnWidth = Dma32Bit;            /* Set data width 8bit. */
         DMA_InitChannel(DMAx, enCh, &stcDmaInit);
 
         /* Enable the specified DMA channel. */
