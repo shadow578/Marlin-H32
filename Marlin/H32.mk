@@ -46,6 +46,8 @@ EXCLUDE_LIB_OBJ_FILES = $(foreach f,\
 	hooks \
 	itoa \
 	wirish_math \
+	Print \
+	WString \
 , lib/h32_core/main/hdsc32core/lib/$(f).o)
 
 
