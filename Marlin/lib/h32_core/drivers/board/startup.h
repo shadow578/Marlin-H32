@@ -31,7 +31,11 @@ extern "C"
 {
 #endif
 
-    extern uint32_t F_CPU;
+    extern uint32_t CPU_FREQ;
+
+    #ifndef F_CPU
+    #define F_CPU CPU_FREQ
+    #endif
 
     typedef enum ExtIntTriggerMode
     {

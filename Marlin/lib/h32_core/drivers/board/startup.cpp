@@ -2,7 +2,7 @@
 #include "startup.h"
 
 #define APP_START_ADDRESS 0xC000
-uint32_t F_CPU = 0;
+uint32_t CPU_FREQ = 0;
 
 void getResetCause(void)
 {
@@ -85,7 +85,7 @@ static void setup_SysClk(void)
 	// todo: the 2 below are testers and can be delete in the near future
 	enSysClkSrc = CLK_GetSysClkSource();
 	CLK_GetClockFreq(&stcClkFreq);
-	F_CPU = stcClkFreq.pclk1Freq;
+	CPU_FREQ = stcClkFreq.pclk1Freq;
 }
 
 void init(void)
