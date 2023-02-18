@@ -7,6 +7,39 @@
 #include "../../inc/MarlinConfig.h"
 #include "../cores/iwdg.h"
 
+#ifdef REPORT_FREQUENCY_INFO
+#include "../drivers/library/inc/hc32f46x_clk.h"
+void reportFrequencyInfo()
+{
+    // query clock frequencies
+    stc_clk_freq_t clks;
+    CLK_GetClockFreq(&clks);
+
+    // print the frequencies
+    printf(R""""(
+== HC32F46x frequency report ==
+sysclkFreq = %ld
+hclkFreq = %ld
+exckFreq = %ld
+pclk0Freq = %ld
+pclk1Freq = %ld
+pclk2Freq = %ld
+pclk3Freq = %ld
+pclk4Freq = %ld
+)"""",
+           clks.sysclkFreq,
+           clks.hclkFreq,
+           clks.exckFreq,
+           clks.pclk0Freq,
+           clks.pclk1Freq,
+           clks.pclk2Freq,
+           clks.pclk3Freq,
+           clks.pclk4Freq);
+}
+#else
+void reportFrequencyInfo() {}
+#endif
+
 extern "C" char *_sbrk(int incr);
 
 enum TEMP_PINS
@@ -43,6 +76,7 @@ void MarlinHAL::watchdog_refresh()
 void MarlinHAL::init()
 {
     NVIC_SetPriorityGrouping(0x3);
+    reportFrequencyInfo();
 }
 
 void MarlinHAL::init_board() {}
