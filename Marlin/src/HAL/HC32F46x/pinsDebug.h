@@ -20,6 +20,9 @@
 #include "fastio.h"
 #include "../../inc/MarlinConfig.h"
 
+// allow pins with potentially unsafe FuncSel
+//#define ALLOW_UNSAFE_FUNCTION_PINS
+
 //
 // Translation of routines & variables used by pinsDebug.h
 //
@@ -30,7 +33,7 @@
 #define NUM_DIGITAL_PINS BOARD_NR_GPIO_PINS
 #define NUMBER_PINS_TOTAL BOARD_NR_GPIO_PINS
 #define VALID_PIN(pin) (pin >= 0 && pin < BOARD_NR_GPIO_PINS)
-#define GET_ARRAY_PIN(p) pin_t(PIN_MAP[p].gpio_pin)
+#define GET_ARRAY_PIN(p) pin_t(pin_array[p].pin)
 #define pwm_status(pin) PWM_PIN(pin)
 #define digitalRead_mod(p) extDigitalRead(p)
 #define PRINT_PIN(p)                                  \
@@ -58,11 +61,23 @@
 // pins that will cause a hang / reset / disconnect in M43 Toggle and Watch utils
 //
 #ifndef M43_NEVER_TOUCH
-// do not touch any pin not defined as gpio function
-// and (explicitly) host serial pins
+// do not touch any pin not defined as gpio or sdio function,
+// (explicitly) host serial pins, and
+// pins related to the oscillator
 #define IS_HOST_USART_PIN(Q) (Q == BOARD_USART2_TX_PIN || Q == BOARD_USART2_RX_PIN)
-#define IS_GPIO_FUNC_PIN(Q) (PIN_MAP[Q].FuncSel == en_port_func_t::Func_Gpio)
-#define M43_NEVER_TOUCH(Q) (!IS_GPIO_FUNC_PIN(Q) || IS_HOST_USART_PIN(Q))
+#define IS_OSC_PIN(Q) ( Q == PH0 || Q == PH1 || Q == PH2 )
+#define IS_PIN_FUNC(Q,FUNC) (PIN_MAP[Q].FuncSel == en_port_func_t::Func_##FUNC)
+
+#ifndef ALLOW_UNSAFE_FUNCTION_PINS
+#define IS_SAFE_PIN_FUNC(Q) (IS_PIN_FUNC(Q, Gpio) || IS_PIN_FUNC(Q, Sdio))
+#else
+#define IS_SAFE_PIN_FUNC(Q) (true)
+#endif
+
+#define M43_NEVER_TOUCH(Q) ( \
+    !IS_SAFE_PIN_FUNC(Q) \
+    || IS_HOST_USART_PIN(Q) \
+    || IS_OSC_PIN(Q))
 #endif
 
 // static int8_t get_pin_mode(pin_t pin) {
