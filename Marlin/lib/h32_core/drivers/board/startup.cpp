@@ -99,12 +99,10 @@ void init(void)
 	SCB->VTOR = ((uint32_t)APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk); // bootloader vector startup addr
 	setup_SysClk();
 	setup_systick();
-	setup_time();
 	setup_gpio();
 	setup_adcs();
 	Ddl_UartInit(); // Uart printf port initialize, disable uart3 send
 	// setup_I2C1_eeprom();
-	setup_Extinterrupt();
 	getResetCause();
 }
 #undef _BOARD_C_

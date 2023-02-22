@@ -16,7 +16,6 @@ extern void setup_systick(void)
 	SysTick_Config(stcClkFreq.sysclkFreq / OS_TICKS_PER_SEC);
 }
 
-extern void setup_time(void) {}
 
 extern uint32_t millis(void)
 {

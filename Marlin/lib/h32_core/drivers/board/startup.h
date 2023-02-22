@@ -32,44 +32,31 @@ extern "C"
 
     extern uint32_t CPU_FREQ;
 
-    #ifndef F_CPU
-    #define F_CPU CPU_FREQ
-    #endif
-
-    typedef enum ExtIntTriggerMode
-    {
-        RISING,  /**< To trigger an interrupt when the pin transitions LOW
-                      to HIGH */
-        FALLING, /**< To trigger an interrupt when the pin transitions
-                      HIGH to LOW */
-        CHANGE   /**< To trigger an interrupt when the pin transitions from
-                      LOW to HIGH or HIGH to LOW (i.e., when the pin
-                      changes). */
-    } ExtIntTriggerMode;
+#ifndef F_CPU
+#define F_CPU CPU_FREQ
+#endif
 
     static inline void nvic_globalirq_enable()
     {
         asm volatile("cpsie i");
     }
+
     static inline void nvic_globalirq_disable()
     {
         asm volatile("cpsid i");
     }
+
     static inline void interrupts()
     {
         nvic_globalirq_enable();
     }
+
     static inline void noInterrupts()
     {
         nvic_globalirq_disable();
     }
-    void init(void);
-    extern void setup_Extinterrupt(void);
-    extern void attachInterrupt(uint8 pin, voidFuncPtr handler, uint8 irqNum, ExtIntTriggerMode mode);
-    extern void ExtInt_X_MIN_Callback(void);
-    extern void ExtInt_Y_MIN_Callback(void);
-    extern void ExtInt_Z_MIN_Callback(void);
 
+    void init(void);
 #ifdef __cplusplus
 } // extern "C"
 #endif
