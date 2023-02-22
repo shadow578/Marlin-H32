@@ -16,9 +16,21 @@
 
 static stc_sd_handle_t cardHandle;
 
+const stc_sdcard_dma_init_t dmaConf = {
+	.DMAx = M4_DMA2,
+	.enDmaCh = DmaCh0,
+};
+
+const stc_sdcard_init_t cardConf = {
+	.enBusWidth = SdiocBusWidth4Bit,
+	.enClkFreq = SdiocClk400K,
+	.enSpeedMode = SdiocNormalSpeedMode,
+	.pstcInitCfg = NULL,
+};
+
 bool SDIO_Init()
 {
-	// initialize sd handle
+	// configure SDIO pins
 	PORT_SetFuncMapp(BOARD_SDIO_D0, Disable);
 	PORT_SetFuncMapp(BOARD_SDIO_D1, Disable);
 	PORT_SetFuncMapp(BOARD_SDIO_D2, Disable);
@@ -26,23 +38,14 @@ bool SDIO_Init()
 	PORT_SetFuncMapp(BOARD_SDIO_CLK, Disable);
 	PORT_SetFuncMapp(BOARD_SDIO_CMD, Disable);
 	PORT_SetFuncMapp(BOARD_SDIO_DET, Disable);
+
+	// create sdio handle
 	MEM_ZERO_STRUCT(cardHandle);
 	cardHandle.SDIOCx = SDIO_INTERFACE;
 	cardHandle.enDevMode = SdCardDmaMode;
-
-	// set dma config of handle
-	stc_sdcard_dma_init_t dmaConf = {
-		M4_DMA2,
-		DmaCh0,
-	};
 	cardHandle.pstcDmaInitCfg = &dmaConf;
 
 	// initialize sd card
-	stc_sdcard_init_t cardConf = {
-		SdiocBusWidth4Bit,
-		SdiocClk400K,
-		SdiocNormalSpeedMode,
-		NULL};
 	en_result_t rc = SDCARD_Init(&cardHandle, &cardConf);
 	if (rc != Ok)
 	{
