@@ -20,7 +20,6 @@
 #include "board_gpio.h"
 #include "adc.h"
 #include "../pins/hc32f46x/pins_Aquila_X2.h"
-#include "sdio_f1.h"
 #include "../cores/usart.h"
 
 #include "../cores/libmaple_types.h"

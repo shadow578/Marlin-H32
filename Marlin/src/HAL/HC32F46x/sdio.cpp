@@ -1,30 +1,104 @@
+#ifdef TARGET_HC32F46x
+#include "sdio.h"
+#include "sd_card.h"
 
+#define SDIO_INTERFACE M4_SDIOC1
 
-#ifdef ARDUINO_ARCH_STM32F1
+#define SDIO_READ_RETRIES 3
+#define SDIO_WRITE_RETRIES 1
+#define SDIO_TIMEOUT 100u
 
-#include "../../inc/MarlinConfig.h" // Allow pins/pins.h to set density
+#define WITH_RETRY(retries, fn)                     \
+	for (int retry = 0; retry < (retries); retry++) \
+	{                                               \
+		fn                                          \
+	}
+
+static stc_sd_handle_t cardHandle;
 
 bool SDIO_Init()
 {
-	return (steup_sdio());
+	// initialize sd handle
+	PORT_SetFuncMapp(BOARD_SDIO_D0, Disable);
+	PORT_SetFuncMapp(BOARD_SDIO_D1, Disable);
+	PORT_SetFuncMapp(BOARD_SDIO_D2, Disable);
+	PORT_SetFuncMapp(BOARD_SDIO_D3, Disable);
+	PORT_SetFuncMapp(BOARD_SDIO_CLK, Disable);
+	PORT_SetFuncMapp(BOARD_SDIO_CMD, Disable);
+	PORT_SetFuncMapp(BOARD_SDIO_DET, Disable);
+	MEM_ZERO_STRUCT(cardHandle);
+	cardHandle.SDIOCx = SDIO_INTERFACE;
+	cardHandle.enDevMode = SdCardDmaMode;
+
+	// set dma config of handle
+	stc_sdcard_dma_init_t dmaConf = {
+		M4_DMA2,
+		DmaCh0,
+	};
+	cardHandle.pstcDmaInitCfg = &dmaConf;
+
+	// initialize sd card
+	stc_sdcard_init_t cardConf = {
+		SdiocBusWidth4Bit,
+		SdiocClk400K,
+		SdiocNormalSpeedMode,
+		NULL};
+	en_result_t rc = SDCARD_Init(&cardHandle, &cardConf);
+	if (rc != Ok)
+	{
+		printf("SDIO_Init() error (rc=%u)\n", rc);
+	}
+
+	return rc == Ok;
 }
 
-bool SDIO_ReadBlock(uint32_t blockAddress, uint8_t *data)
+bool SDIO_ReadBlock(uint32_t block, uint8_t *dst)
 {
-	uint32_t retries = 3;
-	while (retries--)
-		if (SDIO_ReadBlock_DMA(blockAddress, data))
+	WITH_RETRY(SDIO_READ_RETRIES, {
+		en_result_t rc = SDCARD_ReadBlocks(&cardHandle, block, 1, dst, SDIO_TIMEOUT);
+		if (rc == Ok)
+		{
 			return true;
+		}
+		else
+		{
+			printf("SDIO_ReadBlock error (rc=%u)\n", rc);
+		}
+	})
+
 	return false;
 }
 
-bool SDIO_WriteBlock(uint32_t blockAddress, const uint8_t *data)
+bool SDIO_WriteBlock(uint32_t block, const uint8_t *src)
 {
-	return SDIO_WriteBlockDMA(blockAddress, data);
+	WITH_RETRY(SDIO_WRITE_RETRIES, {
+		en_result_t rc = SDCARD_WriteBlocks(&cardHandle, block, 1, (uint8_t *)src, SDIO_TIMEOUT);
+		if (rc == Ok)
+		{
+			return true;
+		}
+		else
+		{
+			printf("SDIO_WriteBlock error (rc=%u)\n", rc);
+		}
+	})
+
+	return false;
 }
 
-// No F1 board with SDIO + MSC using Maple, that I aware of...
-bool SDIO_IsReady() { return true; }
-uint32_t SDIO_GetCardSize() { return 0; }
+bool SDIO_IsReady()
+{
+	// TODO HC32F46x: untested
+	// return SdCardCheckReayForData(&cardHandle, SDIO_TIMEOUT) == Ok;
+	return bool(cardHandle.stcCardStatus.READY_FOR_DATA);
+}
 
-#endif // ARDUINO_ARCH_STM32F1
+uint32_t SDIO_GetCardSize()
+{
+	// TODO HC32F46x: untested
+	// SDCARD_GetCardCSD(&cardHandle);
+	return cardHandle.stcSdCardInfo.u32BlockNbr * cardHandle.stcSdCardInfo.u32BlockSize;
+	return cardHandle.stcSdCardInfo.u32LogBlockNbr * cardHandle.stcSdCardInfo.u32LogBlockSize;
+}
+
+#endif // TARGET_HC32F46x
