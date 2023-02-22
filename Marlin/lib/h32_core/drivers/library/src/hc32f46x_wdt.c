@@ -163,7 +163,7 @@ en_result_t WDT_Init(const stc_wdt_init_t *pstcWdtInit)
         DDL_ASSERT(IS_VALID_CLOCK_DIV(pstcWdtInit->enClkDiv));
         DDL_ASSERT(IS_VALID_ALLOW_REFRESH_RANGE(pstcWdtInit->enRefreshRange));
         DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcWdtInit->enSleepModeCountEn));
-        DDL_ASSERT(IS_VALID_EVENT_REQUEST_TYPE(pstcWdtInit->enRequsetType));
+        DDL_ASSERT(IS_VALID_EVENT_REQUEST_TYPE(pstcWdtInit->enRequestType));
 
         /* software start mode */
         regTemp = ((((uint32_t)pstcWdtInit->enRequestType) << 31) |

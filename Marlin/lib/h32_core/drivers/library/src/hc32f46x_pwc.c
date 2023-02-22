@@ -163,8 +163,8 @@
 
 /*! Parameter validity check for flash mode while stop mode mode. */
 #define IS_PWC_STOP_MODE_FLASH(x) \
-    (((x) == Wait) ||             \
-     ((x) == NotWait))
+    (((x) == FlashWait) ||        \
+     ((x) == FlashNotWait))
 
 /*! Parameter validity check for wake_up timer over flag. */
 #define IS_PWC_WKTMOVER_FLAG(flag) \
