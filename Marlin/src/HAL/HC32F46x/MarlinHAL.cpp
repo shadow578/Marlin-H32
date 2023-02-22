@@ -79,10 +79,52 @@ void MarlinHAL::idletask()
 
 uint8_t MarlinHAL::get_reset_source()
 {
-    return /* RST_POWER_ON */ 1;
+    // query reset cause
+    stc_rmu_rstcause_t rstCause;
+    MEM_ZERO_STRUCT(rstCause);
+    RMU_GetResetCause(&rstCause);
+
+    // map reset causes to those expected by Marlin
+    uint8_t cause = 0;
+#define MAP_CAUSE(from, to)                                \
+    if (rstCause.from == Set)                              \
+    {                                                      \
+        printf("GetResetCause " STRINGIFY(from) " set\n"); \
+        cause |= to;                                       \
+    }
+
+    // external
+    MAP_CAUSE(enRstPin, RST_EXTERNAL)
+    MAP_CAUSE(enPvd1, RST_EXTERNAL)
+    MAP_CAUSE(enPvd2, RST_EXTERNAL)
+
+    // brown out
+    MAP_CAUSE(enBrownOut, RST_BROWN_OUT)
+
+    // wdt
+    MAP_CAUSE(enWdt, RST_WATCHDOG)
+    MAP_CAUSE(enSwdt, RST_WATCHDOG)
+
+    // software
+    MAP_CAUSE(enPowerDown, RST_SOFTWARE)
+    MAP_CAUSE(enSoftware, RST_SOFTWARE)
+
+    // other
+    MAP_CAUSE(enMpuErr, RST_BACKUP)
+    MAP_CAUSE(enRamParityErr, RST_BACKUP)
+    MAP_CAUSE(enRamEcc, RST_BACKUP)
+    MAP_CAUSE(enClkFreqErr, RST_BACKUP)
+    MAP_CAUSE(enXtalErr, RST_BACKUP)
+
+    // power on
+    MAP_CAUSE(enPowerOn, RST_POWER_ON)
+    return cause;
 }
 
-void MarlinHAL::clear_reset_source() {}
+void MarlinHAL::clear_reset_source()
+{
+    RMU_ClrResetFlag();
+}
 
 int MarlinHAL::freeMemory()
 {
