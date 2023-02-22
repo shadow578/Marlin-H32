@@ -157,7 +157,7 @@ extern "C"
         en_wdt_clk_div_t enClkDiv;                 ///< Count clock division
         en_wdt_refresh_range_t enRefreshRange;     ///< Allow refresh percent range
         en_functional_state_t enSleepModeCountEn;  ///< Enable/disable count in the sleep mode
-        en_wdt_event_request_type_t enRequsetType; ///< Refresh error or count underflow trigger event type
+        en_wdt_event_request_type_t enRequestType;  ///< Refresh error or count underflow trigger event type
     } stc_wdt_init_t;
 
     /*******************************************************************************

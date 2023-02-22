@@ -4,8 +4,8 @@
 #ifdef TARGET_HC32F46x
 
 #include "HAL.h"
-#include "../../inc/MarlinConfig.h"
-#include "../cores/iwdg.h"
+#include "hc32f46x_wdt.h"
+#include "../inc/MarlinConfig.h"
 
 extern "C" char *_sbrk(int incr);
 
@@ -22,21 +22,21 @@ MarlinHAL::MarlinHAL() {}
 void MarlinHAL::watchdog_init()
 {
 #if ENABLED(USE_WATCHDOG)
-    //  increase WDT timeout, see https://github.com/alexqzd/Marlin-H32/commit/d8483fdff9d582e6773b002a1730052718787c3a
-    stc_wdt_init_t wdt_config;
-    wdt_config.enCountCycle = WdtCountCycle65536;      ///< Count cycle
-    wdt_config.enClkDiv = WdtPclk3Div8192;             ///< Count clock division
-    wdt_config.enRefreshRange = WdtRefresh100Pct;      ///< Allow refresh percent range
-    wdt_config.enSleepModeCountEn = Disable;           ///< Enable/disable count in the sleep mode
-    wdt_config.enRequsetType = WdtTriggerResetRequest; ///< Refresh error or count underflow trigger event type
-    WDT_Init(&wdt_config);
+    stc_wdt_init_t wdtConf = {
+        .enCountCycle = WdtCountCycle65536,
+        .enClkDiv = WdtPclk3Div8192,
+        .enRefreshRange = WdtRefresh100Pct,
+        .enSleepModeCountEn = Disable,
+        .enRequestType = WdtTriggerResetRequest};
+    WDT_Init(&wdtConf);
+    WDT_RefreshCounter();
 #endif
 }
 
 void MarlinHAL::watchdog_refresh()
 {
 #if ENABLED(USE_WATCHDOG)
-    iwdg_feed();
+    WDT_RefreshCounter();
 #endif
 }
 
@@ -86,7 +86,6 @@ void MarlinHAL::clear_reset_source() {}
 
 int MarlinHAL::freeMemory()
 {
-    // TODO HC32F46x: untested, taken from STM32F1 HAL
     volatile char top;
     return &top - _sbrk(0);
 }
