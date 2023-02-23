@@ -12,7 +12,7 @@
 #include <time.h>
 #include <inttypes.h>
 
-#include "hc32_ddl.h"
+#include "../hdsc/common/hc32_ddl.h"
 #include "../core/macros.h"
 
 #include "board_tim0.h"
@@ -20,10 +20,10 @@
 #include "board_gpio.h"
 #include "adc.h"
 #include "../pins/hc32f46x/pins_Aquila_X2.h"
-#include "../cores/usart.h"
+#include "../../usart.h"
 
-#include "../cores/libmaple_types.h"
-#include "../cores/wirish_types.h"
+#include "../../libmaple_types.h"
+#include "../../wirish_types.h"
 
 #ifdef __cplusplus
 extern "C"
