@@ -1,7 +1,7 @@
 
 #include "wirish_time.h"
 #include "libmaple_types.h"
-#include "hc32f46x_utility.h"
+#include "drivers/hdsc/common/hc32_ddl.h"
 
 void delay(unsigned long ms)
 {

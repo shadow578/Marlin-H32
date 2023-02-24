@@ -22,7 +22,8 @@
 
 #ifdef TARGET_HC32F46x
 #include "MarlinSerial.h"
-#include "../../inc/MarlinConfig.h"
+#include "../inc/MarlinConfig.h"
+#include "usart.h"
 
 /**
  * Not every MarlinSerial instance should handle emergency parsing, as

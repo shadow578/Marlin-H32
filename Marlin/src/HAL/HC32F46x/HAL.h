@@ -97,7 +97,7 @@ static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) "."
 // Emergency Parser
 //
 #if ENABLED(EMERGENCY_PARSER)
-void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
+extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #endif
 
 //

@@ -1781,13 +1781,6 @@ void PWC_EnterStopMd(void)
 
 #endif /* DDL_PWC_ENABLE */
 
-void set_vcap(void)
-{
-    ENABLE_PWR_REG_WRITE();
-    M4_SYSREG->PWR_PWRC3_f.PDTS = 0;
-    DISABLE_PWR_REG_WRITE();
-}
-
 //@} // PwcGroup
 
 /*******************************************************************************

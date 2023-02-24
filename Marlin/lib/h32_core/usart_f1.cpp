@@ -1,6 +1,3 @@
-
-
-#include "../board/startup.h"
 #include "usart.h"
 
 stc_usart_uart_init_t stcInitCfg = {

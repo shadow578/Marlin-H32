@@ -1,9 +1,8 @@
 
-#include "../board/startup.h"
-#include "../pins/hc32f46x/pins_Aquila_X2.h"
 #include "HardwareSerial.h"
 #include "libmaple.h"
 #include "usart.h"
+#include "drivers/board/board_gpio.h"
 
 HardwareSerial::HardwareSerial(usart_dev *usart_device,
 							   uint8 tx_pin,
@@ -47,7 +46,7 @@ void HardwareSerial::end(void)
 	usart_disable(this->usart_device);
 }
 
-int __O0 HardwareSerial::read(void)
+int  HardwareSerial::read(void)
 {
 	if (usart_data_available(usart_device) > 0)
 	{
@@ -66,17 +65,17 @@ int HardwareSerial::available(void)
 
 /* Roger Clark. Added function missing from LibMaple code */
 
-int __O0 HardwareSerial::peek(void)
+int  HardwareSerial::peek(void)
 {
 	return usart_peek(this->usart_device);
 }
 
-int __O0 HardwareSerial::availableForWrite(void)
+int  HardwareSerial::availableForWrite(void)
 {
 	return this->usart_device->wb->size - rb_full_count(this->usart_device->wb);
 }
 
-size_t __O0 HardwareSerial::write(unsigned char ch)
+size_t  HardwareSerial::write(unsigned char ch)
 {
 	usart_putc(this->usart_device, ch);
 	return 1;

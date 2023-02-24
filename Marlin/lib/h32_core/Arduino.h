@@ -1,41 +1,43 @@
-/******************************************************************************
- * The MIT License
- *
- * Copyright (c) 2010 LeafLabs LLC.
- *
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *****************************************************************************/
-
-#ifndef _WIRISH_WPROGRAM_H_
-#define _WIRISH_WPROGRAM_H_
+#pragma once
 
 #include "wirish.h"
+#include "drivers/board/systick.h"
+#include "drivers/board/board_gpio.h"
 
 #ifdef __cplusplus
 extern "C"
 {
-#endif // __cplusplus
+#endif
+
+    extern uint32_t CPU_FREQ;
+
+#ifndef F_CPU
+#define F_CPU CPU_FREQ
+#endif
+
+    //
+    // Interrupts
+    //
+    static inline void interrupts()
+    {
+        asm volatile("cpsie i");
+    }
+
+    static inline void noInterrupts()
+    {
+        asm volatile("cpsid i");
+    }
+
+    //#define sei() interrupts
+    //#define cli() noInterrupts()
+
+    extern void setup();
+    extern void loop();
+
+    //TODO: int map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+    //TODO: void attachInterrupt(uint32_t pin, void (*callback)(), uint32_t mode);
+    //TODO: void detachInterrupt(uint32_t pin);
 
 #ifdef __cplusplus
 }
-#endif // __cplusplus
-
 #endif

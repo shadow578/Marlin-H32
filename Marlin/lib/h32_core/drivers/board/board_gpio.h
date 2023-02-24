@@ -1,8 +1,8 @@
 #ifndef _BOARD_GPIO_H
 #define _BOARD_GPIO_H
 
-#include "hc32_common.h"
-#include "adc.h"
+#include "../../hdsc/common/hc32_ddl.h"
+#include "../adc/adc.h"
 
 #ifdef __cplusplus
 extern "C"

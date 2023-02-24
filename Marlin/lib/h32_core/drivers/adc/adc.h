@@ -1,7 +1,7 @@
 #ifndef _ADC_H
 #define _ADC_H
 
-#include "hc32_common.h"
+#include "../../hdsc/common/hc32_ddl.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -29,6 +29,7 @@ extern "C"
 /********************************************************/
 /********************************************************/
 // ADC1 channel definition ch0~ch3.
+#define ADC_CHANNEL_COUNT 2u
 #define ADC1_SA_CHANNEL (ADC1_CH14 | ADC1_CH15)
 #define ADC1_SA_CHANNEL_COUNT (ADC_CHANNEL_COUNT)
 // ADC1 channel sampling time.      ADC1_CH0  ADC1_CH1 ADC1_CH2
@@ -43,7 +44,7 @@ extern "C"
 /* ADC interrupt flag bit mask definition. */
 #define ADC1_SA_DMA_IRQ_BIT (1ul << 0u)
 
-	extern void setup_adcs(void);
+	extern void adc_init(void);
 	extern void adc_main(void);
 	uint16_t adc_read(adc_dev *dev, uint8_t channel);
 

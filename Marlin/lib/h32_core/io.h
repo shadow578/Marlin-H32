@@ -1,9 +1,7 @@
-
 #ifndef _WIRISH_IO_H_
 #define _WIRISH_IO_H_
 
 #include "libmaple_types.h"
-#include "drivers/board/startup.h"
 
 typedef enum WiringPinMode
 {

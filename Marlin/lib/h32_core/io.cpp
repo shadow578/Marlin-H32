@@ -30,7 +30,8 @@
  */
 
 #include "io.h"
-#include "../board/startup.h"
+#include "drivers/board/board_gpio.h"
+#include "drivers/hdsc/common/hc32_ddl.h"
 
 uint32 digitalRead(uint8 pin)
 {

@@ -1,9 +1,9 @@
 #define _BOARD_GPIO_C_
 
-#include "startup.h"
+#include "board_gpio.h"
 #include "fastio.h"
 #include "HardwareSerial.h"
-#include "../Marlin/src/pins/hc32f46x/pins_Aquila_X2.h"
+#include "../inc/MarlinConfig.h"
 
 extern const cfg_pin_info PIN_MAP[BOARD_NR_GPIO_PINS] = {
 
@@ -100,21 +100,6 @@ extern const cfg_pin_info PIN_MAP[BOARD_NR_GPIO_PINS] = {
 /*  Basically everything that is defined having ADC */
 extern const uint8_t boardADCPins[BOARD_NR_ADC_PINS] = {
 	PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7, PB0, PB1, PC0, PC1, PC2, PC3, PC4, PC5};
-
-extern void setup_gpio(void)
-{
-	stc_port_init_t stcPortInit;
-	MEM_ZERO_STRUCT(stcPortInit);
-
-	PORT_DebugPortSetting(0x1C, Disable);
-
-	/*initiallize LED port*/
-	stcPortInit.enPinMode = Pin_Mode_Out;
-	stcPortInit.enExInt = Disable;
-	stcPortInit.enPullUp = Disable;
-	/* LED0 and LED1 Port/Pin initialization */
-	// PORT_InitMapp(LED, &stcPortInit);
-}
 
 #undef _BOARD_GPIO_C_
 /************end of file********************/

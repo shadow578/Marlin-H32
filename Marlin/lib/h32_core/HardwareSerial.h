@@ -2,7 +2,6 @@
 #ifndef _WIRISH_HARDWARESERIAL_H_
 #define _WIRISH_HARDWARESERIAL_H_
 
-#include "../board/startup.h"
 #include "libmaple_types.h"
 
 #include "Print.h"

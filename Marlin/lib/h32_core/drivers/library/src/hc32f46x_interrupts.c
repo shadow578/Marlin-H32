@@ -55,7 +55,6 @@
  ******************************************************************************/
 #include "hc32f46x_interrupts.h"
 #include "hc32f46x_utility.h"
-#include "board_tim0.h"
 
 #if (DDL_INTERRUPTS_ENABLE == DDL_ON)
 
@@ -64,7 +63,7 @@
  ** \addtogroup InterruptGroup
  ******************************************************************************/
 //@{
-// extern void SysTickIrq_Handler(void);
+extern void SysTickIrq_Handler(void);
 
 /*******************************************************************************
  * Local type definitions ('typedef')
