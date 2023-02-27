@@ -6,7 +6,7 @@ extern "C"
 {
 #endif
 
-#include "drivers/hdsc/common/hc32_ddl.h"
+#include "hdsc/common/hc32_ddl.h"
 #include "libmaple_types.h"
 #include "ring_buffer.h"
 
