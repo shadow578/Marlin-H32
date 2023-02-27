@@ -1,7 +1,7 @@
 #include "init.h"
 #include "systick.h"
-#include "../adc/adc.h"
-#include "../../hdsc/common/hc32_ddl.h"
+#include "../drivers/adc/adc.h"
+#include "../hdsc/common/hc32_ddl.h"
 
 uint32_t CPU_FREQ = 0;
 

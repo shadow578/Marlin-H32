@@ -1,5 +1,5 @@
 #include "adc.h"
-#include "../board/gpio.h"
+#include "../gpio/gpio.h"
 
 //
 // ADC1 device

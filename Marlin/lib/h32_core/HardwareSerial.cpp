@@ -2,7 +2,7 @@
 #include "HardwareSerial.h"
 #include "libmaple.h"
 #include "usart.h"
-#include "drivers/board/gpio.h"
+#include "drivers/gpio/gpio.h"
 
 HardwareSerial::HardwareSerial(usart_dev *usart_device,
 							   uint8 tx_pin,

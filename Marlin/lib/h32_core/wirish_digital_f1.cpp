@@ -1,6 +1,6 @@
 
 #include "io.h"
-#include "drivers/board/gpio.h"
+#include "drivers/gpio/gpio.h"
 
 void pinMode(uint8 pin, WiringPinMode mode)
 {

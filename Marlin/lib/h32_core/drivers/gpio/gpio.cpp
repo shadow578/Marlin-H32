@@ -1,6 +1,4 @@
 #include "gpio.h"
-// #include "fastio.h"
-// #include "HardwareSerial.h"
 
 extern const pin_info_t PIN_MAP[BOARD_NR_GPIO_PINS] = {
 	// PA

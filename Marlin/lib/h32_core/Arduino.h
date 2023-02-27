@@ -1,8 +1,8 @@
 #pragma once
 
 #include "wirish.h"
-#include "drivers/board/systick.h"
-#include "drivers/board/gpio.h"
+#include "drivers/systick/systick.h"
+#include "drivers/gpio/gpio.h"
 
 #ifdef __cplusplus
 extern "C"
