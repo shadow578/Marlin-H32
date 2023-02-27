@@ -1,4 +1,4 @@
-#include "board_init.h"
+#include "init.h"
 #include "systick.h"
 #include "../adc/adc.h"
 #include "../../hdsc/common/hc32_ddl.h"
@@ -41,7 +41,8 @@ inline void sysclock_init(void)
 
     // enable MPLL and wait until ready
     CLK_MpllCmd(Enable);
-    while (CLK_GetFlagStatus(ClkFlagMPLLRdy) != Set);
+    while (CLK_GetFlagStatus(ClkFlagMPLLRdy) != Set)
+        ;
 
     // switch the system clock to MPLL
     CLK_SetSysClkSource(CLKSysSrcMPLL);
@@ -52,7 +53,7 @@ inline void sysclock_init(void)
     CPU_FREQ = clkFreq.pclk1Freq;
 }
 
-inline void flash_init() 
+inline void flash_init()
 {
     // set flash latency and cache
     EFM_Unlock();
@@ -67,8 +68,8 @@ void board_init()
     SCB->CPACR |= 0x00F00000;
 #endif
     // setup VTO register
-    SCB->VTOR = ((uint32_t)APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk); 
-    
+    SCB->VTOR = ((uint32_t)APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk);
+
     // init system
     flash_init();
     sysclock_init();

@@ -10,12 +10,18 @@ extern "C" void SysTickIrq_Handler(void)
 
 void systick_init()
 {
-    stc_clk_freq_t stcClkFreq;
-    CLK_GetClockFreq(&stcClkFreq);
-    SysTick_Config(stcClkFreq.sysclkFreq / TICKS_PER_SECOND);
+    stc_clk_freq_t clkFreq;
+    CLK_GetClockFreq(&clkFreq);
+    SysTick_Config(clkFreq.sysclkFreq / TICKS_PER_SECOND);
 }
 
 uint32_t millis()
 {
     return uptime;
+}
+
+uint32_t micros()
+{
+    // TODO dummy
+    return uptime * 1000;
 }

@@ -1,5 +1,5 @@
 #include "../Arduino.h"
-#include "../drivers/board/board_init.h"
+#include "../drivers/board/init.h"
 
 int main(void)
 {
