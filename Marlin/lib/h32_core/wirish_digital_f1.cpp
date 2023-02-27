@@ -1,6 +1,6 @@
 
 #include "io.h"
-#include "drivers/board/board_gpio.h"
+#include "drivers/board/gpio.h"
 
 void pinMode(uint8 pin, WiringPinMode mode)
 {
@@ -41,5 +41,5 @@ void pinMode(uint8 pin, WiringPinMode mode)
 	default:
 		return;
 	}
-	PORT_InitMapp(pin, &stcPortInit);
+	PORT_InitGPIO(pin, &stcPortInit);
 }

@@ -28,9 +28,9 @@
  */
 #include "io.h"
 
-#define READ(IO) (PORT_GetBitMapp(IO) ? HIGH : LOW)
-#define WRITE(IO, V) (((V) > 0) ? PORT_SetBitsMapp(IO) : PORT_ResetBitsMapp(IO))
-#define TOGGLE(IO) (PORT_ToggleMapp(IO))
+#define READ(IO) (PORT_GetBitGPIO(IO) ? HIGH : LOW)
+#define WRITE(IO, V) (((V) > 0) ? PORT_SetBitsGPIO(IO) : PORT_ResetBitsGPIO(IO))
+#define TOGGLE(IO) (PORT_ToggleGPIO(IO))
 
 #define _GET_MODE(IO) gpio_get_mode(IO)
 #define _SET_MODE(IO, M) gpio_set_mode(IO, M)

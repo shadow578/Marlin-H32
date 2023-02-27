@@ -2,7 +2,7 @@
 #include "HardwareSerial.h"
 #include "libmaple.h"
 #include "usart.h"
-#include "drivers/board/board_gpio.h"
+#include "drivers/board/gpio.h"
 
 HardwareSerial::HardwareSerial(usart_dev *usart_device,
 							   uint8 tx_pin,
@@ -34,8 +34,8 @@ void HardwareSerial::begin(uint32 baud, uint8_t config)
 		return;
 	}
 	/* Initialize USART IO */
-	PORT_SetFuncMapp(this->tx_pin, Disable);
-	PORT_SetFuncMapp(this->rx_pin, Disable);
+	PORT_SetFuncGPIO(this->tx_pin, Disable);
+	PORT_SetFuncGPIO(this->rx_pin, Disable);
 	usart_init(this->usart_device);
 	usart_set_baud_rate(this->usart_device, baud);
 	usart_enable(this->usart_device);

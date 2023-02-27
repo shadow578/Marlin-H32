@@ -96,7 +96,7 @@ void attachInterrupt(uint8_t pin, voidFuncPtr handler, uint8_t irqNum, ExtIntTri
     stc_port_init_t portConf;
     MEM_ZERO_STRUCT(portConf);
     portConf.enExInt = Enable;
-    PORT_InitMapp(pin, &portConf);
+    PORT_InitGPIO(pin, &portConf);
 
     // register IRQ
     stc_irq_regi_conf_t irqReg = {

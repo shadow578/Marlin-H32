@@ -30,7 +30,7 @@
  */
 
 #include "io.h"
-#include "drivers/board/board_gpio.h"
+#include "drivers/board/gpio.h"
 #include "drivers/hdsc/common/hc32_ddl.h"
 
 uint32 digitalRead(uint8 pin)
@@ -39,7 +39,7 @@ uint32 digitalRead(uint8 pin)
 	{
 		return 0;
 	}
-	return PORT_GetBitMapp(pin);
+	return PORT_GetBitGPIO(pin);
 }
 
 void digitalWrite(uint8 pin, uint8 val)
@@ -50,11 +50,11 @@ void digitalWrite(uint8 pin, uint8 val)
 	}
 	if (val > 0)
 	{
-		PORT_SetBitsMapp(pin);
+		PORT_SetBitsGPIO(pin);
 	}
 	else
 	{
-		PORT_ResetBitsMapp(pin);
+		PORT_ResetBitsGPIO(pin);
 	}
 }
 

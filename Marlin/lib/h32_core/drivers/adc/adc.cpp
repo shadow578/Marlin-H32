@@ -1,5 +1,5 @@
 #include "adc.h"
-#include "../board/board_gpio.h"
+#include "../board/gpio.h"
 
 //
 // ADC1 device
@@ -155,7 +155,7 @@ void adc_setPinMode(uint8_t adcPin, en_pin_mode_t mode)
 		.enPinMode = mode,
 		.enPullUp = Disable,
 	};
-	PORT_InitMapp(pin, &portConf);
+	PORT_InitGPIO(pin, &portConf);
 }
 
 void adc_setChannelPinMode(const M4_ADC_TypeDef *ADCx, uint32_t channel, en_pin_mode_t mode)

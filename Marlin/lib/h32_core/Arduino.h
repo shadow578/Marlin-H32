@@ -2,7 +2,7 @@
 
 #include "wirish.h"
 #include "drivers/board/systick.h"
-#include "drivers/board/board_gpio.h"
+#include "drivers/board/gpio.h"
 
 #ifdef __cplusplus
 extern "C"
