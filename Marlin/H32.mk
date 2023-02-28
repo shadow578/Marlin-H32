@@ -28,7 +28,7 @@ BUILD_DIR_NAME = build
 C_FILES = $(call rwildcard,,*.c)
 CPP_FILES = $(call rwildcard,,*.cpp)
 ASM_FILES = $(call rwildcard,,*.S)
-LINKER_SCRIPT_FILE = $(realpath lib/h32_core/main/hc32f46x_flash_256k.ld)
+LINKER_SCRIPT_FILE = $(realpath lib/h32_core/ld/hc32f46x_flash_256k.ld)
 
 # library files (.a and .o)
 LIB_FILES = 
