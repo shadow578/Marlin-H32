@@ -1,20 +1,18 @@
-
-#ifndef _WIRISH_WIRISH_TIME_H_
-#define _WIRISH_WIRISH_TIME_H_
-
+#pragma once
 #include "libmaple_types.h"
+#include "hdsc/common/hc32_ddl.h"
 
-void delay(unsigned long ms);
-void delayMicroseconds(uint32 us);
+#define delay(ms) Ddl_Delay1ms(ms)
+#define delayMicroseconds(us) Ddl_Delay1us(us)
 
 #ifdef __cplusplus
 extern "C"
 {
-#endif // __cplusplus
+#endif
 
-    void yield(void);
+    static void __empty() {}
+    void yield() __attribute__((weak, alias("__empty")));
+
 #ifdef __cplusplus
 }
-#endif // __cplusplus
-
 #endif
