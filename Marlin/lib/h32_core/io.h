@@ -3,31 +3,35 @@
 
 #include "libmaple_types.h"
 
-typedef enum WiringPinMode
-{
-    OUTPUT,
-    OUTPUT_OPEN_DRAIN,
-    INPUT,
-    INPUT_ANALOG,
-    INPUT_PULLUP,
-    INPUT_PULLDOWN,
-    INPUT_FLOATING,
-    PWM,
-    PWM_OPEN_DRAIN,
-} WiringPinMode;
+//
+// pin modes
+//
+#define INPUT 0
+#define OUTPUT 1
+#define INPUT_PULLUP 2
+#define INPUT_FLOATING INPUT
+//#define INPUT_PULLDOWN INPUT
+#define INPUT_ANALOG 4
 
-void pinMode(uint8 pin, WiringPinMode mode);
+//
+// digitalWrite
+//
+#define HIGH 1
+#define LOW 0
 
-#define HIGH 0x1
-#define LOW 0x0
+//
+// public api
+//
+
+void pinMode(uint8 pin, uint8_t mode);
 
 void digitalWrite(uint8 pin, uint8 val);
 uint32 digitalRead(uint8 pin);
 
-void pwmWrite(uint8 pin, uint16 duty_cycle16);
-void analogWrite(uint8 pin, int duty_cycle8);
+void pwmWrite(uint8 pin, uint16 duty_cycle);
+void analogWrite(uint8 pin, int duty_cycle);
 uint16 analogRead(uint8 pin);
-void gpio_set_mode(uint8 pin, WiringPinMode mode);
-WiringPinMode gpio_get_mode(uint8 PinNum);
+void gpio_set_mode(uint8 pin, uint8_t mode);
+uint8_t gpio_get_mode(uint8 pin);
 
 #endif

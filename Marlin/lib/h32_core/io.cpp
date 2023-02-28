@@ -25,13 +25,9 @@
  * SOFTWARE.
  *****************************************************************************/
 
-/*
- * Arduino-compatible digital I/O implementation.
- */
-
 #include "io.h"
 #include "drivers/gpio/gpio.h"
-#include "hdsc/common/hc32_ddl.h"
+// #include "hdsc/common/hc32_ddl.h"
 
 uint32 digitalRead(uint8 pin)
 {
@@ -39,6 +35,7 @@ uint32 digitalRead(uint8 pin)
 	{
 		return 0;
 	}
+
 	return PORT_GetBitGPIO(pin);
 }
 
@@ -48,86 +45,94 @@ void digitalWrite(uint8 pin, uint8 val)
 	{
 		return;
 	}
-	if (val > 0)
+
+	switch (val)
 	{
+	case HIGH:
 		PORT_SetBitsGPIO(pin);
-	}
-	else
-	{
+		break;
+	case LOW:
+	default:
 		PORT_ResetBitsGPIO(pin);
+		break;
 	}
 }
 
 void pwmWrite(uint8 pin, uint16 duty_cycle)
 {
-	DDL_ASSERT(pin < BOARD_NR_GPIO_PINS);
-	if (pin >= BOARD_NR_GPIO_PINS)
-	{
-		return;
-	}
-	// timer_dev *dev = PIN_MAP[pin].timer_device;
-	// uint8 cc_channel = PIN_MAP[pin].timer_channel;
-	// DDL_ASSERT(dev && cc_channel);
-	// timer_set_compare(dev, cc_channel, duty_cycle);
+	// TODO stub
 }
 
-void analogWrite(uint8 pin, int duty_cycle8)
+void analogWrite(uint8 pin, int duty_cycle)
 {
-	pinMode(pin, PWM);
-	pwmWrite(pin, duty_cycle8 * 257); // 257 maps 255 to 65535 (i.e 255*257 = 65535)
+	// TODO stub
 }
 
 uint16 analogRead(uint8 pin)
 {
 	if (pin > BOARD_NR_GPIO_PINS)
-		return (0);
+	{
+		return 0;
+	}
+
+	// get adc device
 	adc_dev *dev = PIN_MAP[pin].adc_device;
 	if (dev == NULL)
 	{
 		return 0;
 	}
 
+	// read from adc
 	return adc_read(dev, PIN_MAP[pin].adc_channel);
 }
 
-void gpio_set_mode(uint8 pin, WiringPinMode mode)
+void pinMode(uint8 pin, uint8_t mode)
+{
+	gpio_set_mode(pin, mode);
+}
+
+void gpio_set_mode(uint8 pin, uint8_t mode)
 {
 	if (pin > BOARD_NR_GPIO_PINS)
+	{
 		return;
-	stc_port_init_t stcPortInit;
-	MEM_ZERO_STRUCT(stcPortInit);
+	}
+
+	// build pin configuration
+	stc_port_init_t pinConf;
+	MEM_ZERO_STRUCT(pinConf);
 	switch (mode)
 	{
 	case OUTPUT:
-		stcPortInit.enPinMode = Pin_Mode_Out;
-		stcPortInit.enExInt = Disable;
-		stcPortInit.enPullUp = Disable;
+		pinConf.enPinMode = Pin_Mode_Out;
+		pinConf.enExInt = Disable;
+		pinConf.enPullUp = Disable;
 		break;
 	case INPUT:
-	case INPUT_FLOATING:
-		stcPortInit.enPinMode = Pin_Mode_In;
-		stcPortInit.enExInt = Disable;
-		stcPortInit.enPullUp = Disable;
+		// case INPUT_FLOATING:
+		pinConf.enPinMode = Pin_Mode_In;
+		pinConf.enExInt = Disable;
+		pinConf.enPullUp = Disable;
 		break;
 	case INPUT_ANALOG:
-		stcPortInit.enPinMode = Pin_Mode_Ana;
-		stcPortInit.enExInt = Disable;
-		stcPortInit.enPullUp = Disable;
+		pinConf.enPinMode = Pin_Mode_Ana;
+		pinConf.enExInt = Disable;
+		pinConf.enPullUp = Disable;
 		break;
 	case INPUT_PULLUP:
-		stcPortInit.enPinMode = Pin_Mode_In;
-		stcPortInit.enExInt = Disable;
-		stcPortInit.enPullUp = Enable;
+		pinConf.enPinMode = Pin_Mode_In;
+		pinConf.enExInt = Disable;
+		pinConf.enPullUp = Enable;
 		break;
 	default:
 		return;
 	}
-	PORT_Init(PIN_MAP[pin].gpio_port, PIN_MAP[pin].gpio_pin, &stcPortInit);
+
+	PORT_InitGPIO(pin, &pinConf);
 }
 
-WiringPinMode gpio_get_mode(uint8 PinNum)
+uint8_t gpio_get_mode(uint8 pin)
 {
-	WiringPinMode crMode;
-	crMode = INPUT_ANALOG;
-	return (crMode);
+	// TODO stub implementation
+	return INPUT_FLOATING;
 }
