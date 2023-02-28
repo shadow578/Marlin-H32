@@ -48,14 +48,13 @@
 #include "pgmspace.h"
 
 #include "io.h"
-#include "bit_constants.h"
+#include "binary.h"
 #include "wirish_math.h"
 #include "wirish_time.h"
 #include "HardwareSerial.h"
 #include "wirish_types.h"
 #include "libmaple.h"
 #include <stdint.h>
-#include "WCharacter.h"
 
 typedef unsigned int word;
 // typedef uint16 word;// definition from Arduino website, now appears to be incorrect for 32 bit devices
