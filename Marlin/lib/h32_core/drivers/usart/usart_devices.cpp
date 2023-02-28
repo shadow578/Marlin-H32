@@ -1,80 +1,76 @@
 #include "usart.h"
 
-stc_usart_uart_init_t stcInitCfg = {
-    UsartIntClkCkNoOutput,
-    UsartClkDiv_1,
-    UsartDataBits8,
-    UsartDataLsbFirst,
-    UsartOneStopBit,
-    UsartParityNone,
-    UsartSamleBit8,
-    UsartStartBitFallEdge,
-    UsartRtsEnable,
-};
+// initial usart config
+stc_usart_uart_init_t usartConf = {
+    .enClkMode = UsartIntClkCkNoOutput,
+    .enClkDiv = UsartClkDiv_1,
+    .enDataLength = UsartDataBits8,
+    .enDirection = UsartDataLsbFirst,
+    .enStopBit = UsartOneStopBit,
+    .enParity = UsartParityNone,
+    .enSampleMode = UsartSamleBit8,
+    .enDetectMode = UsartStartBitFallEdge,
+    .enHwFlow = UsartRtsEnable};
 
-ring_buffer usart4_rb;
-ring_buffer usart4_wb;
-usart_dev usart4 = {
-    .regs = SCREEN_UART,
-    .rb = &usart4_rb,
-    .wb = &usart4_wb,
-    .max_baud = 2250000UL,
+//
+// USART1
+//
+ring_buffer usart1_rb;
+ring_buffer usart1_wb;
+usart_dev usart1 = {
+    .regs = M4_USART1,
+    .rb = &usart1_rb,
+    .wb = &usart1_wb,
     .rx_buf = {0},
     .tx_buf = {0},
-    .clk_id = SCREEN_CLK,
-    .pstcInitCfg = &stcInitCfg,
+    .clk_id = PWC_FCG1_PERIPH_USART1,
+    .pstcInitCfg = &usartConf,
     .RX_IRQ = Int002_IRQn,
     .TX_IRQ = Int003_IRQn,
     .RX_error_IRQ = Int020_IRQn,
     .TX_complete_IRQ = Int021_IRQn,
     .IRQ_priority = DDL_IRQ_PRIORITY_02,
 };
-/** USART4 device */
-usart_dev *USART4 = &usart4;
+usart_dev *USART1 = &usart1;
 
+//
+// USART2
+//
 ring_buffer usart2_rb;
 ring_buffer usart2_wb;
 usart_dev usart2 = {
-    .regs = PRINT_UART,
+    .regs = M4_USART2,
     .rb = &usart2_rb,
     .wb = &usart2_wb,
-    .max_baud = 2250000UL,
     .rx_buf = {0},
     .tx_buf = {0},
-    .clk_id = PRINT_CLK,
-    .pstcInitCfg = &stcInitCfg,
+    .clk_id = PWC_FCG1_PERIPH_USART2,
+    .pstcInitCfg = &usartConf,
     .RX_IRQ = Int004_IRQn,
     .TX_IRQ = Int005_IRQn,
     .RX_error_IRQ = Int022_IRQn,
     .TX_complete_IRQ = Int023_IRQn,
     .IRQ_priority = DDL_IRQ_PRIORITY_06,
 };
-/** USART2 device */
 usart_dev *USART2 = &usart2;
 
+//
+// USART3
+//
 ring_buffer usart3_rb;
 ring_buffer usart3_wb;
 usart_dev usart3 = {
     .regs = M4_USART3,
     .rb = &usart3_rb,
     .wb = &usart3_wb,
-    .max_baud = 2250000UL,
     .rx_buf = {0},
     .tx_buf = {0},
     .clk_id = PWC_FCG1_PERIPH_USART3,
-    .pstcInitCfg = &stcInitCfg,
+    .pstcInitCfg = &usartConf,
     .RX_IRQ = Int008_IRQn,
     .TX_IRQ = Int009_IRQn,
     .RX_error_IRQ = Int024_IRQn,
     .TX_complete_IRQ = Int025_IRQn,
     .IRQ_priority = DDL_IRQ_PRIORITY_05,
 };
-/** USART3 device */
 usart_dev *USART3 = &usart3;
-
-void usart_foreach(void (*fn)(usart_dev *))
-{
-    fn(USART2);
-    fn(USART3);
-    fn(USART4);
-}

@@ -53,5 +53,5 @@ struct MarlinSerial : public HardwareSerial
 
 typedef Serial1Class<MarlinSerial> MSerialT;
 
+extern MSerialT MSerial1;
 extern MSerialT MSerial2;
-extern MSerialT MSerial4;

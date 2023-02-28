@@ -1,4 +1,3 @@
-
 #include "HardwareSerial.h"
 #include "libmaple.h"
 #include "usart.h"
@@ -29,11 +28,7 @@ void HardwareSerial::begin(uint32 baud)
 
 void HardwareSerial::begin(uint32 baud, uint8_t config)
 {
-	if (baud > this->usart_device->max_baud)
-	{
-		return;
-	}
-	/* Initialize USART IO */
+	// init IO pins
 	PORT_SetFuncGPIO(this->tx_pin, Disable);
 	PORT_SetFuncGPIO(this->rx_pin, Disable);
 	usart_init(this->usart_device);
@@ -46,7 +41,7 @@ void HardwareSerial::end(void)
 	usart_disable(this->usart_device);
 }
 
-int  HardwareSerial::read(void)
+int HardwareSerial::read(void)
 {
 	if (usart_data_available(usart_device) > 0)
 	{
@@ -63,27 +58,24 @@ int HardwareSerial::available(void)
 	return usart_data_available(this->usart_device);
 }
 
-/* Roger Clark. Added function missing from LibMaple code */
-
-int  HardwareSerial::peek(void)
+int HardwareSerial::peek(void)
 {
 	return usart_peek(this->usart_device);
 }
 
-int  HardwareSerial::availableForWrite(void)
+int HardwareSerial::availableForWrite(void)
 {
 	return this->usart_device->wb->size - rb_full_count(this->usart_device->wb);
 }
 
-size_t  HardwareSerial::write(unsigned char ch)
+size_t HardwareSerial::write(unsigned char ch)
 {
 	usart_putc(this->usart_device, ch);
 	return 1;
 }
 
-/* edogaldo: Waits for the transmission of outgoing serial data to complete (Arduino 1.0 api specs) */
 void HardwareSerial::flush(void)
 {
 	while (!rb_is_empty(this->usart_device->wb))
-		; // wait for TX buffer empty
+		;
 }

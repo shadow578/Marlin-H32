@@ -1,9 +1,5 @@
-
-#ifndef _WIRISH_HARDWARESERIAL_H_
-#define _WIRISH_HARDWARESERIAL_H_
-
+#pragma once
 #include "libmaple_types.h"
-
 #include "Print.h"
 #include "Stream.h"
 
@@ -27,7 +23,6 @@ public:
                    uint8 tx_pin,
                    uint8 rx_pin);
 
-    /* Set up/tear down */
     void init(usart_dev *usart_device,
               uint8_t tx_pin,
               uint8_t rx_pin);
@@ -40,19 +35,13 @@ public:
     int availableForWrite(void);
     virtual void flush(void);
     size_t write(unsigned char ch);
-    // inline size_t write(unsigned long n) { return write((uint8_t)n); }
-    // inline size_t write(long n) { return write((uint8_t)n); }
-    // inline size_t write(unsigned int n) { return write((uint8_t)n); }
-    // inline size_t write(int n) { return write((uint8_t)n); }
 
-    /* Pin accessors */
     int txPin(void) { return this->tx_pin; }
     int rxPin(void) { return this->rx_pin; }
 
     operator bool() { return true; }
 
-    /* Escape hatch into libmaple */
-    /* FIXME [0.0.13] documentation */
+    // Escape hatch into libmaple
     struct usart_dev *c_dev(void) { return this->usart_device; }
 
 private:
@@ -109,4 +98,3 @@ private:
     size_t printNumber(unsigned long long, uint8);
     size_t printFloat(double, uint8);
 };
-#endif

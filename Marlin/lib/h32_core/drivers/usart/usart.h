@@ -1,46 +1,32 @@
-#ifndef _LIBMAPLE_USART_H_
-#define _LIBMAPLE_USART_H_
+#pragma once
+#include "../../hdsc/common/hc32_ddl.h"
+#include "libmaple_types.h"
+#include "ring_buffer.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#include "hdsc/common/hc32_ddl.h"
-#include "libmaple_types.h"
-#include "ring_buffer.h"
+#ifndef USART_RXTX_BUF_SIZE
+#define USART_RXTX_BUF_SIZE 64
+#endif
 
-#define USART_RX_BUF_SIZE 64
-#define USART_TX_BUF_SIZE 64
+#ifndef USART_RX_BUF_SIZE
+#define USART_RX_BUF_SIZE USART_RXTX_BUF_SIZE
+#endif
 
-#define PRINT_UART M4_USART2
-#define SCREEN_UART M4_USART1
-
-#define PRINT_CLK PWC_FCG1_PERIPH_USART2
-#define SCREEN_CLK PWC_FCG1_PERIPH_USART1
-
-#define PRINT_RX_IRQ INT_USART2_RI
-#define PRINT_RXERR_IRQ INT_USART2_EI
-#define PRINT_TX_IRQ INT_USART2_TI
-#define PRINT_TCI_IRQ INT_USART2_TCI
-
-#define SCREEN_RX_IRQ INT_USART1_RI
-#define SCREEN_RXERR_IRQ INT_USART1_EI
-#define SCREEN_TX_IRQ INT_USART1_TI
-#define SCREEN_TCI_IRQ INT_USART1_TCI
+#ifndef USART_TX_BUF_SIZE
+#define USART_TX_BUF_SIZE USART_RXTX_BUF_SIZE
+#endif
 
     typedef struct usart_dev
     {
-        M4_USART_TypeDef *regs;          /**< Register map */
-        ring_buffer *rb;                 /**< RX ring buffer */
-        ring_buffer *wb;                 /**< TX ring buffer */
-        uint32 max_baud;                 /**< @brief Deprecated.
-                                          * Maximum baud rate. */
-        uint8 rx_buf[USART_RX_BUF_SIZE]; /**< @brief Deprecated.
-                                          * Actual RX buffer used by rb.
-                                          * This field will be removed in
-                                          * a future release. */
-        uint8 tx_buf[USART_TX_BUF_SIZE]; /**< Actual TX buffer used by wb */
+        M4_USART_TypeDef *regs;
+        ring_buffer *rb;
+        ring_buffer *wb;
+        uint8 rx_buf[USART_RX_BUF_SIZE];
+        uint8 tx_buf[USART_TX_BUF_SIZE];
         uint32 clk_id;
         stc_usart_uart_init_t *pstcInitCfg;
         IRQn_Type RX_IRQ;
@@ -50,26 +36,31 @@ extern "C"
         uint32_t IRQ_priority;
     } usart_dev;
 
-    struct usart_dev;
-    extern usart_dev usart4;
-    extern usart_dev usart3;
+    // struct usart_dev;
+
+    // USART1
+    extern usart_dev usart1;
+    extern struct usart_dev *USART1;
+    extern ring_buffer usart1_rb;
+    extern ring_buffer usart1_wb;
+
+    // USART2
     extern usart_dev usart2;
     extern struct usart_dev *USART2;
-    extern struct usart_dev *USART3;
-    extern struct usart_dev *USART4;
-
     extern ring_buffer usart2_rb;
     extern ring_buffer usart2_wb;
+
+    // USART3
+    extern usart_dev usart3;
+    extern struct usart_dev *USART3;
     extern ring_buffer usart3_rb;
     extern ring_buffer usart3_wb;
-    extern ring_buffer usart4_rb;
-    extern ring_buffer usart4_wb;
 
+    // public api
     void usart_init(usart_dev *dev);
     void usart_set_baud_rate(usart_dev *dev, uint32 baud);
     void usart_enable(usart_dev *dev);
     void usart_disable(usart_dev *dev);
-    void usart_foreach(void (*fn)(usart_dev *dev));
     uint32 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len);
     uint32 usart_rx(usart_dev *dev, uint8 *buf, uint32 len);
     void usart_putudec(usart_dev *dev, uint32 val);
@@ -79,7 +70,9 @@ extern "C"
      */
     static inline void usart_disable_all(void)
     {
-        usart_foreach(usart_disable);
+        usart_disable(USART1);
+        usart_disable(USART2);
+        usart_disable(USART3);
     }
 
     /**
@@ -224,6 +217,4 @@ extern "C"
 
 #ifdef __cplusplus
 } // extern "C"
-#endif
-
 #endif
