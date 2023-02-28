@@ -31,17 +31,13 @@
  * This implementation is not thread-safe.  In particular, none of
  * these functions is guaranteed re-entrant.
  */
-
-#ifndef _LIBMAPLE_RING_BUFFER_H_
-#define _LIBMAPLE_RING_BUFFER_H_
+#pragma once
+#include "libmaple_types.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#include "libmaple_types.h"
-
     /**
      * Ring buffer type.
      *
@@ -216,7 +212,5 @@ extern "C"
     }
 
 #ifdef __cplusplus
-} // extern "C"
-#endif
-
+}
 #endif

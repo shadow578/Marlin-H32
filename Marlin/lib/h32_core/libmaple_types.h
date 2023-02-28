@@ -1,7 +1,4 @@
-
-#ifndef _LIBMAPLE_LIBMAPLE_TYPES_H_
-#define _LIBMAPLE_LIBMAPLE_TYPES_H_
-
+#pragma once
 #include <stdint.h>
 #include "wirish_types.h"
 
@@ -24,7 +21,6 @@ extern "C"
     typedef void (*voidArgumentFuncPtr)(void *);
 
 #define __IO volatile
-#define __attr_flash __attribute__((section(".USER_FLASH")))
 #define __packed __attribute__((__packed__))
 #define __deprecated __attribute__((__deprecated__))
 #define __weak __attribute__((weak))
@@ -45,6 +41,4 @@ extern "C"
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

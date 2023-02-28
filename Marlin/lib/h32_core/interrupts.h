@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 
 #define AVAILABLE_IRQn_COUNT 10
@@ -13,6 +14,15 @@ typedef void (*isr_handler_t)(void);
 //
 // Public API
 //
+static inline void interrupts()
+{
+    asm volatile("cpsie i");
+}
+
+static inline void noInterrupts()
+{
+    asm volatile("cpsid i");
+}
 
 /**
  * attach a external interrupt to the pin. max. 10 are available
