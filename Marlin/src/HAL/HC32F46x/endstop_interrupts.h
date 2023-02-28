@@ -47,15 +47,4 @@
  * (Located in Marlin/buildroot/share/pin_interrupt_test/pin_interrupt_test.ino)
  */
 
-typedef enum ExtIntTriggerMode
-{
-    RISING,  /**< To trigger an interrupt when the pin transitions LOW
-                  to HIGH */
-    FALLING, /**< To trigger an interrupt when the pin transitions
-                  HIGH to LOW */
-    CHANGE   /**< To trigger an interrupt when the pin transitions from
-                  LOW to HIGH or HIGH to LOW (i.e., when the pin
-                  changes). */
-} ExtIntTriggerMode;
-
 void setup_endstop_interrupts();

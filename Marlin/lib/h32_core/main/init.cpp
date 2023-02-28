@@ -1,6 +1,7 @@
 #include "init.h"
 #include "systick.h"
 #include "../drivers/adc/adc.h"
+#include "../interrupts.h"
 #include "../hdsc/common/hc32_ddl.h"
 
 uint32_t CPU_FREQ = 0;
@@ -74,5 +75,6 @@ void board_init()
     flash_init();
     sysclock_init();
     systick_init();
+    interrupts_init();
     adc_init();
 }

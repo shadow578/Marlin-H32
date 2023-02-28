@@ -1,6 +1,7 @@
 #pragma once
 
 #include "wirish.h"
+#include "interrupts.h"
 #include "drivers/systick/systick.h"
 #include "drivers/gpio/gpio.h"
 
@@ -35,8 +36,6 @@ extern "C"
     extern void loop();
 
     //TODO: int map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-    //TODO: void attachInterrupt(uint32_t pin, void (*callback)(), uint32_t mode);
-    //TODO: void detachInterrupt(uint32_t pin);
 
 #ifdef __cplusplus
 }
