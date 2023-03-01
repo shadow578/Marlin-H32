@@ -2043,7 +2043,18 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
         #if HAS_HOTEND || HAS_HEATED_BED
           case TEMP_PID:
             if (draw)
+            {
+              #if (ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED)) && ENABLED(MPCTEMP)
+              // PID and MPC
+              Draw_Menu_Item(row, ICON_Step, F("PID+MPC"), nullptr, true);
+              #elif (ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED)) && !ENABLED(MPCTEMP)
+              // only PID
               Draw_Menu_Item(row, ICON_Step, F("PID"), nullptr, true);
+              #else
+              // only MPC
+              Draw_Menu_Item(row, ICON_Step, F("MPC"), nullptr, true);
+              #endif
+            }
             else
               Draw_Menu(PID);
             break;
@@ -2059,16 +2070,19 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
       }
       break;
 
-    #if HAS_HOTEND || HAS_HEATED_BED
+    #if ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED) || ENABLED(MPCTEMP) 
       case PID:
 
         #define PID_BACK 0
-        #define PID_HOTEND (PID_BACK + ENABLED(HAS_HOTEND))
-        #define PID_BED (PID_HOTEND + ENABLED(HAS_HEATED_BED))
+        #define PID_HOTEND (PID_BACK + ENABLED(PIDTEMP))
+        #define MPC_HOTEND (PID_HOTEND + ENABLED(MPCTEMP))
+        #define PID_BED (MPC_HOTEND + ENABLED(PIDTEMPBED))
         #define PID_CYCLES (PID_BED + 1)
         #define PID_TOTAL PID_CYCLES
 
+        #if ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED)
         static uint8_t PID_cycles = 5;
+        #endif
 
         switch (item) {
           case PID_BACK:
@@ -2085,6 +2099,14 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
                 Draw_Menu(HotendPID);
               break;
           #endif
+          #if ENABLED(MPCTEMP)
+            case MPC_HOTEND:
+              if (draw)
+                Draw_Menu_Item(row, ICON_HotendTemp, F("Hotend"), nullptr, true);
+              else
+                Draw_Menu(HotendMPC);
+              break;
+          #endif
           #if ENABLED(PIDTEMPBED)
             case PID_BED:
               if (draw)
@@ -2093,6 +2115,7 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
                 Draw_Menu(BedPID);
               break;
           #endif
+          #if ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED)
           case PID_CYCLES:
             if (draw) {
               Draw_Menu_Item(row, ICON_FanSpeed, F("Cycles"));
@@ -2101,9 +2124,10 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
             else
               Modify_Value(PID_cycles, 3, 50, 1);
             break;
+          #endif
         }
         break;
-    #endif // HAS_HOTEND || HAS_HEATED_BED
+    #endif
 
     #if ENABLED(PIDTEMP)
       case HotendPID:
@@ -2170,7 +2194,81 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
             break;
         }
         break;
-    #endif // HAS_HOTEND
+    #endif
+
+    #if ENABLED(MPCTEMP)
+      case HotendMPC:
+        #define HOTENDMPC_BACK 0
+        #define HOTENDMPC_TUNE (HOTENDMPC_BACK + 1)
+        #define HOTENDMPC_HEATER_POWER (HOTENDMPC_TUNE + 1)
+        #define HOTENDMPC_BLOCK_HEAT_CAPACITY (HOTENDMPC_HEATER_POWER + 1)
+        #define HOTENDMPC_SENSOR_RESPONSIVENESS (HOTENDMPC_BLOCK_HEAT_CAPACITY + 1)
+        #define HOTENDMPC_AMBIENT_XFER_COEFF (HOTENDMPC_SENSOR_RESPONSIVENESS + 1)
+        #define HOTENDMPC_FILAMENT_HEAT_CAPACITY (HOTENDMPC_AMBIENT_XFER_COEFF + 1)
+        #define HOTENDMPC_TOTAL HOTENDMPC_FILAMENT_HEAT_CAPACITY
+
+        //TODO: labels are too long to render...
+        switch(item) {
+          case HOTENDMPC_BACK:
+            if (draw)
+              Draw_Menu_Item(row, ICON_Back, F("Back"));
+            else
+              Draw_Menu(PID, MPC_HOTEND);
+            break;
+          case HOTENDMPC_TUNE:
+            if (draw)
+              Draw_Menu_Item(row, ICON_HotendTemp, F("Autotune"));
+            else {
+              Popup_Handler(MPCWait);
+              strcpy_P(cmd, PSTR("M306 T"));
+              gcode.process_subcommands_now(cmd);
+              planner.synchronize();
+              Redraw_Menu();
+            }
+            break;
+          case HOTENDMPC_HEATER_POWER:
+            if (draw) {
+              Draw_Menu_Item(row, ICON_Version, F("Heater Power"));
+              Draw_Float(thermalManager.temp_hotend[0].mpc.heater_power, row, false, 1);
+            }
+            else
+              Modify_Value(thermalManager.temp_hotend[0].mpc.heater_power, 1, 100, 1);
+            break;          
+          case HOTENDMPC_BLOCK_HEAT_CAPACITY:
+            if (draw) {
+              Draw_Menu_Item(row, ICON_Version, F("Block Heat Capacity"));
+              Draw_Float(thermalManager.temp_hotend[0].mpc.block_heat_capacity, row, false, 100);
+            }
+            else
+              Modify_Value(thermalManager.temp_hotend[0].mpc.block_heat_capacity, 1, 100, 100);
+            break;
+          case HOTENDMPC_SENSOR_RESPONSIVENESS:
+            if (draw) {
+              Draw_Menu_Item(row, ICON_Version, F("Sensor Responsiveness"));
+              Draw_Float(thermalManager.temp_hotend[0].mpc.sensor_responsiveness, row, false, 100);
+            }
+            else
+              Modify_Value(thermalManager.temp_hotend[0].mpc.sensor_responsiveness, 1, 100, 100);
+            break;
+          case HOTENDMPC_AMBIENT_XFER_COEFF:
+            if (draw) {
+              Draw_Menu_Item(row, ICON_Version, F("Ambient Heat Transfer Coefficient"));
+              Draw_Float(thermalManager.temp_hotend[0].mpc.ambient_xfer_coeff_fan0, row, false, 100);
+            }
+            else
+              Modify_Value(thermalManager.temp_hotend[0].mpc.ambient_xfer_coeff_fan0, 1, 100, 100);
+            break;
+          case HOTENDMPC_FILAMENT_HEAT_CAPACITY:
+            if (draw) {
+              Draw_Menu_Item(row, ICON_Version, F("Filament Heat Capacity"));
+              Draw_Float(thermalManager.temp_hotend[0].mpc.filament_heat_capacity_permm, row, false, 100);
+            }
+            else
+              Modify_Value(thermalManager.temp_hotend[0].mpc.filament_heat_capacity_permm, 1, 100, 100);
+            break;
+        }
+      break;
+    #endif
 
     #if ENABLED(PIDTEMPBED)
       case BedPID:
@@ -2238,7 +2336,7 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
             break;
         }
         break;
-    #endif // HAS_HEATED_BED
+    #endif
 
     #if HAS_PREHEAT
       #define _PREHEAT_SUBMENU_CASE(N) case Preheat##N: preheat_submenu((N) - 1, item, TEMP_PREHEAT##N); break;
@@ -3964,6 +4062,9 @@ FSTR_P CrealityDWINClass::Get_Menu_Title(uint8_t menu) {
     #if ENABLED(PIDTEMP)
       case HotendPID:       return F("Hotend PID Settings");
     #endif
+    #if ENABLED(MPCTEMP)
+      case HotendMPC:       return F("Hotend MPC Settings");
+    #endif
     #if ENABLED(PIDTEMPBED)
       case BedPID:          return F("Bed PID Settings");
     #endif
@@ -4034,6 +4135,9 @@ uint8_t CrealityDWINClass::Get_Menu_Size(uint8_t menu) {
     #endif
     #if ENABLED(PIDTEMP)
       case HotendPID:       return HOTENDPID_TOTAL;
+    #endif
+    #if ENABLED(MPCTEMP)
+      case HotendMPC:      return HOTENDMPC_TOTAL;
     #endif
     #if ENABLED(PIDTEMPBED)
       case BedPID:          return BEDPID_TOTAL;
@@ -4107,6 +4211,7 @@ void CrealityDWINClass::Popup_Handler(PopupID popupid, bool option/*=false*/) {
     case TempWarn:      Draw_Popup(option ? F("Nozzle temp too low!") : F("Nozzle temp too high!"), F(""), F(""), Wait, option ? ICON_TempTooLow : ICON_TempTooHigh); break;
     case Runout:        Draw_Popup(F("Filament Runout"), F(""), F(""), Wait, ICON_BLTouch); break;
     case PIDWait:       Draw_Popup(F("PID Autotune"), F("in process"), F("Please wait until done."), Wait, ICON_BLTouch); break;
+    case MPCWait:       Draw_Popup(F("MPC Autotune"), F("in process"), F("Please wait until done."), Wait, ICON_BLTouch); break;
     case Resuming:      Draw_Popup(F("Resuming Print"), F("Please wait until done."), F(""), Wait, ICON_BLTouch); break;
     case Custom:        Draw_Popup(F("Running Custom GCode"), F("Please wait until done."), F(""), Wait, ICON_BLTouch); break;
     default: break;
