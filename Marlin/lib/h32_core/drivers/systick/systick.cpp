@@ -22,6 +22,7 @@ uint32_t millis()
 
 uint32_t micros()
 {
-    // TODO dummy
+    //TODO: stub implementation
+    DDL_ASSERT(0);
     return uptime * 1000;
 }
