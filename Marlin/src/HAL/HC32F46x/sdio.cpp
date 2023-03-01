@@ -11,6 +11,7 @@
 #define WITH_RETRY(retries, fn)                     \
 	for (int retry = 0; retry < (retries); retry++) \
 	{                                               \
+		MarlinHAL::watchdog_refresh();              \
 		fn                                          \
 	}
 
@@ -101,7 +102,7 @@ uint32_t SDIO_GetCardSize()
 	// TODO HC32F46x: untested
 	// SDCARD_GetCardCSD(&cardHandle);
 	return cardHandle.stcSdCardInfo.u32BlockNbr * cardHandle.stcSdCardInfo.u32BlockSize;
-	return cardHandle.stcSdCardInfo.u32LogBlockNbr * cardHandle.stcSdCardInfo.u32LogBlockSize;
+	// return cardHandle.stcSdCardInfo.u32LogBlockNbr * cardHandle.stcSdCardInfo.u32LogBlockSize;
 }
 
 #endif // TARGET_HC32F46x
