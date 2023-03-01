@@ -4130,7 +4130,7 @@ uint8_t CrealityDWINClass::Get_Menu_Size(uint8_t menu) {
     #endif
     case Control:           return CONTROL_TOTAL;
     case TempMenu:          return TEMP_TOTAL;
-    #if HAS_HOTEND || HAS_HEATED_BED
+    #if ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED) || ENABLED(MPCTEMP)
       case PID:             return PID_TOTAL;
     #endif
     #if ENABLED(PIDTEMP)
