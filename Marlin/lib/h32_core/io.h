@@ -10,7 +10,7 @@
 #define OUTPUT 1
 #define INPUT_PULLUP 2
 #define INPUT_FLOATING INPUT
-//#define INPUT_PULLDOWN INPUT
+#define INPUT_PULLDOWN INPUT
 #define INPUT_ANALOG 4
 
 //
