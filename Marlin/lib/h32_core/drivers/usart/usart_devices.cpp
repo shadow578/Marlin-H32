@@ -12,17 +12,19 @@ stc_usart_uart_init_t usartConf = {
     .enDetectMode = UsartStartBitFallEdge,
     .enHwFlow = UsartRtsEnable};
 
+// rx / tx buffer shorthand
+#define CREATE_RX_BUFFER(name) DEFINE_RING_BUFFER(, name, USART_RX_BUF_SIZE)
+#define CREATE_TX_BUFFER(name) DEFINE_RING_BUFFER(, name, USART_TX_BUF_SIZE)
+
 //
 // USART1
 //
-ring_buffer usart1_rb;
-ring_buffer usart1_wb;
+CREATE_RX_BUFFER(usart1_rb)
+CREATE_TX_BUFFER(usart1_wb)
 usart_dev usart1 = {
     .regs = M4_USART1,
     .rb = &usart1_rb,
     .wb = &usart1_wb,
-    .rx_buf = {0},
-    .tx_buf = {0},
     .clk_id = PWC_FCG1_PERIPH_USART1,
     .pstcInitCfg = &usartConf,
     .RX_IRQ = Int002_IRQn,
@@ -36,14 +38,12 @@ usart_dev *USART1 = &usart1;
 //
 // USART2
 //
-ring_buffer usart2_rb;
-ring_buffer usart2_wb;
+CREATE_RX_BUFFER(usart2_rb)
+CREATE_TX_BUFFER(usart2_wb)
 usart_dev usart2 = {
     .regs = M4_USART2,
     .rb = &usart2_rb,
     .wb = &usart2_wb,
-    .rx_buf = {0},
-    .tx_buf = {0},
     .clk_id = PWC_FCG1_PERIPH_USART2,
     .pstcInitCfg = &usartConf,
     .RX_IRQ = Int004_IRQn,
@@ -57,14 +57,12 @@ usart_dev *USART2 = &usart2;
 //
 // USART3
 //
-ring_buffer usart3_rb;
-ring_buffer usart3_wb;
+CREATE_RX_BUFFER(usart3_rb)
+CREATE_TX_BUFFER(usart3_wb)
 usart_dev usart3 = {
     .regs = M4_USART3,
     .rb = &usart3_rb,
     .wb = &usart3_wb,
-    .rx_buf = {0},
-    .tx_buf = {0},
     .clk_id = PWC_FCG1_PERIPH_USART3,
     .pstcInitCfg = &usartConf,
     .RX_IRQ = Int008_IRQn,

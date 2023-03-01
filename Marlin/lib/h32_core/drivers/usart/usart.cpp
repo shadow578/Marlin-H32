@@ -6,7 +6,7 @@
 //
 void Usart1RxIrqCallback(void)
 {
-	usart_rx_irq(&usart1_rb, M4_USART1);
+	usart_rx_irq(USART1);
 }
 
 void Usart1ErrIrqCallback(void)
@@ -29,7 +29,7 @@ void Usart1ErrIrqCallback(void)
 
 void Usart1TxIrqCallback(void)
 {
-	usart_tx_irq(&usart1_wb, M4_USART1);
+	usart_tx_irq(USART1);
 }
 
 void Usart1TxCmpltIrqCallback(void)
@@ -43,7 +43,7 @@ void Usart1TxCmpltIrqCallback(void)
 //
 void Usart2RxIrqCallback(void)
 {
-	usart_rx_irq(&usart2_rb, M4_USART2);
+	usart_rx_irq(USART2);
 }
 
 void Usart2ErrIrqCallback(void)
@@ -66,7 +66,7 @@ void Usart2ErrIrqCallback(void)
 
 void Usart2TxIrqCallback(void)
 {
-	usart_tx_irq(&usart2_wb, M4_USART2);
+	usart_tx_irq(USART2);
 }
 
 void Usart2TxCmpltIrqCallback(void)
@@ -80,7 +80,7 @@ void Usart2TxCmpltIrqCallback(void)
 //
 void Usart3RxIrqCallback(void)
 {
-	usart_rx_irq(&usart3_rb, M4_USART3);
+	usart_rx_irq(USART3);
 }
 
 void Usart3ErrIrqCallback(void)
@@ -103,7 +103,7 @@ void Usart3ErrIrqCallback(void)
 
 void Usart3TxIrqCallback(void)
 {
-	usart_tx_irq(&usart3_wb, M4_USART3);
+	usart_tx_irq(USART3);
 }
 
 void Usart3TxCmpltIrqCallback(void)
@@ -117,9 +117,9 @@ void Usart3TxCmpltIrqCallback(void)
 //
 void usart_init(usart_dev *dev)
 {
-	// initialize ring buffers
-	rb_init(dev->rb, USART_RX_BUF_SIZE, dev->rx_buf);
-	rb_init(dev->wb, USART_TX_BUF_SIZE, dev->tx_buf);
+	// clear ring buffers
+	dev->rb->clear();
+	dev->wb->clear();
 
 	// enable clock
 	PWC_Fcg1PeriphClockCmd(dev->clk_id, Enable);
@@ -233,7 +233,7 @@ void usart_enable(usart_dev *dev)
 void usart_disable(usart_dev *dev)
 {
 	// wait until ty buffer is empty
-	while (!rb_is_empty(dev->wb))
+	while (!dev->wb->isEmpty())
 		;
 
 	// deinitialize
@@ -248,7 +248,7 @@ uint32 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len)
 {
 	uint32 sentBytes = 0;
 	uint32 errors = 0;
-	while (!rb_is_empty(dev->wb))
+	while (!dev->wb->isEmpty())
 	{
 		if (++errors > 500)
 		{
@@ -264,7 +264,7 @@ uint32 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len)
 			break;
 		}
 
-		if (rb_safe_insert(dev->wb, buf[sentBytes]))
+		if (dev->wb->push(buf[sentBytes]))
 		{
 			sentBytes++;
 		}
@@ -274,7 +274,7 @@ uint32 usart_tx(usart_dev *dev, const uint8 *buf, uint32 len)
 		}
 	}
 
-	if (!rb_is_empty(dev->wb))
+	if (!dev->wb->isEmpty())
 	{
 		USART_FuncCmd(dev->regs, UsartTxAndTxEmptyInt, Enable);
 	}

@@ -65,7 +65,7 @@ int HardwareSerial::peek(void)
 
 int HardwareSerial::availableForWrite(void)
 {
-	return this->usart_device->wb->size - rb_full_count(this->usart_device->wb);
+	return this->usart_device->wb->capacity() - this->usart_device->wb->count();
 }
 
 size_t HardwareSerial::write(unsigned char ch)
@@ -76,6 +76,6 @@ size_t HardwareSerial::write(unsigned char ch)
 
 void HardwareSerial::flush(void)
 {
-	while (!rb_is_empty(this->usart_device->wb))
+	while (!this->usart_device->wb->isEmpty())
 		;
 }
