@@ -1,6 +1,7 @@
 
 #include "../../hdsc/common/hc32_ddl.h"
 #include "../adc/adc.h"
+#include "../../hdsc/addon/addon_gpio.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -157,6 +158,16 @@ extern "C"
 		}
 
 		return PORT_Init(PIN_MAP[pin].gpio_port, PIN_MAP[pin].gpio_pin, portConf);
+	}
+
+	extern inline en_result_t PORT_GetConfigGPIO(uint8_t pin, stc_port_init_t *portConf)
+	{
+		if (pin > BOARD_NR_GPIO_PINS)
+		{
+			return Error;
+		}
+
+		return PORT_GetConfig(PIN_MAP[pin].gpio_port, PIN_MAP[pin].gpio_pin, portConf);
 	}
 
 	extern inline en_result_t PORT_ToggleGPIO(uint8_t pin)

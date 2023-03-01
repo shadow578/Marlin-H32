@@ -133,6 +133,23 @@ void gpio_set_mode(uint8 pin, uint8_t mode)
 
 uint8_t gpio_get_mode(uint8 pin)
 {
-	// TODO stub implementation
-	return INPUT_FLOATING;
+	if (pin > BOARD_NR_GPIO_PINS)
+	{
+		return INPUT_FLOATING;
+	}
+
+	// get pin configuration
+	stc_port_init_t pinConf;
+	PORT_GetConfigGPIO(pin, &pinConf);
+	switch (pinConf.enPinMode)
+	{
+	case Pin_Mode_Out:
+		return OUTPUT;
+	case Pin_Mode_In:
+		return (pinConf.enPullUp == Enable) ? INPUT_PULLUP : INPUT;
+	case Pin_Mode_Ana:
+		return INPUT_ANALOG;
+	default:
+		return INPUT_FLOATING;
+	}
 }
