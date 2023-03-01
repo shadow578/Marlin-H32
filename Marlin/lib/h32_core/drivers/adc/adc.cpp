@@ -222,26 +222,35 @@ void adc_triggerConfig(adc_dev *dev, uint32_t fcg0Periph)
 void adc_dmaInitConfig(adc_dev *dev)
 {
 	// setup dma config
-	stc_dma_config_t dmaConf;
-	dmaConf.u16BlockSize = ADC1_CH_COUNT;
-	dmaConf.u16TransferCnt = 0u;
-	dmaConf.u32SrcAddr = (uint32_t)(&dev->regs->DR0);
-	dmaConf.u32DesAddr = (uint32_t)(&dev->HAL_adc_results[0]);
-	dmaConf.u16DesRptSize = ADC1_CH_COUNT;
-	dmaConf.u16SrcRptSize = ADC1_CH_COUNT;
-	dmaConf.u32DmaLlp = 0u;
-	dmaConf.stcSrcNseqCfg.u16Cnt = 0u;
-	dmaConf.stcSrcNseqCfg.u32Offset = 0u;
-	dmaConf.stcDesNseqCfg.u16Cnt = 0u;
-	dmaConf.stcDesNseqCfg.u32Offset = 0u;
-	dmaConf.stcDmaChCfg.enSrcInc = AddressIncrease;
-	dmaConf.stcDmaChCfg.enDesInc = AddressIncrease;
-	dmaConf.stcDmaChCfg.enSrcRptEn = Enable;
-	dmaConf.stcDmaChCfg.enDesRptEn = Enable;
-	dmaConf.stcDmaChCfg.enSrcNseqEn = Disable;
-	dmaConf.stcDmaChCfg.enDesNseqEn = Disable;
-	dmaConf.stcDmaChCfg.enTrnWidth = Dma16Bit;
-	dmaConf.stcDmaChCfg.enLlpEn = Disable;
+	stc_dma_config_t dmaConf = {
+		.u16BlockSize = ADC1_CH_COUNT,
+		.u16TransferCnt = 0u,
+		.u32SrcAddr = (uint32_t)(&dev->regs->DR0),
+		.u32DesAddr = (uint32_t)(&dev->HAL_adc_results[0]),
+		.u16SrcRptSize = ADC1_CH_COUNT,
+		.u16DesRptSize = ADC1_CH_COUNT,
+		.u32DmaLlp = 0u,
+		.stcSrcNseqCfg = {
+			.u32Offset = 0u,
+			.u16Cnt = 0u,
+		},
+		.stcDesNseqCfg = {
+			.u32Offset = 0u,
+			.u16Cnt = 0u,
+		},
+		.stcDmaChCfg = {
+			.enSrcInc = AddressIncrease,
+			.enDesInc = AddressIncrease,
+			.enSrcRptEn = Enable,
+			.enDesRptEn = Enable,
+			.enSrcNseqEn = Disable,
+			.enDesNseqEn = Disable,
+			.enTrnWidth = Dma16Bit,
+			.enLlpEn = Disable,
+			.enLlpMd = LlpWaitNextReq,
+			.enIntEn = Disable,
+		},
+	};
 
 	// enable DMA interrupt
 	dmaConf.stcDmaChCfg.enIntEn = Enable;
@@ -287,7 +296,7 @@ void adc_dmaRegisterIRQ(stc_irq_regi_conf_t *pstcCfg, uint32_t priority)
 }
 
 /**
- * ADC DMA IRQ handler 
+ * ADC DMA IRQ handler
  */
 void Dma1Btc3_IrqHandler(void)
 {

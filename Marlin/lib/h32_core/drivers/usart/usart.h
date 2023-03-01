@@ -183,7 +183,7 @@ extern "C"
     static inline void usart_tx_irq(usart_dev *dev)
     {
         uint8_t ch;
-        if (dev->rb->pop(ch))
+        if (dev->wb->pop(ch))
         {
             usart_tx_irq_hook(ch, usart_dev_to_channel(dev->regs));
             USART_SendData(dev->regs, ch);
