@@ -87,7 +87,7 @@ extern "C"
  ** \note DDL_ICG_ENABLE and DDL_UTILITY_ENABLE must be turned on(DDL_ON) to
  ** ensure that the chip works properly.
  ******************************************************************************/
-#define DDL_ICG_ENABLE DDL_OFF
+#define DDL_ICG_ENABLE DDL_ON
 #define DDL_UTILITY_ENABLE DDL_ON
 
 #define DDL_ADC_ENABLE DDL_ON
