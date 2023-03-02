@@ -65,21 +65,20 @@ extern "C"
 {
 #endif
 
-/**
- *******************************************************************************
- ** \defgroup DdlUtilityGroup Device Driver Library Utility(DDLUTILITY)
- **
- ******************************************************************************/
-//@{
+    /**
+     *******************************************************************************
+     ** \defgroup DdlUtilityGroup Device Driver Library Utility(DDLUTILITY)
+     **
+     ******************************************************************************/
+    //@{
 
-/*******************************************************************************
- * Global type definitions ('typedef')
- ******************************************************************************/
+    /*******************************************************************************
+     * Global type definitions ('typedef')
+     ******************************************************************************/
 
-/*******************************************************************************
- * Global pre-processor symbols/macros ('#define')
- ******************************************************************************/
-#define UART_DEBUG_PRINTF
+    /*******************************************************************************
+     * Global pre-processor symbols/macros ('#define')
+     ******************************************************************************/
 
     /*******************************************************************************
      * Global variable definitions ('extern')
@@ -94,7 +93,6 @@ extern "C"
     /* A approximate delay */
     void Ddl_Delay1ms(uint32_t u32Cnt);
     void Ddl_Delay1us(uint32_t u32Cnt);
-#define delay_us(us) Ddl_Delay1us(us)
 
 /*! Ddl assert, you can add your own assert functions by implement the function
 Ddl_AssertHook definition follow the function Ddl_AssertHook declaration */
