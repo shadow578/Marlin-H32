@@ -92,17 +92,21 @@ bool SDIO_WriteBlock(uint32_t block, const uint8_t *src)
 
 bool SDIO_IsReady()
 {
-	// TODO HC32F46x: untested
-	// return SdCardCheckReayForData(&cardHandle, SDIO_TIMEOUT) == Ok;
 	return bool(cardHandle.stcCardStatus.READY_FOR_DATA);
 }
 
 uint32_t SDIO_GetCardSize()
 {
-	// TODO HC32F46x: untested
-	// SDCARD_GetCardCSD(&cardHandle);
-	return cardHandle.stcSdCardInfo.u32BlockNbr * cardHandle.stcSdCardInfo.u32BlockSize;
-	// return cardHandle.stcSdCardInfo.u32LogBlockNbr * cardHandle.stcSdCardInfo.u32LogBlockSize;
+	// multiply number of blocks with block size to get size in bytes
+	uint64_t cardSizeBytes = uint64_t(cardHandle.stcSdCardInfo.u32LogBlockNbr) * uint64_t(cardHandle.stcSdCardInfo.u32LogBlockSize);
+
+	// if the card is bigger than ~4Gb (maximum a 32bit integer can hold), clamp to the maximum value of a 32 bit integer
+	if(cardSizeBytes >= UINT32_MAX)
+	{
+		return UINT32_MAX;
+	}
+
+	return uint32_t(cardSizeBytes);
 }
 
 #endif // TARGET_HC32F46x
