@@ -1995,7 +1995,7 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
       #define TEMP_HOTEND (TEMP_BACK + ENABLED(HAS_HOTEND))
       #define TEMP_BED (TEMP_HOTEND + ENABLED(HAS_HEATED_BED))
       #define TEMP_FAN (TEMP_BED + ENABLED(HAS_FAN))
-      #define TEMP_PID (TEMP_FAN + ANY(HAS_HOTEND, HAS_HEATED_BED))
+      #define TEMP_PID (TEMP_FAN + ANY(PIDTEMP, MPCTEMP, PIDTEMPBED))
       #define TEMP_PREHEAT1 (TEMP_PID + (PREHEAT_COUNT >= 1))
       #define TEMP_PREHEAT2 (TEMP_PREHEAT1 + (PREHEAT_COUNT >= 2))
       #define TEMP_PREHEAT3 (TEMP_PREHEAT2 + (PREHEAT_COUNT >= 3))
@@ -2040,7 +2040,7 @@ void CrealityDWINClass::Menu_Item_Handler(uint8_t menu, uint8_t item, bool draw/
               Modify_Value(thermalManager.fan_speed[0], MIN_FAN_SPEED, MAX_FAN_SPEED, 1);
             break;
         #endif
-        #if HAS_HOTEND || HAS_HEATED_BED
+        #if ENABLED(PIDTEMP) || ENABLED(PIDTEMPBED) || ENABLED(MPCTEMP)
           case TEMP_PID:
             if (draw)
             {
