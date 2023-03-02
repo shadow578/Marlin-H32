@@ -1,20 +1,18 @@
-/* flash region sizes */
-__flash_rx_len = 140K;
-__flash_r_len = 20K;
+/* calculate continious memory regions for FLASH */
+FLASH_ISR_ORIGIN = FLASH_START;
+FLASH_ISR_LENGTH = 1024;
+FLASH_ICG_ORIGIN = FLASH_ISR_ORIGIN + FLASH_ISR_LENGTH;
+FLASH_ICG_LENGTH = 32;
+FLASH_MAIN_ORIGIN = FLASH_ICG_ORIGIN + FLASH_ICG_LENGTH;
+FLASH_MAIN_LENGTH = FLASH_SIZE - FLASH_MAIN_ORIGIN;
 
-ASSERT(__flash_r_len + __flash_rx_len <= 208K, "FLASH_RX and FLASH_R are too big and will not fit into FLASH")
-
-
-/* Use contiguous memory regions for simple. */
-/* seperate .text (FLASH_RX) from .data (FLASH_R) sections to prevent execution of data */
 MEMORY
 {
-    FLASH_ISR   (rx): ORIGIN = 0x0000C000, LENGTH = 1024
-    FLASH_ICG   (rx): ORIGIN = 0x0000C400, LENGTH = 32
-    FLASH_RX    (rx): ORIGIN = 0x0000C420, LENGTH = __flash_rx_len
-    FLASH_R      (r): ORIGIN = (ORIGIN(FLASH_RX) + __flash_rx_len), LENGTH = __flash_r_len
-    RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
-    RAM_RET    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
+    FLASH_ISR   (rx): ORIGIN = FLASH_ISR_ORIGIN, LENGTH = FLASH_ISR_LENGTH
+    FLASH_ICG   (rx): ORIGIN = FLASH_ICG_ORIGIN, LENGTH = FLASH_ICG_LENGTH
+    FLASH       (rx): ORIGIN = FLASH_MAIN_ORIGIN, LENGTH = FLASH_MAIN_LENGTH
+    RAM        (rwx): ORIGIN = RAM_START, LENGTH = RAM_SIZE
+    RAM_RET    (rwx): ORIGIN = RAM_RET_START, LENGTH = RAM_RET_START
 }
 
 ENTRY(Reset_Handler)
@@ -41,7 +39,7 @@ SECTIONS
 
         KEEP(*(.init))
         KEEP(*(.fini))
-    } >FLASH_RX
+    } >FLASH
 
     .rodata :
     {
@@ -49,18 +47,18 @@ SECTIONS
         *(.rodata)
         *(.rodata*)
         . = ALIGN(4);
-    } >FLASH_R
+    } >FLASH
 
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } >FLASH_R
+    } >FLASH
 
     __exidx_start = .;
     .ARM.exidx :
     {
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } >FLASH_R
+    } >FLASH
     __exidx_end = .;
 
     .preinit_array :
@@ -69,7 +67,7 @@ SECTIONS
 		PROVIDE_HIDDEN (__preinit_array_start = .);
 		KEEP(*(.preinit_array))
 		PROVIDE_HIDDEN (__preinit_array_end = .);
-    } >FLASH_R
+    } >FLASH
 
     .init_array :
     {
@@ -78,7 +76,7 @@ SECTIONS
 		KEEP(*(SORT(.init_array.*)))
 		KEEP(*(.init_array))
 		PROVIDE_HIDDEN (__init_array_end = .);
-    } >FLASH_R
+    } >FLASH
 
     .fini_array :
     {
@@ -87,7 +85,7 @@ SECTIONS
 		KEEP(*(SORT(.fini_array.*)))
 		KEEP(*(.fini_array))
 		PROVIDE_HIDDEN (__fini_array_end = .);
-    } >FLASH_R
+    } >FLASH
 
     /*__etext = ALIGN(4);
     .data : AT (__etext)
@@ -111,7 +109,7 @@ SECTIONS
         *(.data*)
         . = ALIGN(4);
         __data_end__ = .;
-    } >RAM AT> FLASH_R
+    } >RAM AT> FLASH
 
     __ram_ret_data_start = LOADADDR(.ram_ret_data);
     .ram_ret_data :
@@ -122,7 +120,7 @@ SECTIONS
         *(.ram_ret_data*)
         . = ALIGN(4);
         __data_end_ram_ret__ = .;
-    } >RAM_RET AT> FLASH_R
+    } >RAM_RET AT> FLASH
 
     .bss :
     {
