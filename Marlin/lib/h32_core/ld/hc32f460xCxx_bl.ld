@@ -1,5 +1,5 @@
 /*
- * HC32F460 SOC with 256kb flash (HC32F460xExx) with bootloader for sd firmware flashing.
+ * HC32F460 SOC with 256kb flash (HC32F460xCxx) with bootloader for sd firmware flashing.
  * the flash contains a bootloader from 0x0000 to 0xC000
  */
 

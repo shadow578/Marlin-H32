@@ -1,5 +1,4 @@
-#ifndef _WIRISH_IO_H_
-#define _WIRISH_IO_H_
+#pragma once
 
 #include "libmaple_types.h"
 
@@ -33,5 +32,3 @@ void analogWrite(uint8 pin, int duty_cycle);
 uint16 analogRead(uint8 pin);
 void gpio_set_mode(uint8 pin, uint8_t mode);
 uint8_t gpio_get_mode(uint8 pin);
-
-#endif
