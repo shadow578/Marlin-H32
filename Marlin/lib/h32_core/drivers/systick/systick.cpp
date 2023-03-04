@@ -3,7 +3,7 @@
 
 volatile uint32_t uptime = 0;
 
-extern "C" void SysTickIrq_Handler(void)
+extern "C" void SysTick_IrqHandler(void)
 {
     uptime++;
 }

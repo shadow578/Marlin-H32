@@ -161,8 +161,7 @@ extern "C"
         Event28 = 1u << 28,
         Event29 = 1u << 29,
         Event30 = 1u << 30,
-        // Event31           =   1u << 31,
-        Event31 = ((int)0x80000000), // kill the mdk warning
+        Event31 = 1u << 31,
     } en_evt_t;
 
     /**
@@ -202,8 +201,7 @@ extern "C"
         Int28 = 1u << 28,
         Int29 = 1u << 29,
         Int30 = 1u << 30,
-        // Int31             =   1u << 31,
-        Int31 = ((int)0x80000000), // kill the mdk warning or just Int31= 1 << 31,
+        Int31 = 1u << 31,
     } en_int_t;
 
 /*! Bit mask definition*/

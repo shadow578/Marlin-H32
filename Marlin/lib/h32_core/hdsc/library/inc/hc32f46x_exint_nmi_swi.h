@@ -180,7 +180,7 @@ extern "C"
         SwiCh28 = 1u << 28,
         SwiCh29 = 1u << 29,
         SwiCh30 = 1u << 30,
-        SwiCh31 = (int)0x80000000u,
+        SwiCh31 = 1u << 31,
     } en_swi_ch_t;
 
     /**
