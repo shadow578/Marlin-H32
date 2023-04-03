@@ -1,0 +1,38 @@
+name: Sync Fork with MarlinFirmware/Marlin
+
+on:
+  schedule:
+    # Run every day at 00:00 UTC
+    - cron: '38 12 * * *'
+
+jobs:
+
+  sync-fork:
+    name: Sync Fork with MarlinFirmware/Marlin
+    if: github.repository == 'classicrocker884/Marlin'
+  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout bugfix-2.1.x
+        uses: actions/checkout@v2
+        with:
+          ref: bugfix-2.1.x # This is the branch you want synced with MarlinFirmware/Marlin
+          fetch-depth: 0 # We want this to fetch all commit history
+
+      - name: Set up git user
+        run: |
+          git config user.name "classicrocker883"
+          git config user.email "andrewleduc88@yahoo.com"
+
+      - name: Check for remote update
+        run: git remote update
+
+      - name: Merge changes from original repo
+        run: |            # Change the URL of the original repository to match your forked repository
+          git merge --ff-only upstream/bugfix-2.1.x || true
+
+      - name: Push changes to forked repo
+        run: |
+          git push
+
