@@ -3,7 +3,7 @@ name: Sync Fork with MarlinFirmware/Marlin
 on:
   schedule:
     # Run every day at 00:00 UTC
-    - cron: '38 12 * * *'
+    - cron: '0 */6 * * *'
 
 jobs:
 
