@@ -1,0 +1,25 @@
+name: Syncing with MarlinFirmware/Marlin
+
+on:
+  schedule:
+    - cron:  '0 */6 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: bugfix-2.1.x 
+        fetch-depth: 0
+
+    - name: Sync with upstream
+      uses: jakejarvis/sync-repos@v2
+      with:
+        src_repo: classicrocker883/Marlin
+        dest_repo: MarlinFirmware/Marlin
+        sync_branch: bugfix-2.1.x 
+        src_token: ${{ secrets.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 }}
+        dest_token: ${{ secrets.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 }}

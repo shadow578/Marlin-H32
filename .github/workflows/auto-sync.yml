@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Checkout bugfix-2.1.x
         uses: actions/checkout@v2
+      - name: Fetch upstream changes
+        run: git fetch upstream
+        env:
+          upstream: MarlinFirmware/Marlin
         with:
           ref: bugfix-2.1.x # This is the branch you want synced with MarlinFirmware/Marlin
           fetch-depth: 0 # We want this to fetch all commit history
@@ -25,14 +29,26 @@ jobs:
           git config user.name "classicrocker883"
           git config user.email "andrewleduc88@yahoo.com"
 
-      - name: Check for remote update
-        run: git remote update
+      - name: Merge upstream changes
+        run: git merge upstream/bugfix-2.1.x\n      
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Sync Fork with MarlinFirmware/Marlin"
 
-      - name: Merge changes from original repo
-        run: |            # Change the URL of the original repository to match your forked repository
-          git merge --ff-only upstream/bugfix-2.1.x || true
+      # - name: Set up git user
+      #   run: |
+      #     git config user.name "classicrocker883"
+      #     git config user.email "andrewleduc88@yahoo.com"
 
-      - name: Push changes to forked repo
-        run: |
-          git push
+      # - name: Check for remote update
+      #   run: git remote update
+
+      # - name: Merge changes from original repo
+      #   run: |            # Change the URL of the original repository to match your forked repository
+      #     git merge --ff-only upstream/bugfix-2.1.x || true
+
+      # - name: Push changes to forked repo
+      #   run: |
+      #     git push
 
