@@ -21,5 +21,5 @@ jobs:
         src_repo: classicrocker883/Marlin
         dest_repo: MarlinFirmware/Marlin
         sync_branch: bugfix-2.1.x 
-        src_token: ${{ secrets.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 }}
-        dest_token: ${{ secrets.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 }}
+        src_token: ${{ secrets.GITHUB_TOKEN }}
+        dest_token: ${{ secrets.GITHUB_TOKEN }}
