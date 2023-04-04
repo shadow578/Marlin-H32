@@ -20,9 +20,6 @@ jobs:
         run: git fetch upstream
         env:
           upstream: MarlinFirmware/Marlin
-        with:
-          ref: bugfix-2.1.x # This is the branch you want synced with MarlinFirmware/Marlin
-          fetch-depth: 0 # We want this to fetch all commit history
 
       - name: Set up git user
         run: |
