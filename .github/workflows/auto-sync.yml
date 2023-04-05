@@ -9,7 +9,7 @@ jobs:
 
   sync-fork:
     name: Sync Fork with MarlinFirmware/Marlin
-    if: github.repository == 'classicrocker884/Marlin'
+    if: github.repository == 'classicrocker883/Marlin'
   
     runs-on: ubuntu-latest
 
