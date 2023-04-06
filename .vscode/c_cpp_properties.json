@@ -1,0 +1,55 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/andrew/Marlin-H32-3/Marlin",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/variants/mega",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/andrew/Marlin-H32-3/Marlin",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/home/andrew/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60106",
+                "ARDUINO_AVR_MEGA2560",
+                "__MARLIN_FIRMWARE__",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/andrew/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

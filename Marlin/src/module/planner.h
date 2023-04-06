@@ -352,7 +352,7 @@ typedef struct {
   } skew_factor_t;
 #endif
 
-#if ENABLED(DISABLE_OTHER_EXTRUDERS)
+#if ENABLED(DISABLE_INACTIVE_EXTRUDER)
   typedef uvalue_t(BLOCK_BUFFER_SIZE * 2) last_move_t;
 #endif
 
@@ -512,10 +512,6 @@ class Planner {
       }
     #endif
 
-    #if ENABLED(FT_MOTION)
-      static bool fxdTiCtrl_busy;
-    #endif
-
   private:
 
     /**
@@ -537,7 +533,7 @@ class Planner {
       static float last_fade_z;
     #endif
 
-    #if ENABLED(DISABLE_OTHER_EXTRUDERS)
+    #if ENABLED(DISABLE_INACTIVE_EXTRUDER)
       // Counters to manage disabling inactive extruder steppers
       static last_move_t extruder_last_move[E_STEPPERS];
     #endif

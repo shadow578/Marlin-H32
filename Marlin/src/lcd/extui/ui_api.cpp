@@ -112,9 +112,9 @@
 
 namespace ExtUI {
   static struct {
-    bool printer_killed : 1;
+    uint8_t printer_killed : 1;
     #if ENABLED(JOYSTICK)
-      bool jogging : 1;
+      uint8_t jogging : 1;
     #endif
   } flags;
 
@@ -926,7 +926,7 @@ namespace ExtUI {
       void setMeshPoint(const xy_uint8_t &pos, const_float_t zoff) {
         if (WITHIN(pos.x, 0, (GRID_MAX_POINTS_X) - 1) && WITHIN(pos.y, 0, (GRID_MAX_POINTS_Y) - 1)) {
           bedlevel.z_values[pos.x][pos.y] = zoff;
-          TERN_(ABL_BILINEAR_SUBDIVISION, bedlevel.refresh_bed_level());
+          TERN_(ABL_BILINEAR_SUBDIVISION, bed_level_virt_interpolate());
         }
       }
 
@@ -1127,21 +1127,14 @@ namespace ExtUI {
     #endif
   }
 
-  void onSurviveInKilled() {
-    thermalManager.disable_all_heaters();
-    flags.printer_killed = 0;
-    marlin_state = MF_RUNNING;
-    //SERIAL_ECHOLNPGM("survived at: ", millis());
-  }
-
   FileList::FileList() { refresh(); }
 
-  void FileList::refresh() { }
+  void FileList::refresh() { num_files = 0xFFFF; }
 
   bool FileList::seek(const uint16_t pos, const bool skip_range_check) {
     #if ENABLED(SDSUPPORT)
       if (!skip_range_check && (pos + 1) > count()) return false;
-      card.selectFileByIndexSorted(pos);
+      card.getfilename_sorted(SD_ORDER(pos, count()));
       return card.filename[0] != '\0';
     #else
       UNUSED(pos);
@@ -1167,7 +1160,7 @@ namespace ExtUI {
   }
 
   uint16_t FileList::count() {
-    return TERN0(SDSUPPORT, card.get_num_items());
+    return TERN0(SDSUPPORT, (num_files = (num_files == 0xFFFF ? card.get_num_Files() : num_files)));
   }
 
   bool FileList::isAtRootDir() {
@@ -1175,11 +1168,19 @@ namespace ExtUI {
   }
 
   void FileList::upDir() {
-    TERN_(SDSUPPORT, card.cdup());
+    #if ENABLED(SDSUPPORT)
+      card.cdup();
+      num_files = 0xFFFF;
+    #endif
   }
 
   void FileList::changeDir(const char * const dirname) {
-    TERN(SDSUPPORT, card.cd(dirname), UNUSED(dirname));
+    #if ENABLED(SDSUPPORT)
+      card.cd(dirname);
+      num_files = 0xFFFF;
+    #else
+      UNUSED(dirname);
+    #endif
   }
 
 } // namespace ExtUI

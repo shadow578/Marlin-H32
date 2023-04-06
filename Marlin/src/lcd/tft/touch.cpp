@@ -27,7 +27,7 @@
 #include "touch.h"
 
 #include "../marlinui.h"  // for ui methods
-#include "../menu/menu_item.h" // for MSG_FIRST_FAN_SPEED
+#include "../menu/menu_item.h" // for touch_screen_calibration
 
 #include "../../module/temperature.h"
 #include "../../module/planner.h"
@@ -152,7 +152,7 @@ void Touch::touch(touch_control_t *control) {
       case CALIBRATE:
         if (touch_calibration.handleTouch(x, y)) ui.refresh();
         break;
-    #endif
+    #endif // TOUCH_SCREEN_CALIBRATION
 
     case MENU_SCREEN: ui.goto_screen((screenFunc_t)control->data); break;
     case BACK: ui.goto_previous_screen(); break;

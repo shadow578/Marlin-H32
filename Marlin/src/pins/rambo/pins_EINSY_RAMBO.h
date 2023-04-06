@@ -23,8 +23,6 @@
 
 /**
  * Einsy-Rambo pin assignments
- * Schematic: https://green-candy.osdn.jp/external/MarlinFW/board_schematics/Einsy-Rambo/Schematic%20Prints_Einsy%20Rambo_1.1a.PDF
- * Origin: https://github.com/ultimachine/Einsy-Rambo/blob/1.1a/board/Project%20Outputs/Schematic%20Prints_Einsy%20Rambo_1.1a.PDF
  */
 
 #include "env_validate.h"
@@ -128,11 +126,11 @@
 #define HEATER_0_PIN                           3
 #define HEATER_BED_PIN                         4
 
-#ifndef FAN0_PIN
+#ifndef FAN_PIN
   #ifdef MK3_FAN_PINS
-    #define FAN0_PIN                           6
+    #define FAN_PIN                            6
   #else
-    #define FAN0_PIN                           8
+    #define FAN_PIN                            8
   #endif
 #endif
 

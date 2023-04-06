@@ -24,6 +24,8 @@
 
 #if ENABLED(MIXING_EXTRUDER)
 
+//#define MIXER_NORMALIZER_DEBUG
+
 #include "mixing.h"
 
 Mixer mixer;

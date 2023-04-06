@@ -72,11 +72,11 @@ uint8_t sel_id = 0;
     else
       card.cdroot();
 
-    const int16_t fileCnt = card.get_num_items();
+    const uint16_t fileCnt = card.get_num_Files();
 
-    for (int16_t i = 0; i < fileCnt; i++) {
+    for (uint16_t i = 0; i < fileCnt; i++) {
       if (list_file.Sd_file_cnt == list_file.Sd_file_offset) {
-        card.selectFileByIndexSorted(i);
+        card.getfilename_sorted(SD_ORDER(i, fileCnt));
 
         list_file.IsFolder[valid_name_cnt] = card.flag.filenameIsDir;
         strcpy(list_file.file_name[valid_name_cnt], list_file.curDirPath);
