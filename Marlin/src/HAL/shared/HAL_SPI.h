@@ -26,7 +26,7 @@
  * Core Marlin definitions for SPI, implemented in the HALs
  */
 
-#include "Marduino.h"
+#include "arduino.h"
 #include <stdint.h>
 
 /**

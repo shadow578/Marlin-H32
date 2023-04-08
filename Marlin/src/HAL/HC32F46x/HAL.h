@@ -28,7 +28,7 @@
 #define CPU_32_BIT
 
 #include "../../core/macros.h"
-#include "../shared/Marduino.h"
+#include "../shared/arduino.h"
 #include "../shared/math_32bit.h"
 #include "../shared/HAL_SPI.h"
 
