@@ -209,6 +209,34 @@
 
   #define BOARD_USART1_RX_PIN EXP_04_PIN // screen TX
   #define BOARD_USART1_TX_PIN EXP_03_PIN // screen RX
+#elif ENABLED(CR10_STOCKDISPLAY)
+
+  // TODO: screen pinout needs to be set by someone with a matching screen, as i don't have one and can't guess the pinout
+  #warning "CR10_STOCKDISPLAY is using placeholder pinouts, please check pins before attempting to flash the firmware!"
+
+  // there is currently no hardware SPI library available, 
+  // so use software SPI instead
+  #define FORCE_SOFT_SPI
+
+  // LCD SPI pins (?)
+  #define DOGLCD_CS  PB0
+  #define DOGLCD_A0  PB0
+  #define DOGLCD_SCK PB0
+  #define DOGLCD_MOSI PB0
+
+  // more lcd pins (??)
+  #define LCD_PINS_RS                EXP_07_PIN
+  #define LCD_PINS_EN                EXP_08_PIN
+  #define LCD_PINS_D4                EXP_06_PIN
+
+  // rotary encoder & beeper like with DWIN
+  #define BTN_ENC EXP_05_PIN // EN
+  #define BTN_EN1 EXP_08_PIN // A
+  #define BTN_EN2 EXP_07_PIN // B
+  
+  #ifndef BEEPER_PIN
+    #define BEEPER_PIN EXP_06_PIN // BEEP
+  #endif
 #endif
 
 //
