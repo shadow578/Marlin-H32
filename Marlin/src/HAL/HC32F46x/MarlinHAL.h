@@ -8,9 +8,9 @@ typedef gpio_pin_t pin_t;
 /**
  * convert ots measurement float to uint16_t for adc_value()
  *
- * @note returns float as integer in degrees C * 100, if T > 0
+ * @note returns float as integer in degrees C * 10, if T > 0
  */
-#define OTS_FLOAT_TO_ADC_READING(T) ((T) > 0 ? ((uint16_t)((T)*100.0f)) : 0)
+#define OTS_FLOAT_TO_ADC_READING(T) ((T) > 0 ? ((uint16_t)((T)*10.0f)) : 0)
 
 /**
  * convert adc_value() uint16_t to ots measurement float
@@ -19,7 +19,7 @@ typedef gpio_pin_t pin_t;
  * 
  * @note RAW is oversampled by OVERSAMPLENR, so we need to divide first
  */
-#define TEMP_SOC_SENSOR(RAW) ((float)(((RAW) / OVERSAMPLENR) / 100))
+#define TEMP_SOC_SENSOR(RAW) ((float)(((RAW) / OVERSAMPLENR) / 10))
 #endif
 
 /**
