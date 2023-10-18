@@ -20,12 +20,6 @@ extern "C" char *_sbrk(int incr);
   extern void install_min_serial();
 #endif
 
-void HAL_wdt_callback()
-{
-    panic("WDT timeout");
-    NVIC_SystemReset();
-}
-
 inline void HAL_clock_frequencies_dump()
 {
     // 1. dump all clock frequencies
@@ -122,8 +116,8 @@ MarlinHAL::MarlinHAL() {}
 void MarlinHAL::watchdog_init()
 {
 #if ENABLED(USE_WATCHDOG)
-    // 5s timeout, panic on timeout
-    WDT.begin(5000, &HAL_wdt_callback);
+    // 5s timeout, reset on timeout
+    WDT.begin(5000);
 #endif
 }
 

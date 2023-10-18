@@ -1,7 +1,3 @@
-// TODO: postmortem debugging on HC32 does not quite work yet:
-// - in `UnwReportOut` (backtrace.cpp), calling MinSerial::TX with bte->name sometimes causes a hardfault
-// - for *whatever* reason, `resume_from_fault` (exeption_arm.cpp) randomly freezes the system after printing the last register...
-
 #include "../platforms.h"
 
 #ifdef TARGET_HC32F46x
