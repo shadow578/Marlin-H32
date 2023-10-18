@@ -15,6 +15,11 @@
 
 extern "C" char *_sbrk(int incr);
 
+#if ENABLED(POSTMORTEM_DEBUGGING)
+  // from MinSerial.cpp
+  extern void install_min_serial();
+#endif
+
 void HAL_wdt_callback()
 {
     panic("WDT timeout");
@@ -135,6 +140,9 @@ void MarlinHAL::init()
 
     // print clock frequencies to host serial
     HAL_clock_frequencies_dump();
+
+    // register min serial
+    TERN_(POSTMORTEM_DEBUGGING, install_min_serial());
 }
 
 void MarlinHAL::init_board() {}
