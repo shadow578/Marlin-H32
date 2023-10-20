@@ -24,3 +24,7 @@
 #ifndef TARGET_HC32F46x
   #error "Oops! Select an HC32F460 board in 'Tools > Board.'"
 #endif
+
+#ifndef TEMP_SOC_PIN
+  #define TEMP_SOC_PIN 0xff // dummy that is not a valid GPIO, HAL checks for this
+#endif
