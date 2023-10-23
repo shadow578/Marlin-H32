@@ -189,7 +189,23 @@
 #define EXP_07_PIN PB12
 #define EXP_08_PIN PB15
 
-#if ANY(HAS_DWIN_E3V2, IS_DWIN_MARLINUI)  
+#if ENABLED(CR10_STOCKDISPLAY)
+#undef LCD_SERIAL_PORT
+#define LCD_SERIAL_PORT 1
+
+  #define LCD_PINS_RS                EXP_07_PIN
+  #define LCD_PINS_EN                EXP_08_PIN
+  #define LCD_PINS_D4                EXP_06_PIN
+
+  #define BTN_ENC                    EXP_02_PIN
+  #define BTN_EN1                    EXP_03_PIN
+  #define BTN_EN2                    EXP_05_PIN
+
+  #ifndef HAS_PIN_27_BOARD
+    #define BEEPER_PIN               EXP_01_PIN
+  #endif
+
+#elif ANY(HAS_DWIN_E3V2, IS_DWIN_MARLINUI)
   // screen pinout (screen side, so RX/TX are swapped)
   //       ------
   // NC   | 1  2 | NC
