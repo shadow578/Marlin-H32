@@ -31,7 +31,7 @@
 #if defined(TARGET_HC32F46x) && PIN_EXISTS(FSMC_CS) // FSMC on 100/144 pins SoCs
 #warning "'u8g_com_stm32duino_fsmc' has not been adapted to HC32F46x. Proceed at your own risk"
 
-#if HAS_GRAPHICAL_LCD
+#if HAS_MARLINUI_U8GLIB
 
 #include <U8glib.h>
 #include <libmaple/fsmc.h>
@@ -424,5 +424,5 @@ void LCD_IO_WaitSequence_Async()
 
 #endif // LCD_USE_DMA_FSMC
 
-#endif // HAS_GRAPHICAL_LCD
+#endif // HAS_MARLINUI_U8GLIB
 #endif // TARGET_HC32F46x && FSMC_CS_PIN
