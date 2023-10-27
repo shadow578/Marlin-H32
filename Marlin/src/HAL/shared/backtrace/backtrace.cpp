@@ -36,8 +36,7 @@ static bool UnwReportOut(void *ctx, const UnwReport *bte) {
 
   const uint32_t a = bte->address, f = bte->function;
   MinSerial::TX('#');    MinSerial::TXDec(*p);    MinSerial::TX(" : ");
-  //TODO: on HC32, calling MinSerial::TX(bte->name) causes a fault...
-  MinSerial::TX(TERN(TARGET_HC32F46x,, bte->name?:)"unknown");            MinSerial::TX('@');   MinSerial::TXHex(f);
+  MinSerial::TX(bte->name?:"unknown");            MinSerial::TX('@');   MinSerial::TXHex(f);
   MinSerial::TX('+');    MinSerial::TXDec(a - f);
   MinSerial::TX(" PC:"); MinSerial::TXHex(a);
   MinSerial::TX('\n');
