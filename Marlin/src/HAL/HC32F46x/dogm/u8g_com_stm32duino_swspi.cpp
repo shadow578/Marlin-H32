@@ -20,7 +20,7 @@
 
 #include "../../../inc/MarlinConfig.h"
 
-#if ALL(HAS_GRAPHICAL_LCD, FORCE_SOFT_SPI)
+#if ALL(HAS_MARLINUI_U8GLIB, FORCE_SOFT_SPI)
 #warning "'u8g_com_stm32duino_swspi' has not been adapted to HC32F46x. Proceed at your own risk"
 
 
@@ -35,7 +35,6 @@ static uint8_t SPI_speed = SPI_SPEED;
 
 static inline uint8_t swSpiTransfer_mode_0(uint8_t b, const uint8_t spi_speed, const pin_t miso_pin = -1)
 {
-  for(int i = 0; i < 8; i++)
   for(int i = 0; i < 8; i++)
   {
     if (spi_speed == 0)
@@ -187,5 +186,5 @@ uint8_t u8g_com_HAL_STM32F1_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, 
   return 1;
 }
 
-#endif // HAS_GRAPHICAL_LCD
+#endif // HAS_MARLINUI_U8GLIB
 #endif // TARGET_HC32F46x
