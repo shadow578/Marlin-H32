@@ -1,3 +1,5 @@
+#ifdef ARDUINO_ARCH_HC32
+
 #include "endstop_interrupts.h"
 #include "../../module/endstops.h"
 #include <Arduino.h>
@@ -72,3 +74,5 @@ void setup_endstop_interrupts()
 #if ENDSTOPS_INTERRUPTS_COUNT == 0
   #error "no endstop interrupts are enabled! If you wish to ignore this error, please comment out this line."
 #endif
+
+#endif // ARDUINO_ARCH_HC32

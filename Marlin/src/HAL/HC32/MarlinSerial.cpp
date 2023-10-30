@@ -19,8 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
 #ifdef ARDUINO_ARCH_HC32
+
 #include "MarlinSerial.h"
 #include "../../inc/MarlinConfig.h"
 #include <drivers/usart/Usart.h>
@@ -137,4 +137,5 @@ CHECK_AXIS_SERIAL(E6);
 #if AXIS_HAS_HW_SERIAL(E7)
 CHECK_AXIS_SERIAL(E7);
 #endif
+
 #endif // ARDUINO_ARCH_HC32

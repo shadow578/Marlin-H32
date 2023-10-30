@@ -1,6 +1,8 @@
 /**
  * HC32f460 system clock configuration
  */
+#ifdef ARDUINO_ARCH_HC32
+
 #include <core_hooks.h>
 #include <drivers/sysclock/sysclock_util.h>
 
@@ -96,3 +98,5 @@ void core_hook_sysclock_init()
     // set power mode
     power_mode_update_post(POWER_MODE_SYSTEM_CLOCK);
 }
+
+#endif // ARDUINO_ARCH_HC32

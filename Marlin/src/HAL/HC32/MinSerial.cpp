@@ -1,7 +1,6 @@
-#include "../platforms.h"
-
 #ifdef ARDUINO_ARCH_HC32
 
+#include "../platforms.h"
 #include "../../inc/MarlinConfigPre.h"
 
 #if ENABLED(POSTMORTEM_DEBUGGING)

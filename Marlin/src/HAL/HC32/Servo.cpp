@@ -1,7 +1,7 @@
-#include "Servo.h"
-
 #ifdef ARDUINO_ARCH_HC32
 #if HAS_SERVOS
+
+#include "Servo.h"
 
 static uint8_t servoCount = 0;
 static MarlinServo *servos[NUM_SERVOS] = {0};

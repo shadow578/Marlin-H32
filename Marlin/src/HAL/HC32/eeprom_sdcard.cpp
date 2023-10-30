@@ -23,7 +23,6 @@
 /**
  * Implementation of EEPROM settings in SD Card
  */
-
 #ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfig.h"

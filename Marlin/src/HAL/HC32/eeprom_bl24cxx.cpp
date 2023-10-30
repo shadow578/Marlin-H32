@@ -24,6 +24,7 @@
  * PersistentStore for Arduino-style EEPROM interface
  * with simple implementations supplied by Marlin.
  */
+#ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfig.h"
 
@@ -100,3 +101,4 @@ bool PersistentStore::read_data(int &pos, uint8_t *value, size_t size, uint16_t 
 }
 
 #endif // IIC_BL24CXX_EEPROM
+#endif // ARDUINO_ARCH_HC32

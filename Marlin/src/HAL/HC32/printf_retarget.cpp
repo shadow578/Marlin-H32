@@ -1,3 +1,4 @@
+#ifdef ARDUINO_ARCH_HC32
 #ifdef REDIRECT_PRINTF_TO_SERIAL
 #if !defined(__GNUC__)
 #error "only GCC is supported"
@@ -34,3 +35,4 @@ extern "C" int _isatty(int file)
 }
 
 #endif // REDIRECT_PRINTF_TO_SERIAL
+#endif // ARDUINO_ARCH_HC32

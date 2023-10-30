@@ -24,6 +24,7 @@
  * Platform-independent Arduino functions for I2C EEPROM.
  * Enable USE_SHARED_EEPROM if not supplied by the framework.
  */
+#ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfig.h"
 
@@ -50,3 +51,4 @@ uint8_t eeprom_read_byte(uint8_t *pos)
 }
 
 #endif // IIC_BL24CXX_EEPROM
+#endif // ARDUINO_ARCH_HC32

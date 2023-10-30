@@ -1,3 +1,5 @@
+#ifdef ARDUINO_ARCH_HC32
+
 #include "HAL.h"
 #include <core_hooks.h>
 #include <drivers/panic/panic.h>
@@ -42,3 +44,5 @@ extern "C" void core_hook_panic_end()
         panic_printf("\n!!\n");
     }
 }
+
+#endif // ARDUINO_ARCH_HC32

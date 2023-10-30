@@ -1,3 +1,5 @@
+#ifdef ARDUINO_ARCH_HC32
+
 #include "timers.h"
 #include <core_debug.h>
 
@@ -30,3 +32,5 @@ void HAL_timer_start(const timer_channel_t timer_num, const uint32_t frequency)
     CORE_ASSERT_FAIL("HAL_timer_start: invalid timer_num")
   }
 }
+
+#endif // ARDUINO_ARCH_HC32
