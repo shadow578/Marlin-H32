@@ -86,40 +86,31 @@ void HAL_timer_start(const timer_channel_t timer_num, const uint32_t frequency);
 // inlined since they are somewhat critical
 #define MARLIN_HAL_TIMER_INLINE_ATTR __attribute__((always_inline)) inline
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_enable_interrupt(const timer_channel_t timer_num)
-{
-    timer_num->resume();
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_enable_interrupt(const timer_channel_t timer_num) {
+  timer_num->resume();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_disable_interrupt(const timer_channel_t timer_num)
-{
-    timer_num->pause();
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_disable_interrupt(const timer_channel_t timer_num) {
+  timer_num->pause();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR bool HAL_timer_interrupt_enabled(const timer_channel_t timer_num)
-{
-    return timer_num->isPaused();
+MARLIN_HAL_TIMER_INLINE_ATTR bool HAL_timer_interrupt_enabled(const timer_channel_t timer_num) {
+  return timer_num->isPaused();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_set_compare(const timer_channel_t timer_num, const hal_timer_t compare)
-{
-    timer_num->setCompareValue(compare);
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_set_compare(const timer_channel_t timer_num, const hal_timer_t compare) {
+  timer_num->setCompareValue(compare);
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR hal_timer_t HAL_timer_get_count(const timer_channel_t timer_num)
-{
-    return timer_num->getCount();
+MARLIN_HAL_TIMER_INLINE_ATTR hal_timer_t HAL_timer_get_count(const timer_channel_t timer_num) {
+  return timer_num->getCount();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_prologue(const timer_channel_t timer_num)
-{
-    timer_num->clearInterruptFlag();
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_prologue(const timer_channel_t timer_num) {
+  timer_num->clearInterruptFlag();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_epilogue(const timer_channel_t timer_num)
-{
-    // nothing
-}
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_epilogue(const timer_channel_t timer_num) {}
 
 //
 // HAL function aliases

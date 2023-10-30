@@ -33,19 +33,16 @@
 #include "../../libs/BL24CXX.h"
 #include "../shared/eeprom_if.h"
 
-void eeprom_init()
-{
+void eeprom_init() {
   BL24CXX::init();
 }
 
-void eeprom_write_byte(uint8_t *pos, unsigned char value)
-{
+void eeprom_write_byte(uint8_t *pos, unsigned char value) {
   const unsigned eeprom_address = (unsigned)pos;
   return BL24CXX::writeOneByte(eeprom_address, value);
 }
 
-uint8_t eeprom_read_byte(uint8_t *pos)
-{
+uint8_t eeprom_read_byte(uint8_t *pos) {
   const unsigned eeprom_address = (unsigned)pos;
   return BL24CXX::readOneByte(eeprom_address);
 }

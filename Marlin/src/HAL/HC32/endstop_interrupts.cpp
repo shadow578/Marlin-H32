@@ -9,12 +9,11 @@
 //
 // IRQ handler
 //
-void endstopIRQHandler()
-{
+void endstopIRQHandler() {
   bool flag = false;
 
-// check all irq flags
-#define CHECK(name) TERN_(USE_##name, flag |= checkIRQFlag(name##_PIN, /*clear*/ true))
+  // check all irq flags
+  #define CHECK(name) TERN_(USE_##name, flag |= checkIRQFlag(name##_PIN, /*clear*/ true))
 
   CHECK(X_MAX);
   CHECK(X_MIN);
@@ -34,18 +33,18 @@ void endstopIRQHandler()
   CHECK(Z_MIN_PROBE);
 
   // update endstops
-  if (flag)
-  {
+  if (flag) {
     endstops.update();
   }
+
+  #undef CHECK
 }
 
 //
 // HAL functions
 //
-void setup_endstop_interrupts()
-{
-#define SETUP(name) TERN_(USE_##name, attachInterrupt(name##_PIN, endstopIRQHandler, CHANGE); setInterruptPriority(name##_PIN, ENDSTOP_IRQ_PRIORITY))
+void setup_endstop_interrupts() {
+  #define SETUP(name) TERN_(USE_##name, attachInterrupt(name##_PIN, endstopIRQHandler, CHANGE); setInterruptPriority(name##_PIN, ENDSTOP_IRQ_PRIORITY))
 
   SETUP(X_MAX);
   SETUP(X_MIN);
@@ -63,6 +62,8 @@ void setup_endstop_interrupts()
   SETUP(Z3_MIN);
 
   SETUP(Z_MIN_PROBE);
+
+  #undef SETUP
 }
 
 // ensure max. 10 irqs are registered

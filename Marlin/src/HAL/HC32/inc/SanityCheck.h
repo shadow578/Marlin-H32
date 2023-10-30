@@ -22,43 +22,43 @@
 #pragma once
 
 #if ENABLED(FAST_PWM_FAN)
-#error "FAST_PWM_FAN is not yet implemented for this platform."
+  #error "FAST_PWM_FAN is not yet implemented for this platform."
 #endif
 
 #if !defined(HAVE_SW_SERIAL) && HAS_TMC_SW_SERIAL
-#warning "With TMC2208/9 consider using SoftwareSerialM with HAVE_SW_SERIAL and appropriate SS_TIMER."
-#error "Missing SoftwareSerial implementation."
+  #error "Missing SoftwareSerial implementation."
 #endif
 
 #if ENABLED(SDCARD_EEPROM_EMULATION) && !HAS_MEDIA
-#undef SDCARD_EEPROM_EMULATION // Avoid additional error noise
-#if USE_FALLBACK_EEPROM
-#warning "EEPROM type not specified. Fallback is SDCARD_EEPROM_EMULATION."
-#endif
-#error "SDCARD_EEPROM_EMULATION requires SDSUPPORT. Enable SDSUPPORT or choose another EEPROM emulation."
+  #undef SDCARD_EEPROM_EMULATION // Avoid additional error noise
+  #if USE_FALLBACK_EEPROM
+    #warning "EEPROM type not specified. Fallback is SDCARD_EEPROM_EMULATION."
+  #endif
+
+  #error "SDCARD_EEPROM_EMULATION requires SDSUPPORT. Enable SDSUPPORT or choose another EEPROM emulation."
 #endif
 
 #if ENABLED(SERIAL_STATS_MAX_RX_QUEUED)
-#error "SERIAL_STATS_MAX_RX_QUEUED is not supported on this platform."
+  #error "SERIAL_STATS_MAX_RX_QUEUED is not supported on this platform."
 #elif ENABLED(SERIAL_STATS_DROPPED_RX)
-#error "SERIAL_STATS_DROPPED_RX is not supported on this platform."
+  #error "SERIAL_STATS_DROPPED_RX is not supported on this platform."
 #endif
 
 #if ENABLED(NEOPIXEL_LED) && DISABLED(MKS_MINI_12864_V3)
-#error "NEOPIXEL_LED (Adafruit NeoPixel) is not supported for HC32F460. Comment out this line to proceed at your own risk!"
+  #error "NEOPIXEL_LED (Adafruit NeoPixel) is not supported for HC32F460. Comment out this line to proceed at your own risk!"
 #endif
 
 // Emergency Parser needs at least one serial with HardwareSerial.
 #if ENABLED(EMERGENCY_PARSER) && ((SERIAL_PORT == -1 && !defined(SERIAL_PORT_2)) || (SERIAL_PORT_2 == -1 && !defined(SERIAL_PORT)))
-#error "EMERGENCY_PARSER is only supported by HardwareSerial on HC32F460."
+  #error "EMERGENCY_PARSER is only supported by HardwareSerial on HC32F460."
 #endif
 
 #if TEMP_SENSOR_SOC
-#if !defined(TEMP_SOC_PIN)
-#error "TEMP_SOC_PIN must be defined to use TEMP_SENSOR_SOC."
-#endif
+  #if !defined(TEMP_SOC_PIN)
+    #error "TEMP_SOC_PIN must be defined to use TEMP_SENSOR_SOC."
+  #endif
 
-#if defined(TEMP_SOC_PIN) && IS_GPIO_PIN(TEMP_SOC_PIN)
-#error "TEMP_SOC_PIN must not be a valid GPIO pin to avoid conflicts."
-#endif
+  #if defined(TEMP_SOC_PIN) && IS_GPIO_PIN(TEMP_SOC_PIN)
+    #error "TEMP_SOC_PIN must not be a valid GPIO pin to avoid conflicts."
+  #endif
 #endif

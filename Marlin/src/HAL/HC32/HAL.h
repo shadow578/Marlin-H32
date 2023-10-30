@@ -51,55 +51,56 @@
 #define NUM_UARTS 4
 
 #if SERIAL_PORT == -1
-#error "USB Serial is not supported on HC32F460"
+  #error "USB Serial is not supported on HC32F460"
 #elif WITHIN(SERIAL_PORT, 1, NUM_UARTS)
-#define MYSERIAL1 MSERIAL(SERIAL_PORT)
+  #define MYSERIAL1 MSERIAL(SERIAL_PORT)
 #else
-#define MYSERIAL1 MSERIAL(1) // dummy port
-static_assert(false, "SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
+  #define MYSERIAL1 MSERIAL(1) // dummy port
+  static_assert(false, "SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
 #endif
 
 #ifdef SERIAL_PORT_2
-#if SERIAL_PORT_2 == -1
-#error "USB Serial is not supported on HC32F460"
-#elif WITHIN(SERIAL_PORT_2, 1, NUM_UARTS)
-#define MYSERIAL2 MSERIAL(SERIAL_PORT_2)
-#else
-#define MYSERIAL2 MSERIAL(1) // dummy port
-static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) ".")
-#endif
+  #if SERIAL_PORT_2 == -1
+    #error "USB Serial is not supported on HC32F460"
+  #elif WITHIN(SERIAL_PORT_2, 1, NUM_UARTS)
+    #define MYSERIAL2 MSERIAL(SERIAL_PORT_2)
+  #else
+    #define MYSERIAL2 MSERIAL(1) // dummy port
+    static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) ".")
+  #endif
 #endif
 
 #ifdef SERIAL_PORT_3
-#if SERIAL_PORT_3 == -1
-#error "USB Serial is not supported on HC32F460"
-#elif WITHIN(SERIAL_PORT_3, 1, NUM_UARTS)
-#define MYSERIAL3 MSERIAL(SERIAL_PORT_3)
-#else
-#define MYSERIAL3 MSERIAL(1) // dummy port
+  #if SERIAL_PORT_3 == -1
+    #error "USB Serial is not supported on HC32F460"
+  #elif WITHIN(SERIAL_PORT_3, 1, NUM_UARTS)
+    #define MYSERIAL3 MSERIAL(SERIAL_PORT_3)
+  #else
+    #define MYSERIAL3 MSERIAL(1) // dummy port
     static_assert(false, "SERIAL_PORT_3 must be from 1 to " STRINGIFY(NUM_UARTS) ".")
-#endif
+  #endif
 #endif
 
 #ifdef LCD_SERIAL_PORT
-#if LCD_SERIAL_PORT == -1
-#error "USB Serial is not supported on HC32F460"
-#elif WITHIN(LCD_SERIAL_PORT, 1, NUM_UARTS)
-#define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
-#else
-#define LCD_SERIAL MSERIAL(1) // dummy port
-        static_assert(false, "LCD_SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
-#endif
-#if HAS_DGUS_LCD
-#define LCD_SERIAL_TX_BUFFER_FREE() LCD_SERIAL.availableForWrite()
-#endif
+  #if LCD_SERIAL_PORT == -1
+    #error "USB Serial is not supported on HC32F460"
+  #elif WITHIN(LCD_SERIAL_PORT, 1, NUM_UARTS)
+    #define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
+  #else
+    #define LCD_SERIAL MSERIAL(1) // dummy port
+    static_assert(false, "LCD_SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
+  #endif
+
+  #if HAS_DGUS_LCD
+    #define LCD_SERIAL_TX_BUFFER_FREE() LCD_SERIAL.availableForWrite()
+  #endif
 #endif
 
 //
 // Emergency Parser
 //
 #if ENABLED(EMERGENCY_PARSER)
-extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
+  extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #endif
 
 //
@@ -108,7 +109,7 @@ extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #define square(x) ((x) * (x))
 
 #ifndef strncpy_P
-#define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+  #define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
 #endif
 
 //
