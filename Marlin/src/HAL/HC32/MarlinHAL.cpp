@@ -3,15 +3,16 @@
  */
 #ifdef ARDUINO_ARCH_HC32
 
-#include "HAL.h"
+#include "../../inc/MarlinConfig.h"
+
+#include "HAL.h" // includes MarlinHAL.h
 #include <IWatchdog.h>
+#include <AsyncAnalogRead.h>
 
 #if TEMP_SENSOR_SOC
-#include <OnChipTemperature.h>
+  #include <OnChipTemperature.h>
 #endif
 
-#include <AsyncAnalogRead.h>
-#include "../../inc/MarlinConfig.h"
 
 extern "C" char *_sbrk(int incr);
 

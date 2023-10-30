@@ -1,6 +1,6 @@
 #pragma once
-#include <stdint.h>
 #include <core_types.h>
+#include <stdint.h>
 
 typedef gpio_pin_t pin_t;
 

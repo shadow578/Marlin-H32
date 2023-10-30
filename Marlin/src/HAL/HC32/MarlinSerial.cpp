@@ -21,8 +21,8 @@
  */
 #ifdef ARDUINO_ARCH_HC32
 
-#include "MarlinSerial.h"
 #include "../../inc/MarlinConfig.h"
+#include "MarlinSerial.h"
 #include <drivers/usart/Usart.h>
 
 /**

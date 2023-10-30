@@ -1,8 +1,6 @@
-#include "../platforms.h"
-
 #ifdef ARDUINO_ARCH_HC32
 
-#include "../../inc/MarlinConfig.h"
+#include "../../inc/MarlinConfigPre.h"
 
 #if HAS_SERVOS
 

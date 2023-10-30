@@ -28,7 +28,7 @@
  */
 #include <wiring_digital.h>
 #include <wiring_analog.h>
-#include <gpio/gpio.h>
+#include <drivers/gpio/gpio.h>
 
 #define READ(IO) (GPIO_GetBit(IO) ? HIGH : LOW)
 #define WRITE(IO, V) (((V) > 0) ? GPIO_SetBits(IO) : GPIO_ResetBits(IO))

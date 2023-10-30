@@ -20,8 +20,8 @@
  *
  */
 #pragma once
-#include <drivers/usart/Usart.h>
 #include "../../core/serial_hook.h"
+#include <drivers/usart/Usart.h>
 
 // optionally set uart IRQ priority to reduce overflow errors
 // #define UART_IRQ_PRIO 1

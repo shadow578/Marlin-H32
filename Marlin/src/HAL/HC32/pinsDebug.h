@@ -17,8 +17,8 @@
  *
  */
 #pragma once
-#include "fastio.h"
 #include "../../inc/MarlinConfig.h"
+#include "fastio.h"
 #include <drivers/timera/timera_pwm.h>
 
 //

@@ -3,11 +3,12 @@
  */
 #ifdef ARDUINO_ARCH_HC32
 
+// get BOARD_XTAL_FREQUENCY from configuration / pins
+#include "../../inc/MarlinConfig.h"
+
 #include <core_hooks.h>
 #include <drivers/sysclock/sysclock_util.h>
 
-// get BOARD_XTAL_FREQUENCY from configuration / pins
-#include "../../inc/MarlinConfig.h"
 
 void core_hook_sysclock_init() {
   // set wait cycles, as we are about to switch to 200 MHz HCLK

@@ -29,6 +29,8 @@
 
 #define CPU_32_BIT
 
+#include "../../inc/MarlinConfig.h"
+
 #include "../../core/macros.h"
 #include "../shared/Marduino.h"
 #include "../shared/math_32bit.h"
@@ -36,12 +38,10 @@
 
 #include "fastio.h"
 #include "timers.h"
+#include "MarlinSerial.h"
 
 #include <stdint.h>
 
-#include "../../inc/MarlinConfigPre.h"
-#include "../../inc/MarlinConfig.h"
-#include "MarlinSerial.h"
 
 //
 // Serial Ports
