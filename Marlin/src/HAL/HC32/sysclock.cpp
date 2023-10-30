@@ -46,7 +46,7 @@ void core_hook_sysclock_init() {
     sysclock_configure_xtal();
     sysclock_configure_mpll(ClkPllSrcXTAL, &pllConf);
 
-  #warning "16 MHz XTAL is not tested yet, please check clock dump on startup and report any issues"
+  #warning "HC32F460 with 16 MHz XTAL has not been tested."
 
   #else // HRC (16 MHz)
     // - M = 1   => 16 MHz / 1 = 16 MHz
@@ -70,7 +70,7 @@ void core_hook_sysclock_init() {
     }
 
     #if defined(BOARD_XTAL_FREQUENCY)
-      #warning "no valid XTAL frequency defined, falling back to HRC. please submit a PR or issue to add support for your XTAL frequency"
+      #warning "no valid XTAL frequency defined, falling back to HRC."
     #endif
   #endif
 

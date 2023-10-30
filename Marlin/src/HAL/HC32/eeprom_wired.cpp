@@ -22,7 +22,7 @@
 #include "../../inc/MarlinConfig.h"
 
 #if USE_WIRED_EEPROM
-#warning "'eeprom_wired' has not been tested on HC32F460. Please report any issues."
+#warning "'eeprom_wired' has not been tested on HC32F460."
 
 /**
  * PersistentStore for Arduino-style EEPROM interface
