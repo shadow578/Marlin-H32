@@ -311,8 +311,8 @@ void MarlinHAL::set_pwm_duty(const pin_t pin, const uint16_t value, const uint16
 
 void MarlinHAL::set_pwm_frequency(const pin_t pin, const uint16_t f_desired)
 {
-    // TODO stub
-    printf("set_pwm_frequency is not implemented yet\n");
+    // TODO set_pwm_frequency is not implemented yet
+    panic("set_pwm_frequency is not implemented yet\n");
 }
 
 void flashFirmware(const int16_t) { MarlinHAL::reboot(); }

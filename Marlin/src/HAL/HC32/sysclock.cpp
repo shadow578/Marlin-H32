@@ -64,7 +64,7 @@ void core_hook_sysclock_init()
     sysclock_configure_mpll(ClkPllSrcHRC, &pllConf);
 
     // HRC could have been configured by ICG to 20 MHz
-    // TODO: handle this gracefully
+    // TODO: handle gracefully if HRC is not 16 MHz
     if (1UL != (HRC_FREQ_MON() & 1UL))
     {
         panic("HRC is not 16 MHz");
