@@ -1,6 +1,6 @@
 #include "../platforms.h"
 
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfig.h"
 
@@ -82,4 +82,4 @@ private:
 typedef MarlinServo hal_servo_t;
 
 #endif // HAS_SERVOS
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

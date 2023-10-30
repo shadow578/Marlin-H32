@@ -45,12 +45,12 @@
 #endif
 
 #if ENABLED(NEOPIXEL_LED) && DISABLED(MKS_MINI_12864_V3)
-#error "NEOPIXEL_LED (Adafruit NeoPixel) is not supported for HC32F46x. Comment out this line to proceed at your own risk!"
+#error "NEOPIXEL_LED (Adafruit NeoPixel) is not supported for HC32F460. Comment out this line to proceed at your own risk!"
 #endif
 
 // Emergency Parser needs at least one serial with HardwareSerial.
 #if ENABLED(EMERGENCY_PARSER) && ((SERIAL_PORT == -1 && !defined(SERIAL_PORT_2)) || (SERIAL_PORT_2 == -1 && !defined(SERIAL_PORT)))
-#error "EMERGENCY_PARSER is only supported by HardwareSerial on HC32F46x."
+#error "EMERGENCY_PARSER is only supported by HardwareSerial on HC32F460."
 #endif
 
 #if TEMP_SENSOR_SOC

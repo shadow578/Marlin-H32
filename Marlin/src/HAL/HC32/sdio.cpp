@@ -1,4 +1,4 @@
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 #include "sdio.h"
 #include <gpio/gpio.h>
 #include <sd_card.h>
@@ -137,4 +137,4 @@ uint32_t SDIO_GetCardSize()
 	return uint32_t(cardSizeBytes);
 }
 
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

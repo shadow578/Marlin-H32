@@ -1,6 +1,6 @@
 #include "../platforms.h"
 
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfigPre.h"
 
@@ -95,4 +95,4 @@ extern "C"
 
 #endif // CORE_DISABLE_FAULT_HANDLER
 #endif // POSTMORTEM_DEBUGGING
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

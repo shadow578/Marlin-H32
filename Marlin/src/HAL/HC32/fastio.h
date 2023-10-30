@@ -23,7 +23,7 @@
 #pragma once
 
 /**
- * Fast I/O interfaces for HC32F46x
+ * Fast I/O interfaces for HC32F460
  * These use GPIO functions instead of Direct Port Manipulation.
  */
 #include <wiring_digital.h>

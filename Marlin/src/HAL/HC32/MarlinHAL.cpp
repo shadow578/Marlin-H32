@@ -1,7 +1,7 @@
 /**
- * HAL for HC32F46x, based heavily on the legacy implementation and STM32F1
+ * HAL for HC32F460, based heavily on the legacy implementation and STM32F1
  */
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 
 #include "HAL.h"
 #include <IWatchdog.h>
@@ -317,4 +317,4 @@ void MarlinHAL::set_pwm_frequency(const pin_t pin, const uint16_t f_desired)
 
 void flashFirmware(const int16_t) { MarlinHAL::reboot(); }
 
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

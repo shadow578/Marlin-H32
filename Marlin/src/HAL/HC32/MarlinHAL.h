@@ -23,7 +23,7 @@ typedef gpio_pin_t pin_t;
 #endif
 
 /**
- * HAL class for Marlin on HC32F46x
+ * HAL class for Marlin on HC32F460
  */
 class MarlinHAL
 {
@@ -104,7 +104,7 @@ private:
 };
 
 // M997: trigger firmware update from sd card (after upload)
-// on HC32F46x, a reboot is enough to do this
+// on HC32F460, a reboot is enough to do this
 #ifndef PLATFORM_M997_SUPPORT
   #define PLATFORM_M997_SUPPORT
 #endif

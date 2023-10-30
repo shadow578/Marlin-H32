@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 
 #include "../../../inc/MarlinConfig.h"
 
 #if ALL(HAS_MARLINUI_U8GLIB, FORCE_SOFT_SPI)
-#warning "'u8g_com_stm32duino_swspi' has not been adapted to HC32F46x. Proceed at your own risk"
+#warning "'u8g_com_stm32duino_swspi' has not been adapted to HC32F460. Proceed at your own risk"
 
 
 #include "../HAL.h"
@@ -187,4 +187,4 @@ uint8_t u8g_com_HAL_STM32F1_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, 
 }
 
 #endif // HAS_MARLINUI_U8GLIB
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

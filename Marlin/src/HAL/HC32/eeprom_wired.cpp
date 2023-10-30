@@ -17,12 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfig.h"
 
 #if USE_WIRED_EEPROM
-#warning "'eeprom_wired' has not been tested on HC32F46x. Please report any issues."
+#warning "'eeprom_wired' has not been tested on HC32F460. Please report any issues."
 
 /**
  * PersistentStore for Arduino-style EEPROM interface
@@ -93,4 +93,4 @@ bool PersistentStore::read_data(int &pos, uint8_t *value, size_t size, uint16_t 
 }
 
 #endif // USE_WIRED_EEPROM
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

@@ -40,7 +40,7 @@ extern Timer0 step_timer;
 //
 
 // TODO: some calculations (step irq min_step_rate) require the timer rate to be known at compile time
-//       this is not possible with the HC32F46x, as the timer rate depends on PCLK1
+//       this is not possible with the HC32F460, as the timer rate depends on PCLK1
 //       as a workaround, PCLK1 = 50MHz is assumed (check with clock dump in MarlinHAL::init())
 #define HAL_TIMER_RATE 50000000 // 50MHz
 // #define HAL_TIMER_RATE TIMER0_BASE_FREQUENCY

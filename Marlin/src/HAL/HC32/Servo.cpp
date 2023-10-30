@@ -1,6 +1,6 @@
 #include "Servo.h"
 
-#ifdef TARGET_HC32F46x
+#ifdef ARDUINO_ARCH_HC32
 #if HAS_SERVOS
 
 static uint8_t servoCount = 0;
@@ -73,4 +73,4 @@ servo_angle_t MarlinServo::read()
 }
 
 #endif // HAS_SERVOS
-#endif // TARGET_HC32F46x
+#endif // ARDUINO_ARCH_HC32

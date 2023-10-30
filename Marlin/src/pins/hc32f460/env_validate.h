@@ -21,7 +21,7 @@
  */
 #pragma once
 
-#ifndef TARGET_HC32F46x
+#ifndef ARDUINO_ARCH_HC32
   #error "Oops! Select an HC32F460 board in 'Tools > Board.'"
 #endif
 

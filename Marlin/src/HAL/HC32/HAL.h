@@ -22,7 +22,7 @@
  */
 
 /**
- * HAL for HC32F46x based boards
+ * HAL for HC32F460 based boards
  *
  * Note: MarlinHAL class is in MarlinHAL.h/cpp
  */
@@ -51,7 +51,7 @@
 #define NUM_UARTS 4
 
 #if SERIAL_PORT == -1
-#error "USB Serial is not supported on HC32F46x"
+#error "USB Serial is not supported on HC32F460"
 #elif WITHIN(SERIAL_PORT, 1, NUM_UARTS)
 #define MYSERIAL1 MSERIAL(SERIAL_PORT)
 #else
@@ -61,7 +61,7 @@ static_assert(false, "SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
 
 #ifdef SERIAL_PORT_2
 #if SERIAL_PORT_2 == -1
-#error "USB Serial is not supported on HC32F46x"
+#error "USB Serial is not supported on HC32F460"
 #elif WITHIN(SERIAL_PORT_2, 1, NUM_UARTS)
 #define MYSERIAL2 MSERIAL(SERIAL_PORT_2)
 #else
@@ -72,7 +72,7 @@ static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) "."
 
 #ifdef SERIAL_PORT_3
 #if SERIAL_PORT_3 == -1
-#error "USB Serial is not supported on HC32F46x"
+#error "USB Serial is not supported on HC32F460"
 #elif WITHIN(SERIAL_PORT_3, 1, NUM_UARTS)
 #define MYSERIAL3 MSERIAL(SERIAL_PORT_3)
 #else
@@ -83,7 +83,7 @@ static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) "."
 
 #ifdef LCD_SERIAL_PORT
 #if LCD_SERIAL_PORT == -1
-#error "USB Serial is not supported on HC32F46x"
+#error "USB Serial is not supported on HC32F460"
 #elif WITHIN(LCD_SERIAL_PORT, 1, NUM_UARTS)
 #define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
 #else
