@@ -9,7 +9,7 @@
 
 #define SDIO_PERIPHERAL M4_SDIOC1
 
-// DMA1 is used by ADC (in arduino core), so we use DMA2 CH0
+// use DMA2 channel 0
 #define SDIO_DMA_PERIPHERAL M4_DMA2
 #define SDIO_DMA_CHANNEL DmaCh0
 

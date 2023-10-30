@@ -118,11 +118,6 @@ extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #define analogInputToDigitalPin(p) (p)
 #endif
 
-// TODO: digitalPinHasPWM is not implemented
-#ifndef digitalPinHasPWM
-#define digitalPinHasPWM(P) (P) //(PIN_MAP[P].timer_device != nullptr)
-#endif
-
 #define CRITICAL_SECTION_START        \
   uint32_t primask = __get_PRIMASK(); \
   (void)__iCliRetVal()
@@ -153,9 +148,6 @@ extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #define GET_PIN_MAP_PIN(index) index
 #define GET_PIN_MAP_INDEX(pin) pin
 #define PARSED_PIN_INDEX(code, dval) parser.intval(code, dval)
-
-#define JTAG_DISABLE()    // afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY)
-#define JTAGSWD_DISABLE() // afio_cfg_debug_ports(AFIO_DEBUG_NONE)
 
 //
 // MarlinHAL implementation

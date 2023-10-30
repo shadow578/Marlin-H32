@@ -129,9 +129,10 @@ bool pwm_status(const pin_t pin)
     // - assigned to a timerA unit (tested above)
     // - unit is initialized
     // - channel is active
-    // - GPIO function is set to assigned port_function (cannot test this)
-    // TODO: check GPIO function is set to assigned port_function
-    return timera_is_unit_initialized(unit) && timera_is_channel_active(unit, channel);
+    // - pinMode is OUTPUT_PWM
+    return timera_is_unit_initialized(unit) 
+        && timera_is_channel_active(unit, channel)
+        && getPinMode(pin) == OUTPUT_PWM;
 }
 
 void pwm_details(const pin_t pin)

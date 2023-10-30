@@ -11,10 +11,6 @@
  * @param ptr pointer to the data to write
  * @param len length of the data to write
  * @return number of bytes written
- *
- * @note
- * i'm not sure if ptr is guaranteed to be null-terminated, so i'm copying the data to a buffer
- * and adding a null terminator just in case
  */
 extern "C" int _write(int file, char *ptr, int len)
 {
