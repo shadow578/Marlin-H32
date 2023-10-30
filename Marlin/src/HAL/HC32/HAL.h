@@ -26,6 +26,7 @@
  *
  * Note: MarlinHAL class is in MarlinHAL.h/cpp
  */
+#pragma once
 
 #define CPU_32_BIT
 

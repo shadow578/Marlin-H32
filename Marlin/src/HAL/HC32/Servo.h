@@ -1,3 +1,4 @@
+#pragma once
 #ifdef ARDUINO_ARCH_HC32
 
 #include "../../inc/MarlinConfigPre.h"
