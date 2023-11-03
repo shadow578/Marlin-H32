@@ -1,21 +1,18 @@
 #ifdef ARDUINO_ARCH_HC32
 
-#include "../../inc/MarlinConfigPre.h"
+#include "../../inc/MarlinConfig.h"
+#include <drivers/panic/panic.h>
 
-#if ENABLED(POSTMORTEM_DEBUGGING)
-
-#ifndef CORE_DISABLE_FAULT_HANDLER
-  #error "POSTMORTEM_DEBUGGING requires CORE_DISABLE_FAULT_HANDLER to be set."
-#endif
-
-#include "../shared/MinSerial.h"
+#if ENABLED(POSTMORTEM_DEBUGGING) || defined(PANIC_ENABLE)
 #include <drivers/usart/usart_sync.h>
-#include <drivers/panic/fault_handlers.h>
 
-static void TXBegin() {
+//
+// shared by both panic and PostMortem debugging
+//
+static void minserial_begin() {
   #if !WITHIN(SERIAL_PORT, 1, 3)
-    #warning "Using POSTMORTEM_DEBUGGING requires a physical U(S)ART hardware in case of severe error."
-    #warning "Disabling the severe error reporting feature currently because the used serial port is not a HW port."
+    #warning "MinSerial requires a physical UART port for output."
+    #warning "Disabling MinSerial because the used serial port is not a HW port."
   #else
 
     // prepare usart_sync configuration
@@ -53,7 +50,7 @@ static void TXBegin() {
   #endif
 }
 
-static void TX(char c) {
+static void minserial_putc(char c) {
   #if WITHIN(SERIAL_PORT, 1, 3)
     #define __USART_SYNC_PUTC(port_no, ch) \
       usart_sync_putc(M4_USART##port_no, ch);
@@ -66,6 +63,29 @@ static void TX(char c) {
   #endif
 }
 
+//
+// panic only
+//
+#ifdef PANIC_ENABLE
+void panic_begin() {
+  minserial_begin();
+}
+
+void panic_puts(const char *str) {
+  while (*str) {
+    minserial_putc(*str++);
+  }
+}
+#endif // PANIC_ENABLE
+
+//
+// PostMortem debugging only
+//
+#if ENABLED(POSTMORTEM_DEBUGGING)
+
+#include "../shared/MinSerial.h"
+#include <drivers/panic/fault_handlers.h>
+
 void fault_handlers_init() {
   // enable cpu traps:
   // - divide by zero
@@ -74,8 +94,8 @@ void fault_handlers_init() {
 }
 
 void install_min_serial() {
-  HAL_min_serial_init = &TXBegin;
-  HAL_min_serial_out = &TX;
+  HAL_min_serial_init = &minserial_begin;
+  HAL_min_serial_out = &minserial_putc;
 }
 
 extern "C" {
@@ -91,4 +111,20 @@ extern "C" {
 }
 
 #endif // POSTMORTEM_DEBUGGING
+#endif // POSTMORTEM_DEBUGGING || PANIC_ENABLE
+
+//
+// panic_end is always required to print the '!!' to the host
+//
+void panic_end() {
+  // print '!!' to signal error to host
+  // do it 10x so it's not missed
+  for (int i = 0; i < 10; i++) {
+    panic_printf("\n!!\n");
+  }
+
+  // then, reset the board
+  NVIC_SystemReset();
+}
+
 #endif // ARDUINO_ARCH_HC32

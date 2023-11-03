@@ -62,3 +62,13 @@
     #error "TEMP_SOC_PIN must not be a valid GPIO pin to avoid conflicts."
   #endif
 #endif
+
+#if ENABLED(POSTMORTEM_DEBUGGING) && !defined(CORE_DISABLE_FAULT_HANDLER)
+  #error "POSTMORTEM_DEBUGGING requires CORE_DISABLE_FAULT_HANDLER to be set."
+#endif
+
+#if defined(PANIC_ENABLE)
+  #if defined(PANIC_USART1_TX_PIN) || defined(PANIC_USART2_TX_PIN) || defined(PANIC_USART3_TX_PIN) || defined(PANIC_USART3_TX_PIN)
+    #error "HC32 HAL uses a custom panic handler. Do not define PANIC_USARTx_TX_PIN."
+  #endif
+#endif
