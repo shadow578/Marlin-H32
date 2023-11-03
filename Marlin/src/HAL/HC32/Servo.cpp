@@ -1,4 +1,7 @@
 #ifdef ARDUINO_ARCH_HC32
+
+#include "../../inc/MarlinConfig.h"
+
 #if HAS_SERVOS
 
 #include "Servo.h"
