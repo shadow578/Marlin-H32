@@ -69,6 +69,8 @@ static void minserial_putc(char c) {
 #ifdef PANIC_ENABLE
 void panic_begin() {
   minserial_begin();
+
+  panic_puts("\n\nPANIC:\n");
 }
 
 void panic_puts(const char *str) {
