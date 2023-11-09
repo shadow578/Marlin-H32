@@ -158,9 +158,7 @@ void MarlinHAL::delay_ms(const int ms) {
   delay(ms);
 }
 
-void MarlinHAL::idletask() {
-  MarlinHAL::watchdog_refresh();
-}
+void MarlinHAL::idletask() {}
 
 uint8_t MarlinHAL::get_reset_source() {
   // query reset cause from RMU
