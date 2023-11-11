@@ -40,7 +40,7 @@ extern Timer0 step_timer;
 //
 
 // TODO: some calculations (step irq min_step_rate) require the timer rate to be known at compile time
-//       this is not possible with the HC32F46x, as the timer rate depends on PCLK1
+//       this is not possible with the HC32F460, as the timer rate depends on PCLK1
 //       as a workaround, PCLK1 = 50MHz is assumed (check with clock dump in MarlinHAL::init())
 #define HAL_TIMER_RATE 50000000 // 50MHz
 // #define HAL_TIMER_RATE TIMER0_BASE_FREQUENCY
@@ -86,40 +86,31 @@ void HAL_timer_start(const timer_channel_t timer_num, const uint32_t frequency);
 // inlined since they are somewhat critical
 #define MARLIN_HAL_TIMER_INLINE_ATTR __attribute__((always_inline)) inline
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_enable_interrupt(const timer_channel_t timer_num)
-{
-    timer_num->resume();
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_enable_interrupt(const timer_channel_t timer_num) {
+  timer_num->resume();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_disable_interrupt(const timer_channel_t timer_num)
-{
-    timer_num->pause();
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_disable_interrupt(const timer_channel_t timer_num) {
+  timer_num->pause();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR bool HAL_timer_interrupt_enabled(const timer_channel_t timer_num)
-{
-    return timer_num->isPaused();
+MARLIN_HAL_TIMER_INLINE_ATTR bool HAL_timer_interrupt_enabled(const timer_channel_t timer_num) {
+  return timer_num->isPaused();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_set_compare(const timer_channel_t timer_num, const hal_timer_t compare)
-{
-    timer_num->setCompareValue(compare);
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_set_compare(const timer_channel_t timer_num, const hal_timer_t compare) {
+  timer_num->setCompareValue(compare);
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR hal_timer_t HAL_timer_get_count(const timer_channel_t timer_num)
-{
-    return timer_num->getCount();
+MARLIN_HAL_TIMER_INLINE_ATTR hal_timer_t HAL_timer_get_count(const timer_channel_t timer_num) {
+  return timer_num->getCount();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_prologue(const timer_channel_t timer_num)
-{
-    timer_num->clearInterruptFlag();
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_prologue(const timer_channel_t timer_num) {
+  timer_num->clearInterruptFlag();
 }
 
-MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_epilogue(const timer_channel_t timer_num)
-{
-    // nothing
-}
+MARLIN_HAL_TIMER_INLINE_ATTR void HAL_timer_isr_epilogue(const timer_channel_t timer_num) {}
 
 //
 // HAL function aliases

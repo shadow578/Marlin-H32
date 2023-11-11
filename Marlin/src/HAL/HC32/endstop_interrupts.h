@@ -23,9 +23,9 @@
 #pragma once
 
 /**
- * Endstop interrupts for HC32F46x based targets.
+ * Endstop interrupts for HC32F460 based targets.
  *
- * On HC32F46x, all pins support external interrupt capability, with some restrictions.
+ * On HC32F460, all pins support external interrupt capability, with some restrictions.
  * See the documentation of WInterrupts#attachInterrupt() for details.
  *
  * TL;DR

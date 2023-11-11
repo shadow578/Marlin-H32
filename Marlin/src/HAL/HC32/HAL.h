@@ -22,12 +22,14 @@
  */
 
 /**
- * HAL for HC32F46x based boards
+ * HAL for HC32F460 based boards
  *
  * Note: MarlinHAL class is in MarlinHAL.h/cpp
  */
 
 #define CPU_32_BIT
+
+#include "../../inc/MarlinConfig.h"
 
 #include "../../core/macros.h"
 #include "../shared/Marduino.h"
@@ -36,12 +38,10 @@
 
 #include "fastio.h"
 #include "timers.h"
+#include "MarlinSerial.h"
 
 #include <stdint.h>
 
-#include "../../inc/MarlinConfigPre.h"
-#include "../../inc/MarlinConfig.h"
-#include "MarlinSerial.h"
 
 //
 // Serial Ports
@@ -51,55 +51,56 @@
 #define NUM_UARTS 4
 
 #if SERIAL_PORT == -1
-#error "USB Serial is not supported on HC32F46x"
+  #error "USB Serial is not supported on HC32F460"
 #elif WITHIN(SERIAL_PORT, 1, NUM_UARTS)
-#define MYSERIAL1 MSERIAL(SERIAL_PORT)
+  #define MYSERIAL1 MSERIAL(SERIAL_PORT)
 #else
-#define MYSERIAL1 MSERIAL(1) // dummy port
-static_assert(false, "SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
+  #define MYSERIAL1 MSERIAL(1) // dummy port
+  static_assert(false, "SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
 #endif
 
 #ifdef SERIAL_PORT_2
-#if SERIAL_PORT_2 == -1
-#error "USB Serial is not supported on HC32F46x"
-#elif WITHIN(SERIAL_PORT_2, 1, NUM_UARTS)
-#define MYSERIAL2 MSERIAL(SERIAL_PORT_2)
-#else
-#define MYSERIAL2 MSERIAL(1) // dummy port
-static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) ".")
-#endif
+  #if SERIAL_PORT_2 == -1
+    #error "USB Serial is not supported on HC32F460"
+  #elif WITHIN(SERIAL_PORT_2, 1, NUM_UARTS)
+    #define MYSERIAL2 MSERIAL(SERIAL_PORT_2)
+  #else
+    #define MYSERIAL2 MSERIAL(1) // dummy port
+    static_assert(false, "SERIAL_PORT_2 must be from 1 to " STRINGIFY(NUM_UARTS) ".")
+  #endif
 #endif
 
 #ifdef SERIAL_PORT_3
-#if SERIAL_PORT_3 == -1
-#error "USB Serial is not supported on HC32F46x"
-#elif WITHIN(SERIAL_PORT_3, 1, NUM_UARTS)
-#define MYSERIAL3 MSERIAL(SERIAL_PORT_3)
-#else
-#define MYSERIAL3 MSERIAL(1) // dummy port
+  #if SERIAL_PORT_3 == -1
+    #error "USB Serial is not supported on HC32F460"
+  #elif WITHIN(SERIAL_PORT_3, 1, NUM_UARTS)
+    #define MYSERIAL3 MSERIAL(SERIAL_PORT_3)
+  #else
+    #define MYSERIAL3 MSERIAL(1) // dummy port
     static_assert(false, "SERIAL_PORT_3 must be from 1 to " STRINGIFY(NUM_UARTS) ".")
-#endif
+  #endif
 #endif
 
 #ifdef LCD_SERIAL_PORT
-#if LCD_SERIAL_PORT == -1
-#error "USB Serial is not supported on HC32F46x"
-#elif WITHIN(LCD_SERIAL_PORT, 1, NUM_UARTS)
-#define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
-#else
-#define LCD_SERIAL MSERIAL(1) // dummy port
-        static_assert(false, "LCD_SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
-#endif
-#if HAS_DGUS_LCD
-#define LCD_SERIAL_TX_BUFFER_FREE() LCD_SERIAL.availableForWrite()
-#endif
+  #if LCD_SERIAL_PORT == -1
+    #error "USB Serial is not supported on HC32F460"
+  #elif WITHIN(LCD_SERIAL_PORT, 1, NUM_UARTS)
+    #define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
+  #else
+    #define LCD_SERIAL MSERIAL(1) // dummy port
+    static_assert(false, "LCD_SERIAL_PORT must be from 1 to " STRINGIFY(NUM_UARTS) ".")
+  #endif
+
+  #if HAS_DGUS_LCD
+    #define LCD_SERIAL_TX_BUFFER_FREE() LCD_SERIAL.availableForWrite()
+  #endif
 #endif
 
 //
 // Emergency Parser
 //
 #if ENABLED(EMERGENCY_PARSER)
-extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
+  extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #endif
 
 //
@@ -108,7 +109,7 @@ extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #define square(x) ((x) * (x))
 
 #ifndef strncpy_P
-#define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+  #define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
 #endif
 
 //
@@ -116,11 +117,6 @@ extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 //
 #ifndef analogInputToDigitalPin
 #define analogInputToDigitalPin(p) (p)
-#endif
-
-// TODO: digitalPinHasPWM is not implemented
-#ifndef digitalPinHasPWM
-#define digitalPinHasPWM(P) (P) //(PIN_MAP[P].timer_device != nullptr)
 #endif
 
 #define CRITICAL_SECTION_START        \
@@ -153,9 +149,6 @@ extern "C" void usart_rx_irq_hook(uint8_t ch, uint8_t usart);
 #define GET_PIN_MAP_PIN(index) index
 #define GET_PIN_MAP_INDEX(pin) pin
 #define PARSED_PIN_INDEX(code, dval) parser.intval(code, dval)
-
-#define JTAG_DISABLE()    // afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY)
-#define JTAGSWD_DISABLE() // afio_cfg_debug_ports(AFIO_DEBUG_NONE)
 
 //
 // MarlinHAL implementation

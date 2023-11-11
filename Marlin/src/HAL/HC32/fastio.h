@@ -23,12 +23,12 @@
 #pragma once
 
 /**
- * Fast I/O interfaces for HC32F46x
+ * Fast I/O interfaces for HC32F460
  * These use GPIO functions instead of Direct Port Manipulation.
  */
 #include <wiring_digital.h>
 #include <wiring_analog.h>
-#include <gpio/gpio.h>
+#include <drivers/gpio/gpio.h>
 
 #define READ(IO) (GPIO_GetBit(IO) ? HIGH : LOW)
 #define WRITE(IO, V) (((V) > 0) ? GPIO_SetBits(IO) : GPIO_ResetBits(IO))
@@ -39,8 +39,7 @@
 #define _SET_OUTPUT(IO) _SET_MODE(IO, OUTPUT)
 
 #define OUT_WRITE(IO, V) \
-  do                     \
-  {                      \
+  do {                   \
     _SET_OUTPUT(IO);     \
     WRITE(IO, V);        \
   } while (0)
@@ -51,11 +50,21 @@
 #define SET_OUTPUT(IO) OUT_WRITE(IO, LOW)
 #define SET_PWM(IO) _SET_MODE(IO, OUTPUT_PWM)
 
-#define IS_INPUT(IO) (_GET_MODE(IO) == INPUT || _GET_MODE(IO) == INPUT_FLOATING || _GET_MODE(IO) == INPUT_ANALOG || _GET_MODE(IO) == INPUT_PULLUP ||  _GET_MODE(IO) == INPUT_PULLDOWN)
-#define IS_OUTPUT(IO) (_GET_MODE(IO) == OUTPUT || || _GET_MODE(IO) == OUTPUT_PWM || _GET_MODE(IO) == OUTPUT_OPEN_DRAIN)
+#define IS_INPUT(IO) (                 \
+  _GET_MODE(IO) == INPUT ||          \
+  _GET_MODE(IO) == INPUT_FLOATING || \
+  _GET_MODE(IO) == INPUT_ANALOG ||   \
+  _GET_MODE(IO) == INPUT_PULLUP ||   \
+  _GET_MODE(IO) == INPUT_PULLDOWN)
+
+#define IS_OUTPUT(IO) (            \
+  _GET_MODE(IO) == OUTPUT ||     \
+  _GET_MODE(IO) == OUTPUT_PWM || \
+  _GET_MODE(IO) == OUTPUT_OPEN_DRAIN)
 
 #define PWM_PIN(IO) isAnalogWritePin(IO)
-#define NO_COMPILE_TIME_PWM // cannot check for PWM at compile time
 
 #define extDigitalRead(IO) digitalRead(IO)
 #define extDigitalWrite(IO, V) digitalWrite(IO, V)
+
+#define NO_COMPILE_TIME_PWM // cannot check for PWM at compile time
