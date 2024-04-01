@@ -139,7 +139,17 @@ extern "C" {
 //
 // Panic_end is always required to print the '!!' to the host
 //
+bool did_panic = false;
+
 void panic_end() {
+  // Break into the debugger on the first panic
+  // If no debugger is attached, this may cause a fault and trigger a second panic.
+  // To prevent from causing the CPU to enter lockup, we only BKPT once.
+  if (!did_panic) {
+    did_panic = true;
+    __BKPT(0);
+  }
+
   // Print '!!' to signal error to host
   // Do it 10x so it's not missed
   for (uint_fast8_t i = 10; i--;) panic_printf("\n!!\n");
