@@ -29,11 +29,11 @@
 #define CANNON_W      11
 #define CANNON_H       8
 #define CANNON_VEL     4
-#define CANNON_Y      (LCD_PIXEL_HEIGHT - 1 - CANNON_H)
+#define CANNON_Y      (GAME_HEIGHT - 1 - CANNON_H)
 
 #define INVADER_VEL    3
 
-#define INVADER_TOP   MENU_FONT_ASCENT
+#define INVADER_TOP   GAME_FONT_ASCENT
 #define INVADERS_WIDE ((INVADER_COL_W) * (INVADER_COLS))
 #define INVADERS_HIGH ((INVADER_ROW_H) * (INVADER_ROWS))
 
@@ -175,7 +175,7 @@ inline void update_invader_data() {
   }
   idat.leftmost = 0;
   for (uint8_t i = 0; i < INVADER_COLS; ++i) { if (TEST(inv_mask, i)) break; idat.leftmost -= INVADER_COL_W; }
-  idat.rightmost = LCD_PIXEL_WIDTH - (INVADERS_WIDE);
+  idat.rightmost = GAME_WIDTH - (INVADERS_WIDE);
   for (uint8_t i = INVADER_COLS; i--;) { if (TEST(inv_mask, i)) break; idat.rightmost += INVADER_COL_W; }
   if (idat.count == 2) idat.dir = idat.dir > 0 ? INVADER_VEL + 1 : -(INVADER_VEL + 1);
 }
@@ -195,7 +195,7 @@ inline void reset_invaders() {
 
 inline void spawn_ufo() {
   idat.ufov = random(0, 2) ? 1 : -1;
-  idat.ufox = idat.ufov > 0 ? -(UFO_W) : LCD_PIXEL_WIDTH - 1;
+  idat.ufox = idat.ufov > 0 ? -(UFO_W) : GAME_WIDTH - 1;
 }
 
 inline void reset_player() {
@@ -205,7 +205,7 @@ inline void reset_player() {
 
 inline void fire_cannon() {
   idat.laser.x = idat.cannon_x + CANNON_W / 2;
-  idat.laser.y = LCD_PIXEL_HEIGHT - CANNON_H - (LASER_H);
+  idat.laser.y = GAME_HEIGHT - CANNON_H - (LASER_H);
   idat.laser.v = -(LASER_H);
 }
 
@@ -235,7 +235,7 @@ void InvadersGame::game_screen() {
   if (ui.first_page) {
 
     // Update Cannon Position
-    int16_t ep = constrain(int16_t(ui.encoderPosition), 0, (LCD_PIXEL_WIDTH - (CANNON_W)) / (CANNON_VEL));
+    int16_t ep = constrain(int16_t(ui.encoderPosition), 0, (GAME_WIDTH - (CANNON_W)) / (CANNON_VEL));
     ui.encoderPosition = ep;
 
     ep *= (CANNON_VEL);
@@ -246,7 +246,7 @@ void InvadersGame::game_screen() {
     if (game_state) do {
 
       // Move the UFO, if any
-      if (idat.ufov) { idat.ufox += idat.ufov; if (!WITHIN(idat.ufox, -(UFO_W), LCD_PIXEL_WIDTH - 1)) idat.ufov = 0; }
+      if (idat.ufov) { idat.ufox += idat.ufov; if (!WITHIN(idat.ufox, -(UFO_W), GAME_WIDTH - 1)) idat.ufov = 0; }
 
       if (game_state > 1) { if (--game_state == 2) { reset_invaders(); } else if (game_state == 100) { game_state = 1; } break; }
 
@@ -326,7 +326,7 @@ void InvadersGame::game_screen() {
         if (b->v) {
           // Update alien bullet position
           b->y += b->v;
-          if (b->y >= LCD_PIXEL_HEIGHT)
+          if (b->y >= GAME_HEIGHT)
             b->v = 0; // Offscreen
           else if (b->y >= CANNON_Y && WITHIN(b->x, idat.cannon_x, idat.cannon_x + CANNON_W - 1))
             kill_cannon(game_state, 120); // Hit the cannon
@@ -365,7 +365,8 @@ void InvadersGame::game_screen() {
 
   if (!idat.quit_count) exit_game();
 
-  u8g.setColorIndex(1);
+  screen.frame_start();
+  screen.set_color(1);
 
   // Draw invaders
   if (PAGE_CONTAINS(idat.pos.y, idat.pos.y + idat.botmost * (INVADER_ROW_H) - 2 - 1)) {
@@ -376,7 +377,7 @@ void InvadersGame::game_screen() {
         int8_t xx = idat.pos.x;
         for (uint8_t x = 0; x < INVADER_COLS; ++x) {
           if (TEST(idat.bugs[y], x))
-            u8g.drawBitmapP(xx, yy, 2, INVADER_H, invader[type][idat.game_blink]);
+            screen.draw_bitmapP(xx, yy, 2, INVADER_H, invader[type][idat.game_blink]);
           xx += INVADER_COL_W;
         }
       }
@@ -386,43 +387,44 @@ void InvadersGame::game_screen() {
 
   // Draw UFO
   if (idat.ufov && PAGE_UNDER(UFO_H + 2))
-    u8g.drawBitmapP(idat.ufox, 2, 2, UFO_H, ufo);
+    screen.draw_bitmapP(idat.ufox, 2, 2, UFO_H, ufo);
 
   // Draw cannon
   if (game_state && PAGE_CONTAINS(CANNON_Y, CANNON_Y + CANNON_H - 1) && (game_state < 2 || (game_state & 0x02)))
-    u8g.drawBitmapP(idat.cannon_x, CANNON_Y, 2, CANNON_H, cannon);
+    screen.draw_bitmapP(idat.cannon_x, CANNON_Y, 2, CANNON_H, cannon);
 
   // Draw laser
   if (idat.laser.v && PAGE_CONTAINS(idat.laser.y, idat.laser.y + LASER_H - 1))
-    u8g.drawVLine(idat.laser.x, idat.laser.y, LASER_H);
+    screen.draw_vline(idat.laser.x, idat.laser.y, LASER_H);
 
   // Draw invader bullets
   for (uint8_t i = 0; i < COUNT(idat.bullet); ++i) {
     if (idat.bullet[i].v && PAGE_CONTAINS(idat.bullet[i].y - (SHOT_H - 1), idat.bullet[i].y))
-      u8g.drawVLine(idat.bullet[i].x, idat.bullet[i].y - (SHOT_H - 1), SHOT_H);
+      screen.draw_vline(idat.bullet[i].x, idat.bullet[i].y - (SHOT_H - 1), SHOT_H);
   }
 
   // Draw explosion
   if (idat.explod.v && PAGE_CONTAINS(idat.explod.y, idat.explod.y + 7 - 1)) {
-    u8g.drawBitmapP(idat.explod.x, idat.explod.y, 2, 7, explosion);
+    screen.draw_bitmapP(idat.explod.x, idat.explod.y, 2, 7, explosion);
     --idat.explod.v;
   }
 
   // Blink GAME OVER when game is over
   if (!game_state) draw_game_over();
 
-  if (PAGE_UNDER(MENU_FONT_ASCENT - 1)) {
+  if (PAGE_UNDER(GAME_FONT_ASCENT - 1)) {
     // Draw Score
-    //const uint8_t sx = (LCD_PIXEL_WIDTH - (score >= 10 ? score >= 100 ? score >= 1000 ? 4 : 3 : 2 : 1) * MENU_FONT_WIDTH) / 2;
+    //const uint8_t sx = (GAME_WIDTH - (score >= 10 ? score >= 100 ? score >= 1000 ? 4 : 3 : 2 : 1) * GAME_FONT_WIDTH) / 2;
     constexpr uint8_t sx = 0;
-    lcd_put_int(sx, MENU_FONT_ASCENT - 1, score);
+    screen.draw_int(sx, GAME_FONT_ASCENT - 1, score);
 
     // Draw lives
     if (idat.cannons_left)
       for (uint8_t i = 1; i <= idat.cannons_left; ++i)
-        u8g.drawBitmapP(LCD_PIXEL_WIDTH - i * (LIFE_W), 6 - (LIFE_H), 1, LIFE_H, life);
+        screen.draw_bitmapP(GAME_WIDTH - i * (LIFE_W), 6 - (LIFE_H), 1, LIFE_H, life);
   }
 
+  screen.frame_end();
 }
 
 void InvadersGame::enter_game() {
