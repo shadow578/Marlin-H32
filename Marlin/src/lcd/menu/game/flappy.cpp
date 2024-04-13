@@ -4,18 +4,40 @@
 
 #include "game.h"
 
-// bird
+// Bird:
+//
+// |--------//--
+// |        
+// |    _   -----
+// |   |_|>     | <- bird_size (square)
+// |   |    -----
+// |   |        
+// |--------//--
+// |   |
+// |<->|  
+// bird_x  
 constexpr int8_t bird_x = 3;
 constexpr int8_t bird_size = 4;
 
-constexpr int8_t gravity = 1; // px/frame
-constexpr int8_t flap_strength = gravity * 4;
-constexpr int8_t max_velocity = 5;
-constexpr int8_t min_velocity = -max_velocity;
 
-// pipes
-constexpr int8_t pipe_speed = 1; // px/frame
-
+// Pipe:
+//
+// pipe_width |     | distance_between_pipes
+//          |<>|<------->|
+//          |  |         |
+// |----//----------------------//--
+// |        |  |         |  |      | <- pipe_gap_min_y 
+// |       |____| ------ |  | ------
+// |                     |  |      
+// |        ____         |  |      
+// |       |    |        |  |      
+// |        |  |         |  |      
+// |        |  |        |____| _____
+// |        |  |                   | <- pipe_gap
+// |        |  |         ____  -----
+// |        |  |        |    |     | <- pipe_gap_max_y
+// | _______|__|_________|__|___   | 
+// |----//----------------------//--
 constexpr int8_t pipe_width = 2;
 
 constexpr int8_t pipe_gap = 3 * bird_size;
@@ -24,15 +46,78 @@ constexpr int8_t pipe_gap_max_y = GAME_HEIGHT - pipe_gap_min_y;
 
 constexpr int8_t distance_between_pipes = bird_size * 8;
 
+
+// Pipe Flare: 
+//
+// pipe_flare_widht
+// |<---------->|
+//  ____________  --
+// |            |  | <- pipe_flare_height
+// |__        __| --
+//    |      |  
+//    |      |  
+//
 constexpr int8_t pipe_flare_width = pipe_width + 1;
 constexpr int8_t pipe_flare_height = 2;
 
-// ground
+
+// Ground:
+//
+// |---------------//----
+// |                    |
+// ~                    ~
+// |       ____         | <- ground_y
+// |      |    |        |
+// |_______|__|____ -----
+// |                    
+// |---------------//----
 constexpr int8_t ground_y = GAME_HEIGHT - 1;
 
 // score display (visible after game over only)
 constexpr int8_t score_x = (GAME_WIDTH / 2) - 2; // kinda centered
 constexpr int8_t score_y = GAME_HEIGHT - GAME_FONT_ASCENT - 1;
+
+
+
+// Bird Physics:
+// - every frame, the birds Y position is increased by its current velocity
+// - the gravity increases the velocity by 1 px/frame, accelerating the bird downwards
+// - on flap, the velocity is instantly set to -flap_strength, giving the bird upwards momentum
+// - the bird's velocity is clamped to a maximum and minimum value
+// 
+// |-//---------------//--
+// |                      
+// |     ^
+// |     | <- flap_strength  
+// |     _
+// |    |_|>
+// |     |
+// |     v <- gravity
+// |
+// |-//---------------//--
+
+constexpr int8_t gravity = 1;                  // px / frame^2
+constexpr int8_t flap_strength = gravity * 4;  // px / frame
+constexpr int8_t max_velocity = flap_strength; // px / frame
+constexpr int8_t min_velocity = -max_velocity; // px / frame
+
+// Pipe Physics:
+// - pipes move to the right-to-left by pipe_speed px/frame
+//
+// |----//-------------------//--
+// |                   |  | 
+// |                  |____|
+// |                        
+// |                   ____ 
+// |                  |    |
+// |                   |  | 
+// |                   |  | 
+// | <---------------- |  | 
+// |   | pipe_speed    |  | 
+// |                   |  | 
+// | __________________|__|_
+// |----//-------------------//--
+constexpr int8_t pipe_speed = 1; // px / frame
 
 
 flappy_data_t &state = marlin_game_data.flappy;
