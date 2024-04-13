@@ -22,6 +22,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "renderer.h"
 
 typedef struct { int8_t x, y; } pos_t;
 
@@ -37,6 +38,7 @@ protected:
   static int score;
   static uint8_t game_state;
   static millis_t next_frame;
+  static GameRenderer screen;
 
   static bool game_frame();
   static void draw_game_over();
