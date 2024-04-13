@@ -773,6 +773,7 @@ namespace LanguageNarrow_en {
   LSTR MSG_INVADERS                       = _UxGT("Invaders");
   LSTR MSG_SNAKE                          = _UxGT("Sn4k3");
   LSTR MSG_MAZE                           = _UxGT("Maze");
+  LSTR MSG_FLAPPY                         = _UxGT("Flappy");
 
   LSTR MSG_BAD_PAGE                       = _UxGT("Bad page index");
   LSTR MSG_BAD_PAGE_SPEED                 = _UxGT("Bad page speed");
