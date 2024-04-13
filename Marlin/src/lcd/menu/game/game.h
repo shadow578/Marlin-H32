@@ -49,6 +49,9 @@
 #if ENABLED(MARLIN_SNAKE)
   #include "snake.h"
 #endif
+#if ENABLED(MARLIN_FLAPPY)
+  #include "flappy.h"
+#endif
 
 // Pool game data to save SRAM
 union MarlinGameData {
@@ -63,6 +66,9 @@ union MarlinGameData {
   #endif
   #if ENABLED(MARLIN_MAZE)
     maze_data_t maze;
+  #endif
+  #if ENABLED(MARLIN_FLAPPY)
+    flappy_data_t flappy;
   #endif
 };
 

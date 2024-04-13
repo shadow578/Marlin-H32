@@ -42,6 +42,9 @@ void menu_game() {
   #if ENABLED(MARLIN_MAZE)
     SUBMENU(MSG_MAZE, maze.enter_game);
   #endif
+  #if ENABLED(MARLIN_FLAPPY)
+    SUBMENU(MSG_FLAPPY, flappy.enter_game);
+  #endif
   END_MENU();
 }
 
