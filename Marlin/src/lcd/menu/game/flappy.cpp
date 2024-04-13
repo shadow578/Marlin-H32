@@ -99,7 +99,7 @@ constexpr int8_t score_y = GAME_HEIGHT - GAME_FONT_ASCENT - 1;
 constexpr int8_t gravity = 1;                  // px / frame^2
 constexpr int8_t flap_strength = gravity * 4;  // px / frame
 constexpr int8_t max_velocity = flap_strength; // px / frame
-constexpr int8_t min_velocity = -max_velocity; // px / frame
+constexpr int8_t min_velocity = -15;  // px / frame
 
 // Pipe Physics:
 // - pipes move to the right-to-left by pipe_speed px/frame
@@ -120,7 +120,7 @@ constexpr int8_t min_velocity = -max_velocity; // px / frame
 constexpr int8_t pipe_speed = 1; // px / frame
 
 
-flappy_data_t &state = marlin_game_data.flappy;
+static flappy_data_t &state = marlin_game_data.flappy;
 
 void FlappyGame::reset() {
   state.bird_y = GAME_HEIGHT / 2;
