@@ -7,15 +7,15 @@
 // Bird:
 //
 // |--------//--
-// |        
+// |
 // |    _   -----
 // |   |_|>     | <- bird_size (square)
 // |   |    -----
-// |   |        
+// |   |
 // |--------//--
 // |   |
-// |<->|  
-// bird_x  
+// |<->|
+// bird_x
 constexpr int8_t bird_x = 3;
 constexpr int8_t bird_size = 4;
 
@@ -26,17 +26,17 @@ constexpr int8_t bird_size = 4;
 //          |<>|<------->|
 //          |  |         |
 // |----//----------------------//--
-// |        |  |         |  |      | <- pipe_gap_min_y 
+// |        |  |         |  |      | <- pipe_gap_min_y
 // |       |____| ------ |  | ------
-// |                     |  |      
-// |        ____         |  |      
-// |       |    |        |  |      
-// |        |  |         |  |      
+// |                     |  |
+// |        ____         |  |
+// |       |    |        |  |
+// |        |  |         |  |
 // |        |  |        |____| _____
 // |        |  |                   | <- pipe_gap
 // |        |  |         ____  -----
 // |        |  |        |    |     | <- pipe_gap_max_y
-// | _______|__|_________|__|___   | 
+// | _______|__|_________|__|___   |
 // |----//----------------------//--
 constexpr int8_t pipe_width = 2;
 
@@ -47,15 +47,15 @@ constexpr int8_t pipe_gap_max_y = GAME_HEIGHT - pipe_gap_min_y;
 constexpr int8_t distance_between_pipes = bird_size * 8;
 
 
-// Pipe Flare: 
+// Pipe Flare:
 //
 // pipe_flare_widht
 // |<---------->|
 //  ____________  --
 // |            |  | <- pipe_flare_height
 // |__        __| --
-//    |      |  
-//    |      |  
+//    |      |
+//    |      |
 //
 constexpr int8_t pipe_flare_width = pipe_width + 1;
 constexpr int8_t pipe_flare_height = 2;
@@ -69,7 +69,7 @@ constexpr int8_t pipe_flare_height = 2;
 // |       ____         | <- ground_y
 // |      |    |        |
 // |_______|__|____ -----
-// |                    
+// |
 // |---------------//----
 constexpr int8_t ground_y = GAME_HEIGHT - 1;
 
@@ -84,11 +84,11 @@ constexpr int8_t score_y = GAME_HEIGHT - GAME_FONT_ASCENT - 1;
 // - the gravity increases the velocity by 1 px/frame, accelerating the bird downwards
 // - on flap, the velocity is instantly set to -flap_strength, giving the bird upwards momentum
 // - the bird's velocity is clamped to a maximum and minimum value
-// 
+//
 // |-//---------------//--
-// |                      
+// |
 // |     ^
-// |     | <- flap_strength  
+// |     | <- flap_strength
 // |     _
 // |    |_|>
 // |     |
@@ -105,16 +105,16 @@ constexpr int8_t min_velocity = -15;  // px / frame
 // - pipes move to the right-to-left by pipe_speed px/frame
 //
 // |----//-------------------//--
-// |                   |  | 
+// |                   |  |
 // |                  |____|
-// |                        
-// |                   ____ 
+// |
+// |                   ____
 // |                  |    |
-// |                   |  | 
-// |                   |  | 
-// | <---------------- |  | 
-// |   | pipe_speed    |  | 
-// |                   |  | 
+// |                   |  |
+// |                   |  |
+// | <---------------- |  |
+// |   | pipe_speed    |  |
+// |                   |  |
 // | __________________|__|_
 // |----//-------------------//--
 constexpr int8_t pipe_speed = 1; // px / frame
@@ -168,7 +168,7 @@ void FlappyGame::game_screen() {
     draw_game_over();
     screen.draw_int(score_x, score_y, score);
     if (ui.use_click()) exit_game();
-  } 
+  }
 
   screen.frame_end();
 }
@@ -189,7 +189,7 @@ void FlappyGame::move_bird(bool did_flap) {
   state.bird_y += state.bird_velocity;
 
   // constrain bird to screen top and ground
-  state.bird_y = constrain(state.bird_y, 0, ground_y - 1);
+  state.bird_y = constrain(state.bird_y, 0, ground_y);
 }
 
 void FlappyGame::move_pipes() {
@@ -251,7 +251,7 @@ bool FlappyGame::is_bird_colliding() {
 
 pos_t FlappyGame::get_next_pipe() {
   // start pipe off screen
-  return { 
+  return {
     GAME_WIDTH - 1,
     static_cast<int8_t>(random(pipe_gap_min_y, pipe_gap_max_y))
   };
@@ -274,9 +274,9 @@ void FlappyGame::on_game_over() {
 
 void FlappyGame::draw_bird() {
   screen.draw_frame(
-    bird_x - (bird_size / 2), 
-    state.bird_y - (bird_size / 2), 
-    bird_size, 
+    bird_x - (bird_size / 2),
+    state.bird_y - (bird_size / 2),
+    bird_size,
     bird_size
   );
 }
@@ -290,9 +290,9 @@ void FlappyGame::draw_pipe(const pipe_t &pipe) {
 
   // top
   screen.draw_box(
-    pipe.gap.x - pipe_width, 
-    0, 
-    pipe_width * 2, 
+    pipe.gap.x - pipe_width,
+    0,
+    pipe_width * 2,
     pipe.gap.y - pipe_gap
   );
   screen.draw_box(
@@ -304,9 +304,9 @@ void FlappyGame::draw_pipe(const pipe_t &pipe) {
 
   // bottom
   screen.draw_box(
-    pipe.gap.x - pipe_width, 
-    pipe.gap.y + pipe_gap, 
-    pipe_width * 2, 
+    pipe.gap.x - pipe_width,
+    pipe.gap.y + pipe_gap,
+    pipe_width * 2,
     ground_y - pipe.gap.y - pipe_gap
   );
   screen.draw_box(
