@@ -9,7 +9,13 @@
 
 void GameRenderer::frame_start() {
   // clear the screen before each frame
-  dwinFrameClear(RGB(0, 0, 0));
+  //dwinFrameClear(RGB(0, 0, 0));
+
+  // filling the play area should be faster than clearing the whole screen
+  const uint16_t fg = dwin_font.fg;
+  dwin_font.fg = dwin_game::color_to_dwin(0);
+  draw_box(0, 0, GAME_WIDTH, GAME_HEIGHT);
+  dwin_font.fg = fg;
 }
 
 void GameRenderer::frame_end() {}
@@ -63,7 +69,7 @@ void GameRenderer::draw_bitmapP(const game_dim_t x, const game_dim_t y, const ga
   for (game_dim_t row = 0; row < rows; row++) {
     for (game_dim_t col = 0; col < bytes_per_row; col++) {
       const uint8_t byte = bitmap[(row * bytes_per_row) + col];
-      for (uint8_t bit = 0; bit < 7; bit++) {
+      for (uint8_t bit = 0; bit < 8; bit++) {
         // assume that the screen area is cleared before drawing
         if (byte & (1 << bit)) {
           draw_pixel(x + (col * 8) + (7 - bit + 1), y + row);
