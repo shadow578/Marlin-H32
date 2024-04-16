@@ -43,7 +43,7 @@ void MarlinGame::draw_game_over() {
   constexpr int8_t gowide = (GAME_FONT_WIDTH) * 9,
                    gohigh = GAME_FONT_ASCENT - 3,
                        lx = (GAME_WIDTH - gowide) / 2,
-                       ly = (GAME_FONT_ASCENT + gohigh) / 2;
+                       ly = (GAME_HEIGHT + gohigh) / 2;
   if (PAGE_CONTAINS(ly - gohigh - 1, ly + 1)) {
     screen.set_color(0);
     screen.draw_box(lx - 1, ly - gohigh - 1, gowide + 2, gohigh + 2);
