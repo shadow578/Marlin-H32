@@ -1,6 +1,6 @@
-#include "../../inc/MarlinConfig.h"
+#include "../../inc/MarlinConfigPre.h"
 
-#if HAS_MARLINUI_U8GLIB
+#if HAS_MARLINUI_U8GLIB && HAS_GAMES
 
 #include "../menu/game/renderer.h"
 
@@ -45,4 +45,4 @@ int GameRenderer::draw_string(const game_dim_t x, const game_dim_t y, FSTR_P con
 void GameRenderer::draw_int(const game_dim_t x, const game_dim_t y, const int value) {
   lcd_put_int(x, y, value);
 }
-#endif // HAS_MARLINUI_U8GLIB
+#endif // HAS_MARLINUI_U8GLIB && HAS_GAMES
