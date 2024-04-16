@@ -1,6 +1,6 @@
-#include "../../../inc/MarlinConfig.h"
+#include "../../../inc/MarlinConfigPre.h"
 
-#if IS_DWIN_MARLINUI
+#if IS_DWIN_MARLINUI && HAS_GAMES
 
 #include "../../menu/game/renderer.h" // includes game_renderer.h
 #include "../../lcdprint.h"
@@ -101,4 +101,4 @@ void GameRenderer::draw_int(const game_dim_t x, const game_dim_t y, const int va
   //  value
   //);
 }
-#endif // IS_DWIN_MARLINUI
+#endif // IS_DWIN_MARLINUI && HAS_GAMES
