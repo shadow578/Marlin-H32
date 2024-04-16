@@ -3,6 +3,7 @@
 #if ENABLED(MARLIN_FLAPPY)
 
 #include "game.h"
+static flappy_data_t &state = marlin_game_data.flappy;
 
 // Bird:
 //
@@ -16,8 +17,8 @@
 // |   |
 // |<->|
 // bird_x
-constexpr int8_t bird_x = 3;
-constexpr int8_t bird_size = 4;
+constexpr int8_t bird_x = 5;
+constexpr int8_t bird_size = 3;
 
 
 // Pipe:
@@ -40,11 +41,12 @@ constexpr int8_t bird_size = 4;
 // |----//----------------------//--
 constexpr int8_t pipe_width = 2;
 
-constexpr int8_t pipe_gap = 3 * bird_size;
-constexpr int8_t pipe_gap_min_y = (pipe_gap * 2) + (pipe_gap / 2);
+constexpr int8_t pipe_gap = 2 * bird_size;
+constexpr int8_t pipe_gap_min_y = (pipe_gap) + (pipe_gap / 2);
 constexpr int8_t pipe_gap_max_y = GAME_HEIGHT - pipe_gap_min_y;
 
-constexpr int8_t distance_between_pipes = bird_size * 8;
+constexpr int8_t distance_between_pipes = GAME_WIDTH / COUNT(state.pipes);
+static_assert(distance_between_pipes >= bird_size * 6, "distance_between_pipes is too small - pipes will be very difficult to dodge, making the game frustrating.");
 
 
 // Pipe Flare:
@@ -97,7 +99,7 @@ constexpr int8_t score_y = GAME_HEIGHT - GAME_FONT_ASCENT - 1;
 // |-//---------------//--
 
 constexpr int8_t gravity = 1;                  // px / frame^2
-constexpr int8_t flap_strength = gravity * 4;  // px / frame
+constexpr int8_t flap_strength = gravity * 3;  // px / frame
 constexpr int8_t max_velocity = flap_strength; // px / frame
 constexpr int8_t min_velocity = -15;  // px / frame
 
@@ -119,8 +121,9 @@ constexpr int8_t min_velocity = -15;  // px / frame
 // |----//-------------------//--
 constexpr int8_t pipe_speed = 1; // px / frame
 
+// draw a frame around the game area
+constexpr bool draw_frame = true;
 
-static flappy_data_t &state = marlin_game_data.flappy;
 
 void FlappyGame::reset() {
   state.bird_y = GAME_HEIGHT / 2;
@@ -156,6 +159,15 @@ void FlappyGame::game_screen() {
   // draw the game
   screen.frame_start();
   screen.set_color(1);
+
+  if (draw_frame) {
+    screen.draw_frame(
+      0,
+      0,
+      GAME_WIDTH,
+      GAME_HEIGHT
+    );
+  }
 
   // draw game elements
   draw_bird();
