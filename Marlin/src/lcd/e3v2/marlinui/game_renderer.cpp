@@ -7,10 +7,6 @@
 #include "lcdprint_dwin.h"
 #include "marlinui_dwin.h"
 
-// ensure game screen size doesn't exceed maximum size of a int8_t
-static_assert(GAME_WIDTH <= 0x7f, "GAME_WIDTH must fit int8_t. Consider increasing the scaling factor.");
-static_assert(GAME_HEIGHT <= 0x7f, "GAME_HEIGHT must fit int8_t. Consider increasing the scaling factor.");
-
 void GameRenderer::frame_start() {
   // clear the screen before each frame
   dwinFrameClear(RGB(0, 0, 0));
@@ -60,7 +56,7 @@ void GameRenderer::draw_pixel(const game_dim_t x, const game_dim_t y) {
 }
 
 void GameRenderer::draw_bitmapP(const game_dim_t x, const game_dim_t y, const game_dim_t bytes_per_row, const game_dim_t rows, const pgm_bitmap_t bitmap) {
-  // DWIN theorethically supports bitmaps, but most screens don't support it 
+  // DWIN theorethically supports bitmaps, but most screens don't support it
   // (either because they use an older kernel version, or because they just (badly) emulate the DWIN protocol).
   // So instead, we draw the bitmap as a series of pixels, effectively emulating the draw call.
   // This will totally suck for performance, but it's the best we can do.
@@ -82,7 +78,7 @@ int GameRenderer::draw_string(const game_dim_t x, const game_dim_t y, const char
     dwin_game::game_to_screen(x) + dwin_game::x_offset,
     dwin_game::game_to_screen(y) + dwin_game::y_offset
   );
-  
+
   return lcd_put_u8str_max_P(
     str,
     PIXEL_LEN_NOLIMIT
