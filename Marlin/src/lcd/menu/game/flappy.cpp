@@ -158,8 +158,15 @@ void FlappyGame::game_screen() {
 
   // draw the game
   frame_start();
-  set_color(color::WHITE);
 
+  // draw game elements
+  draw_bird();
+  for (auto &pipe : state.pipes) {
+    draw_pipe(pipe);
+  }
+
+  // draw the frame around the game area
+  set_color(color::WHITE);
   if (frame_game_area) {
     draw_frame(
       0,
@@ -167,12 +174,6 @@ void FlappyGame::game_screen() {
       GAME_WIDTH,
       GAME_HEIGHT
     );
-  }
-
-  // draw game elements
-  draw_bird();
-  for (auto &pipe : state.pipes) {
-    draw_pipe(pipe);
   }
 
   // draw game over screen and exit on click
@@ -285,6 +286,7 @@ void FlappyGame::on_game_over() {
 }
 
 void FlappyGame::draw_bird() {
+  set_color(color::YELLOW);
   draw_frame(
     bird_x - (bird_size / 2),
     state.bird_y - (bird_size / 2),
@@ -299,6 +301,9 @@ void FlappyGame::draw_pipe(const pipe_t &pipe) {
   // don't draw pipe if it's off the end of the screen
   if (pipe.gap.x < pipe_width + (pipe_flare_width / 2)) return;
   if (pipe.gap.x > GAME_WIDTH - (pipe_width * 2) - pipe_flare_width) return;
+
+  // pipes are green
+  set_color(color::GREEN);
 
   // top
   draw_box(
