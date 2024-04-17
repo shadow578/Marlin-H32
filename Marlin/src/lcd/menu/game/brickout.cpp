@@ -135,14 +135,20 @@ void BrickoutGame::game_screen() {
   }
 
   frame_start();
-  set_color(color::WHITE);
 
-  // Draw bricks
+  // Draw bricks, cycling through colors for each brick
+  const color brick_colors[] = { color::RED, color::CYAN, color::GREEN, color::YELLOW, color::MAGENTA, color::BLUE };
+  int color_index = 0;
   if (PAGE_CONTAINS(BRICK_TOP, BRICK_BOT)) {
     for (uint8_t y = 0; y < BRICK_ROWS; ++y) {
       const uint8_t yy = y * BRICK_H + BRICK_TOP;
       if (PAGE_CONTAINS(yy, yy + BRICK_H - 1)) {
         for (uint8_t x = 0; x < BRICK_COLS; ++x) {
+          // cycle through colors, even if the brick is gone
+          // otherwise, bricks would change color if their neighbor is hit
+          set_color(brick_colors[color_index++ % COUNT(brick_colors)]);
+
+          // draw brick if it's still there
           if (TEST(bdat.bricks[y], x)) {
             const uint8_t xx = x * BRICK_W;
             for (uint8_t v = 0; v < BRICK_H - 1; ++v)
@@ -153,6 +159,9 @@ void BrickoutGame::game_screen() {
       }
     }
   }
+
+  // everything else is white
+  set_color(color::WHITE);
 
   // Draw paddle
   if (PAGE_CONTAINS(PADDLE_Y-1, PADDLE_Y)) {
