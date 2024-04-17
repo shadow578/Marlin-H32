@@ -45,13 +45,6 @@ namespace dwin_game {
    */
   constexpr screen_dim_t x_offset =  IS_PORTRAIT ? 0 : (DWIN_WIDTH - game_to_screen(TARGET_WIDTH)) / 2;
   constexpr screen_dim_t y_offset = !IS_PORTRAIT ? 0 : (DWIN_HEIGHT - game_to_screen(TARGET_HEIGHT)) / 2;
-
-  /**
-   * @brief convert a color (from set_color) to dwin
-   */
-  constexpr uint16_t color_to_dwin(const uint8_t color) {
-    return color == 0 ? RGB(0, 0, 0) : RGB(255, 255, 255);
-  }
 } // namespace dwin_game
 
 constexpr game_dim_t GAME_WIDTH = dwin_game::screen_to_game(DWIN_WIDTH - (dwin_game::x_offset * 2));

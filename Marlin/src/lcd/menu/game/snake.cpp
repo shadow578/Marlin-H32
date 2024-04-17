@@ -229,7 +229,7 @@ void SnakeGame::game_screen() {
   } while(0);
 
   frame_start();
-  set_color(1);
+  set_color(color::WHITE);
 
   // Draw Score
   if (PAGE_UNDER(HEADER_H)) draw_int(0, HEADER_H - 1, score);
