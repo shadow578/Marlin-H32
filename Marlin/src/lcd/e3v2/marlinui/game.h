@@ -52,13 +52,6 @@ namespace dwin_game {
 
   static_assert(game_to_screen(TARGET_WIDTH) + (x_offset * 2) <= DWIN_WIDTH, "DWIN game renderer failed to auto-scale, is too wide");
   static_assert(game_to_screen(TARGET_HEIGHT) + (y_offset * 2) <= DWIN_HEIGHT, "DWIN game renderer failed to auto-scale, is too high");
-
-  /**
-   * @brief convert a color (from set_color) to dwin
-   */
-  constexpr uint16_t color_to_dwin(const uint8_t color) {
-    return color == 0 ? RGB(0, 0, 0) : RGB(255, 255, 255);
-  }
 } // namespace dwin_game
 
 constexpr game_dim_t GAME_WIDTH = dwin_game::screen_to_game(DWIN_WIDTH - (dwin_game::x_offset * 2));
