@@ -2,12 +2,12 @@
 
 #if IS_DWIN_MARLINUI && HAS_GAMES
 
-#include "../../menu/game/renderer.h" // includes game_renderer.h
+#include "../../menu/game/types.h" // includes e3v2/marlinui/game.h
 #include "../../lcdprint.h"
 #include "lcdprint_dwin.h"
 #include "marlinui_dwin.h"
 
-void GameRenderer::frame_start() {
+void MarlinGame::frame_start() {
   // clear the screen before each frame
   //dwinFrameClear(RGB(0, 0, 0));
 
@@ -18,23 +18,23 @@ void GameRenderer::frame_start() {
   dwin_font.fg = fg;
 }
 
-void GameRenderer::frame_end() {}
+void MarlinGame::frame_end() {}
 
-void GameRenderer::set_color(const uint8_t color) {
+void MarlinGame::set_color(const uint8_t color) {
   dwin_font.fg = dwin_game::color_to_dwin(color);
 }
 
-void GameRenderer::draw_hline(const game_dim_t x, const game_dim_t y, const game_dim_t w) {
+void MarlinGame::draw_hline(const game_dim_t x, const game_dim_t y, const game_dim_t w) {
   // draw lines as boxes, since DWIN lines are always 1px wide but we want to scale them
   draw_box(x, y, w, 1);
 }
 
-void GameRenderer::draw_vline(const game_dim_t x, const game_dim_t y, const game_dim_t h) {
+void MarlinGame::draw_vline(const game_dim_t x, const game_dim_t y, const game_dim_t h) {
   // draw lines as boxes, since DWIN lines are always 1px wide but we want to scale them
   draw_box(x, y, 1, h);
 }
 
-void GameRenderer::draw_frame(const game_dim_t x, const game_dim_t y, const game_dim_t w, const game_dim_t h) {
+void MarlinGame::draw_frame(const game_dim_t x, const game_dim_t y, const game_dim_t w, const game_dim_t h) {
   dwinDrawBox(
     0, // mode = frame
     dwin_font.fg, // color
@@ -45,7 +45,7 @@ void GameRenderer::draw_frame(const game_dim_t x, const game_dim_t y, const game
   );
 }
 
-void GameRenderer::draw_box(const game_dim_t x, const game_dim_t y, const game_dim_t w, const game_dim_t h) {
+void MarlinGame::draw_box(const game_dim_t x, const game_dim_t y, const game_dim_t w, const game_dim_t h) {
   dwinDrawBox(
     1, // mode = fill
     dwin_font.fg, // color
@@ -56,13 +56,13 @@ void GameRenderer::draw_box(const game_dim_t x, const game_dim_t y, const game_d
   );
 }
 
-void GameRenderer::draw_pixel(const game_dim_t x, const game_dim_t y) {
+void MarlinGame::draw_pixel(const game_dim_t x, const game_dim_t y) {
   // draw pixels as boxes, since DWIN pixels are always 1px wide but we want to scale them
   draw_box(x, y, 1, 1);
 }
 
-void GameRenderer::draw_bitmapP(const game_dim_t x, const game_dim_t y, const game_dim_t bytes_per_row, const game_dim_t rows, const pgm_bitmap_t bitmap) {
-  // DWIN theorethically supports bitmaps, but most screens don't support it
+void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_dim_t bytes_per_row, const game_dim_t rows, const pgm_bitmap_t bitmap) {
+  // DWIN theorethically supports bitmaps since kernel 2.1, but most screens don't support it
   // (either because they use an older kernel version, or because they just (badly) emulate the DWIN protocol).
   // So instead, we draw the bitmap as a series of pixels, effectively emulating the draw call.
   // This will totally suck for performance, but it's the best we can do.
@@ -79,7 +79,7 @@ void GameRenderer::draw_bitmapP(const game_dim_t x, const game_dim_t y, const ga
   }
 }
 
-int GameRenderer::draw_string(const game_dim_t x, const game_dim_t y, const char* str) {
+int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, const char* str) {
   lcd_moveto_xy(
     dwin_game::game_to_screen(x) + dwin_game::x_offset,
     dwin_game::game_to_screen(y) + dwin_game::y_offset
@@ -91,11 +91,11 @@ int GameRenderer::draw_string(const game_dim_t x, const game_dim_t y, const char
   );
 }
 
-int GameRenderer::draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const fstr) {
-  return draw_string(x, y, FTOP(fstr));
+int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const str) {
+  return draw_string(x, y, FTOP(str));
 }
 
-void GameRenderer::draw_int(const game_dim_t x, const game_dim_t y, const int value) {
+void MarlinGame::draw_int(const game_dim_t x, const game_dim_t y, const int value) {
   // TODO: lcd_put_int doesn't seem to work ?!
   char str[12];
   itoa(value, str, 10);

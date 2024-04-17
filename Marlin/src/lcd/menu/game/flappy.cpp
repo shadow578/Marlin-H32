@@ -122,7 +122,7 @@ constexpr int8_t min_velocity = -15;  // px / frame
 constexpr int8_t pipe_speed = 1; // px / frame
 
 // draw a frame around the game area
-constexpr bool draw_frame = true;
+constexpr bool frame_game_area = true;
 
 
 void FlappyGame::reset() {
@@ -157,11 +157,11 @@ void FlappyGame::game_screen() {
   if (!game_state) move_bird(false);
 
   // draw the game
-  screen.frame_start();
-  screen.set_color(1);
+  frame_start();
+  set_color(1);
 
-  if (draw_frame) {
-    screen.draw_frame(
+  if (frame_game_area) {
+    draw_frame(
       0,
       0,
       GAME_WIDTH,
@@ -178,11 +178,11 @@ void FlappyGame::game_screen() {
   // draw game over screen and exit on click
   if (!game_state) {
     draw_game_over();
-    screen.draw_int(score_x, score_y, score);
+    draw_int(score_x, score_y, score);
     if (ui.use_click()) exit_game();
   }
 
-  screen.frame_end();
+  frame_end();
 }
 
 void FlappyGame::move_bird(bool did_flap) {
@@ -285,7 +285,7 @@ void FlappyGame::on_game_over() {
 }
 
 void FlappyGame::draw_bird() {
-  screen.draw_frame(
+  draw_frame(
     bird_x - (bird_size / 2),
     state.bird_y - (bird_size / 2),
     bird_size,
@@ -301,13 +301,13 @@ void FlappyGame::draw_pipe(const pipe_t &pipe) {
   if (pipe.gap.x > GAME_WIDTH - (pipe_width * 2) - pipe_flare_width) return;
 
   // top
-  screen.draw_box(
+  draw_box(
     pipe.gap.x - pipe_width,
     0,
     pipe_width * 2,
     pipe.gap.y - pipe_gap
   );
-  screen.draw_box(
+  draw_box(
     pipe.gap.x - pipe_width - (pipe_flare_width / 2),
     pipe.gap.y - pipe_gap - pipe_flare_height,
     pipe_flare_width * 2,
@@ -315,13 +315,13 @@ void FlappyGame::draw_pipe(const pipe_t &pipe) {
   );
 
   // bottom
-  screen.draw_box(
+  draw_box(
     pipe.gap.x - pipe_width,
     pipe.gap.y + pipe_gap,
     pipe_width * 2,
     ground_y - pipe.gap.y - pipe_gap
   );
-  screen.draw_box(
+  draw_box(
     pipe.gap.x - pipe_width - (pipe_flare_width / 2),
     pipe.gap.y + pipe_gap,
     pipe_flare_width * 2,

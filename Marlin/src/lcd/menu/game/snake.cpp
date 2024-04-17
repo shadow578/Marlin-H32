@@ -228,14 +228,14 @@ void SnakeGame::game_screen() {
 
   } while(0);
 
-  screen.frame_start();
-  screen.set_color(1);
+  frame_start();
+  set_color(1);
 
   // Draw Score
-  if (PAGE_UNDER(HEADER_H)) screen.draw_int(0, HEADER_H - 1, score);
+  if (PAGE_UNDER(HEADER_H)) draw_int(0, HEADER_H - 1, score);
 
   // DRAW THE PLAYFIELD BORDER
-  screen.draw_frame(BOARD_L - 2, BOARD_T - 2, BOARD_R - BOARD_L + 4, BOARD_B - BOARD_T + 4);
+  draw_frame(BOARD_L - 2, BOARD_T - 2, BOARD_R - BOARD_L + 4, BOARD_B - BOARD_T + 4);
 
   // Draw the snake (tail)
   #if SNAKE_WH < 2
@@ -246,11 +246,11 @@ void SnakeGame::game_screen() {
       if (p.x == q.x) {
         const int8_t y1 = GAMEY(_MIN(p.y, q.y)), y2 = GAMEY(_MAX(p.y, q.y));
         if (PAGE_CONTAINS(y1, y2))
-          screen.draw_vline(GAMEX(p.x), y1, y2 - y1 + 1);
+          draw_vline(GAMEX(p.x), y1, y2 - y1 + 1);
       }
       else if (PAGE_CONTAINS(GAMEY(p.y), GAMEY(p.y))) {
         const int8_t x1 = GAMEX(_MIN(p.x, q.x)), x2 = GAMEX(_MAX(p.x, q.x));
-        screen.draw_hline(x1, GAMEY(p.y), x2 - x1 + 1);
+        draw_hline(x1, GAMEY(p.y), x2 - x1 + 1);
       }
     }
 
@@ -262,13 +262,13 @@ void SnakeGame::game_screen() {
       if (p.x == q.x) {
         const int8_t y1 = GAMEY(_MIN(p.y, q.y)), y2 = GAMEY(_MAX(p.y, q.y));
         if (PAGE_CONTAINS(y1, y2 + 1))
-          screen.draw_frame(GAMEX(p.x), y1, 2, y2 - y1 + 1 + 1);
+          draw_frame(GAMEX(p.x), y1, 2, y2 - y1 + 1 + 1);
       }
       else {
         const int8_t py = GAMEY(p.y);
         if (PAGE_CONTAINS(py, py + 1)) {
           const int8_t x1 = GAMEX(_MIN(p.x, q.x)), x2 = GAMEX(_MAX(p.x, q.x));
-          screen.draw_frame(x1, py, x2 - x1 + 1 + 1, 2);
+          draw_frame(x1, py, x2 - x1 + 1 + 1, 2);
         }
       }
     }
@@ -284,7 +284,7 @@ void SnakeGame::game_screen() {
           for (int8_t i = y1; i <= y2; ++i) {
             const int8_t y = GAMEY(i);
             if (PAGE_CONTAINS(y, y + SNAKE_SIZ - 1))
-              screen.draw_box(GAMEX(p.x), y, SNAKE_SIZ, SNAKE_SIZ);
+              draw_box(GAMEX(p.x), y, SNAKE_SIZ, SNAKE_SIZ);
           }
         }
       }
@@ -293,7 +293,7 @@ void SnakeGame::game_screen() {
         if (PAGE_CONTAINS(py, py + SNAKE_SIZ - 1)) {
           const int8_t x1 = _MIN(p.x, q.x), x2 = _MAX(p.x, q.x);
           for (int8_t i = x1; i <= x2; ++i)
-            screen.draw_box(GAMEX(i), py, SNAKE_SIZ, SNAKE_SIZ);
+            draw_box(GAMEX(i), py, SNAKE_SIZ, SNAKE_SIZ);
         }
       }
     }
@@ -304,11 +304,11 @@ void SnakeGame::game_screen() {
   const int8_t fy = GAMEY(sdat.foody);
   if (PAGE_CONTAINS(fy, fy + FOOD_WH - 1)) {
     const int8_t fx = GAMEX(sdat.foodx);
-    screen.draw_frame(fx, fy, FOOD_WH, FOOD_WH);
-    if (FOOD_WH == 5) screen.draw_pixel(fx + 2, fy + 2);
+    draw_frame(fx, fy, FOOD_WH, FOOD_WH);
+    if (FOOD_WH == 5) draw_pixel(fx + 2, fy + 2);
   }
 
-  screen.frame_end();
+  frame_end();
 
   // Draw GAME OVER
   if (!game_state) draw_game_over();
