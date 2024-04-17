@@ -10,20 +10,25 @@ namespace dwin_game {
   /**
    * @brief Target the renderer at 128x64 pixels to match UG8 screens
    */
-  constexpr float TARGET_WIDTH = 128;
-  constexpr float TARGET_HEIGHT = 64;
+  constexpr screen_dim_t TARGET_WIDTH = 128;
+  constexpr screen_dim_t TARGET_HEIGHT = 64;
 
-  /**
-   * @brief Is the screen in portrait mode?
-   * If yes, scale the game to fit the width of the screen and offset on Y.
-   * If no, scale the game to fit the height of the screen and offset on X.
-   */
-  constexpr bool IS_PORTRAIT = DWIN_HEIGHT > DWIN_WIDTH;
+  constexpr int calculate_scale()
+  {
+    // use whichever is smaller: the width or height scaling factor
+    float scaling_factor = _MIN(
+      static_cast<float>(DWIN_WIDTH) / static_cast<float>(TARGET_WIDTH),
+      static_cast<float>(DWIN_HEIGHT) / static_cast<float>(TARGET_HEIGHT)
+    );
+
+    // round DOWN to closest integer
+    return static_cast<int>(scaling_factor);
+  }
 
   /**
    * @brief Game render scale.
    */
-  constexpr float scale = IS_PORTRAIT ? (DWIN_WIDTH / TARGET_WIDTH) : (DWIN_HEIGHT / TARGET_HEIGHT);
+  constexpr int scale = calculate_scale();
 
   /**
    * @brief scale a game dimension to screen dimensions
@@ -39,12 +44,14 @@ namespace dwin_game {
     return x * scale;
   }
 
-
   /**
    * @brief Offset of the game window on the screen. Applied after scaling.
    */
-  constexpr screen_dim_t x_offset =  IS_PORTRAIT ? 0 : (DWIN_WIDTH - game_to_screen(TARGET_WIDTH)) / 2;
-  constexpr screen_dim_t y_offset = !IS_PORTRAIT ? 0 : (DWIN_HEIGHT - game_to_screen(TARGET_HEIGHT)) / 2;
+  constexpr screen_dim_t x_offset = (DWIN_WIDTH - game_to_screen(TARGET_WIDTH)) / 2;
+  constexpr screen_dim_t y_offset = (DWIN_HEIGHT - game_to_screen(TARGET_HEIGHT)) / 2;
+
+  static_assert(game_to_screen(TARGET_WIDTH) + (x_offset * 2) <= DWIN_WIDTH, "DWIN game renderer failed to auto-scale, is too wide");
+  static_assert(game_to_screen(TARGET_HEIGHT) + (y_offset * 2) <= DWIN_HEIGHT, "DWIN game renderer failed to auto-scale, is too high");
 } // namespace dwin_game
 
 constexpr game_dim_t GAME_WIDTH = dwin_game::screen_to_game(DWIN_WIDTH - (dwin_game::x_offset * 2));
