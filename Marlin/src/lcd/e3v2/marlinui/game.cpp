@@ -7,15 +7,13 @@
 #include "lcdprint_dwin.h"
 #include "marlinui_dwin.h"
 
-constexpr uint16_t CLEAR_COLOR = COLOR_BG_BLACK;
-
 void MarlinGame::frame_start() {
   // clear the screen before each frame
   //dwinFrameClear(CLEAR_COLOR);
 
   // filling the play area should be faster than clearing the whole screen
   const uint16_t fg = dwin_font.fg;
-  dwin_font.fg = CLEAR_COLOR;
+  dwin_font.fg = COLOR_BG_BLACK;
   draw_box(0, 0, GAME_WIDTH, GAME_HEIGHT);
   dwin_font.fg = fg;
 }
@@ -26,7 +24,7 @@ void MarlinGame::set_color(const color color) {
   switch(color)
   {
     case color::BLACK:
-      dwin_font.fg = CLEAR_COLOR;
+      dwin_font.fg = COLOR_BG_BLACK;
       break;
     case color::WHITE:
     default:
@@ -35,22 +33,22 @@ void MarlinGame::set_color(const color color) {
 
     // https://rgbcolorpicker.com/565/table
     case color::RED:
-      dwin_font.fg = RGB(0xFF, 0x00, 0x00);
+      dwin_font.fg = RGB(0x1F, 0x00, 0x00);
       break;
     case color::GREEN:
-      dwin_font.fg = RGB(0x00, 0xFF, 0x00);
+      dwin_font.fg = RGB(0x00, 0x3F, 0x00);
       break;
     case color::BLUE:
-      dwin_font.fg = RGB(0x00, 0x00, 0xFF);
+      dwin_font.fg = RGB(0x00, 0x00, 0x1F);
       break;
     case color::YELLOW:
-      dwin_font.fg = RGB(0xFF, 0xFF, 0x00);
+      dwin_font.fg = RGB(0x1F, 0x3F, 0x00);
       break;
     case color::CYAN:
-      dwin_font.fg = RGB(0x00, 0xFF, 0xFF);
+      dwin_font.fg = RGB(0x00, 0x3F, 0x1F);
       break;
     case color::MAGENTA:
-      dwin_font.fg = RGB(0xFF, 0x00, 0xFF);
+      dwin_font.fg = RGB(0x1F, 0x00, 0x1F);
       break;
   }
 }
