@@ -229,15 +229,9 @@ void SnakeGame::game_screen() {
   } while(0);
 
   frame_start();
-  set_color(1);
 
-  // Draw Score
-  if (PAGE_UNDER(HEADER_H)) draw_int(0, HEADER_H - 1, score);
-
-  // DRAW THE PLAYFIELD BORDER
-  draw_frame(BOARD_L - 2, BOARD_T - 2, BOARD_R - BOARD_L + 4, BOARD_B - BOARD_T + 4);
-
-  // Draw the snake (tail)
+  // Draw the snake (tail) in green
+  set_color(color::GREEN);
   #if SNAKE_WH < 2
 
     // At this scale just draw a line
@@ -300,7 +294,8 @@ void SnakeGame::game_screen() {
 
   #endif
 
-  // Draw food
+  // Draw food in red
+  set_color(color::RED);
   const int8_t fy = GAMEY(sdat.foody);
   if (PAGE_CONTAINS(fy, fy + FOOD_WH - 1)) {
     const int8_t fx = GAMEX(sdat.foodx);
@@ -308,13 +303,20 @@ void SnakeGame::game_screen() {
     if (FOOD_WH == 5) draw_pixel(fx + 2, fy + 2);
   }
 
-  frame_end();
+  // Draw the playfield border
+  set_color(color::WHITE);
+  draw_frame(BOARD_L - 2, BOARD_T - 2, BOARD_R - BOARD_L + 4, BOARD_B - BOARD_T + 4);
+
+  // Draw Score
+  if (PAGE_UNDER(HEADER_H)) draw_int(0, HEADER_H - 1, score);
 
   // Draw GAME OVER
   if (!game_state) draw_game_over();
 
   // A click always exits this game
   if (ui.use_click()) exit_game();
+
+  frame_end();
 }
 
 void SnakeGame::enter_game() {
