@@ -365,8 +365,8 @@ void InvadersGame::game_screen() {
 
   if (!idat.quit_count) exit_game();
 
-  screen.frame_start();
-  screen.set_color(1);
+  frame_start();
+  set_color(1);
 
   // Draw invaders
   if (PAGE_CONTAINS(idat.pos.y, idat.pos.y + idat.botmost * (INVADER_ROW_H) - 2 - 1)) {
@@ -377,7 +377,7 @@ void InvadersGame::game_screen() {
         int8_t xx = idat.pos.x;
         for (uint8_t x = 0; x < INVADER_COLS; ++x) {
           if (TEST(idat.bugs[y], x))
-            screen.draw_bitmapP(xx, yy, 2, INVADER_H, invader[type][idat.game_blink]);
+            draw_bitmap(xx, yy, 2, INVADER_H, invader[type][idat.game_blink]);
           xx += INVADER_COL_W;
         }
       }
@@ -387,25 +387,25 @@ void InvadersGame::game_screen() {
 
   // Draw UFO
   if (idat.ufov && PAGE_UNDER(UFO_H + 2))
-    screen.draw_bitmapP(idat.ufox, 2, 2, UFO_H, ufo);
+    draw_bitmap(idat.ufox, 2, 2, UFO_H, ufo);
 
   // Draw cannon
   if (game_state && PAGE_CONTAINS(CANNON_Y, CANNON_Y + CANNON_H - 1) && (game_state < 2 || (game_state & 0x02)))
-    screen.draw_bitmapP(idat.cannon_x, CANNON_Y, 2, CANNON_H, cannon);
+    draw_bitmap(idat.cannon_x, CANNON_Y, 2, CANNON_H, cannon);
 
   // Draw laser
   if (idat.laser.v && PAGE_CONTAINS(idat.laser.y, idat.laser.y + LASER_H - 1))
-    screen.draw_vline(idat.laser.x, idat.laser.y, LASER_H);
+    draw_vline(idat.laser.x, idat.laser.y, LASER_H);
 
   // Draw invader bullets
   for (uint8_t i = 0; i < COUNT(idat.bullet); ++i) {
     if (idat.bullet[i].v && PAGE_CONTAINS(idat.bullet[i].y - (SHOT_H - 1), idat.bullet[i].y))
-      screen.draw_vline(idat.bullet[i].x, idat.bullet[i].y - (SHOT_H - 1), SHOT_H);
+      draw_vline(idat.bullet[i].x, idat.bullet[i].y - (SHOT_H - 1), SHOT_H);
   }
 
   // Draw explosion
   if (idat.explod.v && PAGE_CONTAINS(idat.explod.y, idat.explod.y + 7 - 1)) {
-    screen.draw_bitmapP(idat.explod.x, idat.explod.y, 2, 7, explosion);
+    draw_bitmap(idat.explod.x, idat.explod.y, 2, 7, explosion);
     --idat.explod.v;
   }
 
@@ -416,15 +416,15 @@ void InvadersGame::game_screen() {
     // Draw Score
     //const uint8_t sx = (GAME_WIDTH - (score >= 10 ? score >= 100 ? score >= 1000 ? 4 : 3 : 2 : 1) * GAME_FONT_WIDTH) / 2;
     constexpr uint8_t sx = 0;
-    screen.draw_int(sx, GAME_FONT_ASCENT - 1, score);
+    draw_int(sx, GAME_FONT_ASCENT - 1, score);
 
     // Draw lives
     if (idat.cannons_left)
       for (uint8_t i = 1; i <= idat.cannons_left; ++i)
-        screen.draw_bitmapP(GAME_WIDTH - i * (LIFE_W), 6 - (LIFE_H), 1, LIFE_H, life);
+        draw_bitmap(GAME_WIDTH - i * (LIFE_W), 6 - (LIFE_H), 1, LIFE_H, life);
   }
 
-  screen.frame_end();
+  frame_end();
 }
 
 void InvadersGame::enter_game() {
