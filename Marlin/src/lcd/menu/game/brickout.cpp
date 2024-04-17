@@ -135,7 +135,7 @@ void BrickoutGame::game_screen() {
   }
 
   frame_start();
-  set_color(1);
+  set_color(color::WHITE);
 
   // Draw bricks
   if (PAGE_CONTAINS(BRICK_TOP, BRICK_BOT)) {

@@ -158,7 +158,7 @@ void FlappyGame::game_screen() {
 
   // draw the game
   frame_start();
-  set_color(1);
+  set_color(color::WHITE);
 
   if (frame_game_area) {
     draw_frame(

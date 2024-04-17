@@ -45,9 +45,9 @@ void MarlinGame::draw_game_over() {
                        lx = (GAME_WIDTH - gowide) / 2,
                        ly = (GAME_HEIGHT + gohigh) / 2;
   if (PAGE_CONTAINS(ly - gohigh - 1, ly + 1)) {
-    set_color(0);
+    set_color(color::BLACK);
     draw_box(lx - 1, ly - gohigh - 1, gowide + 2, gohigh + 2);
-    set_color(1);
+    set_color(color::WHITE);
     if (ui.get_blink()) draw_string(lx, ly, F("GAME OVER"));
   }
 }

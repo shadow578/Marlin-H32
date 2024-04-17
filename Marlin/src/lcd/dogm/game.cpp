@@ -8,8 +8,17 @@ void MarlinGame::frame_start() {}
 
 void MarlinGame::frame_end() {}
 
-void MarlinGame::set_color(const uint8_t color) {
-  u8g.setColorIndex(color);
+void MarlinGame::set_color(const color color) {
+  switch(color)
+  {
+    case color::BLACK:
+      u8g.setColorIndex(0);
+      break;
+    case color::WHITE:
+    default:
+      u8g.setColorIndex(1);
+      break;
+  }
 }
 
 void MarlinGame::draw_hline(const game_dim_t x, const game_dim_t y, const game_dim_t w) {

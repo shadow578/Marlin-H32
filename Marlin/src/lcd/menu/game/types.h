@@ -59,6 +59,29 @@ public:
   //
 protected:
   /**
+   * @brief The colors available for drawing games.
+   * @note If a screen doesn't support (a) color, it shall fall back to using WHITE.
+   */
+  enum class color {
+    /**
+     * @brief Black color. This is guaranteed to be the clear color on all screens.
+     */
+    BLACK,
+
+    /**
+     * @brief White color. Guranteed to be white on all screens.
+     */
+    WHITE,
+
+    RED,
+    GREEN,
+    BLUE,
+    YELLOW,
+    CYAN,
+    MAGENTA,
+  };
+
+  /**
    * @brief Called before any draw calls in the current frame.
    */
   static void frame_start();
@@ -71,9 +94,8 @@ protected:
   /**
    * @brief Set the color for subsequent draw calls.
    * @param color The color to use for subsequent draw calls.
-   * @see https://github.com/olikraus/u8glib/wiki/userreference#setcolorindex
    */
-  static void set_color(const uint8_t color);
+  static void set_color(const color color);
 
   /**
    * @brief Draw a horizontal line.

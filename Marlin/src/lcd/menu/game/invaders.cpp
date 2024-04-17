@@ -366,7 +366,7 @@ void InvadersGame::game_screen() {
   if (!idat.quit_count) exit_game();
 
   frame_start();
-  set_color(1);
+  set_color(color::WHITE);
 
   // Draw invaders
   if (PAGE_CONTAINS(idat.pos.y, idat.pos.y + idat.botmost * (INVADER_ROW_H) - 2 - 1)) {
