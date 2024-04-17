@@ -9,19 +9,48 @@
 
 void MarlinGame::frame_start() {
   // clear the screen before each frame
-  //dwinFrameClear(RGB(0, 0, 0));
+  //dwinFrameClear(CLEAR_COLOR);
 
   // filling the play area should be faster than clearing the whole screen
   const uint16_t fg = dwin_font.fg;
-  dwin_font.fg = dwin_game::color_to_dwin(0);
+  dwin_font.fg = COLOR_BG_BLACK;
   draw_box(0, 0, GAME_WIDTH, GAME_HEIGHT);
   dwin_font.fg = fg;
 }
 
 void MarlinGame::frame_end() {}
 
-void MarlinGame::set_color(const uint8_t color) {
-  dwin_font.fg = dwin_game::color_to_dwin(color);
+void MarlinGame::set_color(const color color) {
+  switch(color)
+  {
+    case color::BLACK:
+      dwin_font.fg = COLOR_BG_BLACK;
+      break;
+    case color::WHITE:
+    default:
+      dwin_font.fg = COLOR_WHITE;
+      break;
+
+    // https://rgbcolorpicker.com/565/table
+    case color::RED:
+      dwin_font.fg = RGB(0x1F, 0x00, 0x00);
+      break;
+    case color::GREEN:
+      dwin_font.fg = RGB(0x00, 0x3F, 0x00);
+      break;
+    case color::BLUE:
+      dwin_font.fg = RGB(0x00, 0x00, 0x1F);
+      break;
+    case color::YELLOW:
+      dwin_font.fg = RGB(0x1F, 0x3F, 0x00);
+      break;
+    case color::CYAN:
+      dwin_font.fg = RGB(0x00, 0x3F, 0x1F);
+      break;
+    case color::MAGENTA:
+      dwin_font.fg = RGB(0x1F, 0x00, 0x1F);
+      break;
+  }
 }
 
 void MarlinGame::draw_hline(const game_dim_t x, const game_dim_t y, const game_dim_t w) {
