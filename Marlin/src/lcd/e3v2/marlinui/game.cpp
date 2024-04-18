@@ -2,10 +2,22 @@
 
 #if IS_DWIN_MARLINUI && HAS_GAMES
 
+#define PERFORMANCE_COUNTERS 1
+
 #include "../../menu/game/types.h" // includes e3v2/marlinui/game.h
 #include "../../lcdprint.h"
 #include "lcdprint_dwin.h"
 #include "marlinui_dwin.h"
+
+#if PERFORMANCE_COUNTERS == 1
+  static uint32_t draw_call_cnt = 0;     // total number of draw calls in the current frame
+  static millis_t frame_draw_millis = 0, // time spent drawing the frame 
+                  frame_wait_millis = 0; // time spent waiting for the next frame
+
+  #define DRAW_CALL_INC(subcall_cnt) draw_call_cnt++
+#else
+  #define DRAW_CALL_INC(subcall_cnt)
+#endif
 
 void MarlinGame::frame_start() {
   // clear the screen before each frame
@@ -16,9 +28,50 @@ void MarlinGame::frame_start() {
   dwin_font.fg = COLOR_BG_BLACK;
   draw_box(0, 0, GAME_WIDTH, GAME_HEIGHT);
   dwin_font.fg = fg;
+
+  dwin_font.index = DWIN_FONT_MENU;
+
+  // reset performance counters
+  #if PERFORMANCE_COUNTERS == 1
+    draw_call_cnt = 0;
+    frame_draw_millis = millis();
+    frame_wait_millis = frame_draw_millis - frame_wait_millis; 
+  #endif
 }
 
-void MarlinGame::frame_end() {}
+void MarlinGame::frame_end() {
+  #if PERFORMANCE_COUNTERS == 1
+    const millis_t frame_wait = frame_wait_millis;
+    frame_wait_millis = millis();
+    frame_draw_millis = frame_wait_millis - frame_draw_millis;
+
+    // calculate frames per deci-seconds (100 milliseconds)
+    const uint32_t fpds = 100 / (frame_draw_millis + frame_wait);
+
+    // format the performance counters as a string
+    char perf_str[64];
+    sprintf_P(
+      perf_str,
+      PSTR("d%04lu w%04lu c%04lu f%02lu "),
+      frame_draw_millis,
+      frame_wait,
+      draw_call_cnt,
+      fpds
+    );
+
+    // draw the performance counters at the (physical) origin of the screen
+    const uint16_t fg = dwin_font.fg;
+    const bool solid = dwin_font.solid;
+    dwin_font.fg = RGB(0x1F, 0x3F, 0x00);
+    dwin_font.solid = true;
+
+    lcd_moveto_xy(0, 0);
+    lcd_put_u8str(perf_str);
+
+    dwin_font.fg = fg;
+    dwin_font.solid = solid;
+  #endif
+}
 
 void MarlinGame::set_color(const color color) {
   switch(color)
@@ -56,11 +109,15 @@ void MarlinGame::set_color(const color color) {
 void MarlinGame::draw_hline(const game_dim_t x, const game_dim_t y, const game_dim_t w) {
   // draw lines as boxes, since DWIN lines are always 1px wide but we want to scale them
   draw_box(x, y, w, 1);
+
+  DRAW_CALL_INC(1);
 }
 
 void MarlinGame::draw_vline(const game_dim_t x, const game_dim_t y, const game_dim_t h) {
   // draw lines as boxes, since DWIN lines are always 1px wide but we want to scale them
   draw_box(x, y, 1, h);
+
+  DRAW_CALL_INC(1);
 }
 
 void MarlinGame::draw_frame(const game_dim_t x, const game_dim_t y, const game_dim_t w, const game_dim_t h) {
@@ -72,6 +129,8 @@ void MarlinGame::draw_frame(const game_dim_t x, const game_dim_t y, const game_d
     dwin_game::game_to_screen(w),
     dwin_game::game_to_screen(h)
   );
+
+  DRAW_CALL_INC(0);
 }
 
 void MarlinGame::draw_box(const game_dim_t x, const game_dim_t y, const game_dim_t w, const game_dim_t h) {
@@ -83,6 +142,8 @@ void MarlinGame::draw_box(const game_dim_t x, const game_dim_t y, const game_dim
     dwin_game::game_to_screen(w),
     dwin_game::game_to_screen(h)
   );
+
+  DRAW_CALL_INC(0);
 }
 
 void MarlinGame::draw_pixel(const game_dim_t x, const game_dim_t y) {
@@ -91,6 +152,8 @@ void MarlinGame::draw_pixel(const game_dim_t x, const game_dim_t y) {
   // 0x02 'draw point' command is way slower per pixel than 0x05 'fill rectangle'
   // (0.4 us vs 0.14 us per pixel)
   draw_box(x, y, 1, 1);
+
+  DRAW_CALL_INC(1);
 }
 
 void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_dim_t bytes_per_row, const game_dim_t rows, const pgm_bitmap_t bitmap) {
@@ -112,6 +175,8 @@ void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_
       rows,
       bitmap // U8G bitmap format is compatible to DrawPointMap format
     );
+
+    DRAW_CALL_INC(0);
   #else
     // TJC displays don't seem to support the 0x02 'draw point' command, so instead we have to draw the bitmap
     // as a series of rectangles using draw_pixel.
@@ -123,6 +188,7 @@ void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_
           // assume that the screen area is cleared before drawing
           if (byte & (1 << bit)) {
             draw_pixel(x + (col * 8) + (7 - bit + 1), y + row);
+            DRAW_CALL_INC(1);
           }
         }
       }
@@ -131,6 +197,8 @@ void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_
 }
 
 int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, const char* str) {
+  DRAW_CALL_INC(0);
+
   lcd_moveto_xy(
     dwin_game::game_to_screen(x) + dwin_game::x_offset,
     dwin_game::game_to_screen(y) + dwin_game::y_offset
@@ -151,6 +219,8 @@ void MarlinGame::draw_int(const game_dim_t x, const game_dim_t y, const int valu
   char str[12];
   itoa(value, str, 10);
   draw_string(x, y, str);
+
+  DRAW_CALL_INC(1);
 
   //lcd_put_int(
   //  dwin_game::game_to_screen(x) + dwin_game::x_offset,
