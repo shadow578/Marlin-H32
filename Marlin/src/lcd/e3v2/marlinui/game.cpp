@@ -86,26 +86,48 @@ void MarlinGame::draw_box(const game_dim_t x, const game_dim_t y, const game_dim
 }
 
 void MarlinGame::draw_pixel(const game_dim_t x, const game_dim_t y) {
-  // draw pixels as boxes, since DWIN pixels are always 1px wide but we want to scale them
+  // draw pixels using boxes.
+  // while DWIN protocol supports drawing points with different sizes, the
+  // 0x02 'draw point' command is way slower per pixel than 0x05 'fill rectangle'
+  // (0.4 us vs 0.14 us per pixel)
   draw_box(x, y, 1, 1);
 }
 
 void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_dim_t bytes_per_row, const game_dim_t rows, const pgm_bitmap_t bitmap) {
   // DWIN theorethically supports bitmaps since kernel 2.1, but most screens don't support it
   // (either because they use an older kernel version, or because they just (badly) emulate the DWIN protocol).
-  // So instead, we draw the bitmap as a series of pixels, effectively emulating the draw call.
-  // This will totally suck for performance, but it's the best we can do.
-  for (game_dim_t row = 0; row < rows; row++) {
-    for (game_dim_t col = 0; col < bytes_per_row; col++) {
-      const uint8_t byte = bitmap[(row * bytes_per_row) + col];
-      for (uint8_t bit = 0; bit < 8; bit++) {
-        // assume that the screen area is cleared before drawing
-        if (byte & (1 << bit)) {
-          draw_pixel(x + (col * 8) + (7 - bit + 1), y + row);
+  // So instead, we have to fall back to drawing points manually.
+
+  #if DISABLED(TJC_DISPLAY)
+    // DWIN T5UI actually supports drawing multiple points in one go using the 0x02 'draw point' command, ever since kernel 1.2.
+    // So we use that to draw the bitmap as a series of points, which should be faster than drawing rectangles using draw_pixel.
+    // This will be somewhat slow, but way faster than drawing rectangles one by one.
+    dwinDrawPointMap(
+      dwin_font.fg, // color
+      dwin_game::game_to_screen(1), // point size
+      dwin_game::game_to_screen(1),
+      dwin_game::game_to_screen(x) + dwin_game::x_offset, // x / y
+      dwin_game::game_to_screen(y) + dwin_game::y_offset,
+      bytes_per_row, // bitmap dimensions
+      rows,
+      bitmap // U8G bitmap format is compatible to DrawPointMap format
+    );
+  #else
+    // TJC displays don't seem to support the 0x02 'draw point' command, so instead we have to draw the bitmap
+    // as a series of rectangles using draw_pixel.
+    // This will absolutely suck for performance, but it's the best we can do on these screens.
+    for (game_dim_t row = 0; row < rows; row++) {
+      for (game_dim_t col = 0; col < bytes_per_row; col++) {
+        const uint8_t byte = bitmap[(row * bytes_per_row) + col];
+        for (uint8_t bit = 0; bit < 8; bit++) {
+          // assume that the screen area is cleared before drawing
+          if (byte & (1 << bit)) {
+            draw_pixel(x + (col * 8) + (7 - bit + 1), y + row);
+          }
         }
       }
     }
-  }
+  #endif
 }
 
 int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, const char* str) {
