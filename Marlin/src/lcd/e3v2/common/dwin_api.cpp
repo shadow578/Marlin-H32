@@ -169,6 +169,68 @@ void dwinFrameClear(const uint16_t color) {
     dwinWord(i, y);
     dwinSend(i);
   }
+
+  // Draw a map of multiple points using minimal amount of point drawing commands
+  //  color: point color
+  //  point_width: point width   0x01-0x0F
+  //  point_height: point height 0x01-0x0F
+  //  x,y: upper left point
+  //  map_columns: columns in theh point map. each column is a byte in the map and contains 8 points
+  //  map_rows: rows in the point map
+  //  map: point bitmap. 2D array of points, 1 bit per point
+  // Note: somewhat similar to U8G's drawBitmap() function, see https://github.com/olikraus/u8glib/wiki/userreference#drawbitmap
+  void dwinDrawPointMap(
+      const uint16_t color,
+      const uint8_t point_width,
+      const uint8_t point_height,
+      const uint16_t x,
+      const uint16_t y,
+      const uint16_t map_columns,
+      const uint16_t map_rows,
+      const uint8_t *map_data) {
+    // first, calculate how many points can be drawn per command dispatch.
+    // each point is 2+2 bytes, plus 5 bytes of command header and 1 byte of F_HONE.
+    // thus, we can send up to (len(dwinSendBuf) - (5 + 1)) / 4 points per command.
+    constexpr uint16_t max_points_per_dispatch = (COUNT(dwinSendBuf) - 6) / 4;
+
+    // points already added to the current dispatch
+    // on the first point, we have to initialize the draw command header, so max this out
+    uint16_t points_in_dispatch = 0xffff;
+
+    // draw the point map
+    size_t i = 0;
+    for (uint16_t row = 0; row < map_rows; row++) {
+      for (uint16_t col = 0; col < map_columns; col++) {
+        const uint8_t map_byte = map_data[(row * map_columns) + col];
+        for (uint8_t bit = 0; bit < 8; bit++) {
+          // draw the bit of the byte if it's set
+          if (TEST(map_byte, bit)) {
+            if (points_in_dispatch >= max_points_per_dispatch)
+            {
+              // dispatch the current draw command
+              if (i > 5) dwinSend(i);
+
+              // prepare the next draw command
+              i = 0;
+              dwinByte(i, 0x02); // cmd: draw point(s)
+              dwinWord(i, color);
+              dwinByte(i, point_width);
+              dwinByte(i, point_height);
+
+              points_in_dispatch = 0;
+            }
+
+            // append point coordinates to draw command
+            dwinWord(i, x + (point_width * ((8 * col) + (7 - bit)))); // x
+            dwinWord(i, y + (point_height * (row)));                  // y
+          }
+        }
+      }
+    }
+
+    // dispatch final draw command if the buffer contains any points
+    if (i > 5) dwinSend(i);
+  }
 #endif
 
 // Draw a line
