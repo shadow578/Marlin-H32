@@ -151,9 +151,11 @@ void BrickoutGame::game_screen() {
           // draw brick if it's still there
           if (TEST(bdat.bricks[y], x)) {
             const uint8_t xx = x * BRICK_W;
-            for (uint8_t v = 0; v < BRICK_H - 1; ++v)
-              if (PAGE_CONTAINS(yy + v, yy + v))
-                draw_hline(xx, yy + v, BRICK_W - 1);
+            draw_box(xx, yy, BRICK_W - 1, BRICK_H - 1);
+            
+            //for (uint8_t v = 0; v < BRICK_H - 1; ++v)
+            //  if (PAGE_CONTAINS(yy + v, yy + v))
+            //    draw_hline(xx, yy + v, BRICK_W - 1);
           }
         }
       }
