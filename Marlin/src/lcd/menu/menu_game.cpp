@@ -45,6 +45,9 @@ void menu_game() {
   #if ENABLED(MARLIN_FLAPPY)
     SUBMENU(MSG_FLAPPY, flappy.enter_game);
   #endif
+  #if ENABLED(MARLIN_TENNIS)
+    SUBMENU(MSG_TENNIS, tennis_game::tennis.enter_game);
+  #endif
   END_MENU();
 }
 

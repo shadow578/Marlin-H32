@@ -52,6 +52,9 @@
 #if ENABLED(MARLIN_FLAPPY)
   #include "flappy.h"
 #endif
+#if ENABLED(MARLIN_TENNIS)
+  #include "tennis.h"
+#endif
 
 // Pool game data to save SRAM
 union MarlinGameData {
@@ -69,6 +72,9 @@ union MarlinGameData {
   #endif
   #if ENABLED(MARLIN_FLAPPY)
     flappy_data_t flappy;
+  #endif
+  #if ENABLED(MARLIN_TENNIS)
+    tennis_game::state_t tennis;
   #endif
 };
 
