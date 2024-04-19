@@ -92,6 +92,9 @@ constexpr fixed_t trickshot_edge_distance = FTOF(paddle_height / 6.0f);
 constexpr fixed_t trickshot_base_magnitude_x = FTOF(0.2f); // * 0.1 to 1.0
 constexpr fixed_t trickshot_base_magnitude_y = FTOF(0.2f); // "
 
+// draw a frame around the game area
+constexpr bool frame_game_area = true;
+
 void TennisGame::enter_game()
 {
   init_game(1, game_screen);
@@ -125,6 +128,17 @@ void TennisGame::game_screen()
   if (game_state)
   {
     draw_ball();
+  }
+
+  // draw the frame around the game area
+  set_color(color::WHITE);
+  if (frame_game_area) {
+    draw_frame(
+      0,
+      0,
+      GAME_WIDTH,
+      GAME_HEIGHT
+    );
   }
 
   // draw game over screen and exit on click
