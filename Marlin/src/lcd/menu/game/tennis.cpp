@@ -95,6 +95,9 @@ constexpr fixed_t trickshot_base_magnitude_y = FTOF(0.2f); // "
 // draw a frame around the game area
 constexpr bool frame_game_area = true;
 
+// how many frames the button has to be pressed to exit the game
+constexpr int8_t exit_frames = 10;
+
 void TennisGame::enter_game()
 {
   init_game(1, game_screen);
@@ -117,8 +120,18 @@ void TennisGame::game_screen()
       {
         do_score(ball_outcome == 1);
       }
-
     } while (0);
+
+  // check game exit
+  if (ui.use_click()) {
+    state.exit_counter++;
+  } else {
+    state.exit_counter = 0;
+  }
+
+  if (state.exit_counter >= exit_frames) {
+    exit_game();
+  }
 
   // draw the game
   frame_start();
