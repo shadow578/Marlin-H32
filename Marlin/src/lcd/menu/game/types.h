@@ -57,7 +57,7 @@ public:
   // Render API, based on U8GLib
   // draw functions are implemented by the screen-specific renderer
   //
-protected:
+public:
   /**
    * @brief The colors available for drawing games.
    * @note If a screen doesn't support (a) color, it shall fall back to using WHITE.
@@ -81,6 +81,7 @@ protected:
     MAGENTA,
   };
 
+protected:
   /**
    * @brief Called before any draw calls in the current frame.
    */
