@@ -430,9 +430,10 @@ void InvadersGame::game_screen() {
     --idat.explod.v;
   }
 
+  set_color(color::WHITE);
+
   // Blink GAME OVER when game is over
   if (!game_state) {
-    set_color(color::WHITE);
     draw_game_over();
   }
 
