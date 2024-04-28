@@ -70,6 +70,8 @@ constexpr game_dim_t opponent_paddle_x = GAME_WIDTH - paddle_wall_distance - pad
 // |-//-----------//-|
 constexpr game_dim_t ball_size = 2;
 
+constexpr float ball_base_velocity = 1.0f;
+
 // Trickshot:
 //
 // |------//--
@@ -89,8 +91,8 @@ constexpr game_dim_t ball_size = 2;
 // ~
 // |------//--
 constexpr fixed_t trickshot_edge_distance = FTOF(paddle_height / 6.0f);
-constexpr fixed_t trickshot_base_magnitude_x = FTOF(0.2f); // * 0.1 to 1.0
-constexpr fixed_t trickshot_base_magnitude_y = FTOF(0.2f); // "
+constexpr fixed_t trickshot_base_magnitude_x = FTOF(0.5f); // * 0.1 to 1.0
+constexpr fixed_t trickshot_base_magnitude_y = FTOF(0.5f); // "
 
 // draw a frame around the game area
 constexpr bool frame_game_area = true;
@@ -123,7 +125,7 @@ void TennisGame::game_screen()
     } while (0);
 
   // check game exit
-  if (ui.use_click()) {
+  if (ui.lcd_clicked) {
     state.exit_counter++;
   } else {
     state.exit_counter = 0;
@@ -136,13 +138,6 @@ void TennisGame::game_screen()
   // draw the game
   frame_start();
 
-  draw_play_area();
-  draw_paddles();
-  if (game_state)
-  {
-    draw_ball();
-  }
-
   // draw the frame around the game area
   set_color(color::WHITE);
   if (frame_game_area) {
@@ -153,6 +148,15 @@ void TennisGame::game_screen()
       GAME_HEIGHT
     );
   }
+
+  draw_paddles();
+  if (game_state)
+  {
+    draw_ball();
+  }
+
+  // play area contains text, so draw it last
+  draw_play_area();
 
   // draw game over screen and exit on click
   if (!game_state)
@@ -178,10 +182,8 @@ void TennisGame::reset_ball()
 {
   state.ball.x = BTOF(GAME_WIDTH / 2);
   state.ball.y = BTOF(GAME_HEIGHT / 2);
-  state.ball.y_velocity = FTOF(random(-100, 100) / 100.0f); // -1.0 to 1.0
-
-  state.ball.x_velocity = FTOF(random(50, 100) / 100.0f)   // 0.5 to 1.0
-                          * (random(0, 1) ? 1.0f : -1.0f); // 50:50 random direction
+  state.ball.y_velocity = FTOF(ball_base_velocity * (random(0, 1) ? 1.0f : -1.0f));
+  state.ball.x_velocity = FTOF(ball_base_velocity * (random(0, 1) ? 1.0f : -1.0f));
 }
 
 void TennisGame::update_player()
@@ -216,7 +218,7 @@ uint8_t TennisGame::update_ball()
   const fixed_t new_y = state.ball.y + state.ball.y_velocity;
 
   // is y out of the play area?
-  if (new_y < 0 || new_y > BTOF(GAME_HEIGHT))
+  if (new_y <= BTOF(ball_size / 2) || new_y >= BTOF(GAME_HEIGHT - (ball_size / 2)))
   {
     // yes, bounce off boards
     do_bounce(false);
@@ -309,6 +311,8 @@ void TennisGame::do_trickshot(const bool top_edge, const bool player)
 
   state.ball.x_velocity += player ? x_magnitude : -x_magnitude;
   state.ball.y_velocity += top_edge ? y_magnitude : -y_magnitude;
+
+  state.ball.y_velocity = -state.ball.y_velocity;
 }
 
 void TennisGame::do_bounce(const bool paddle)
@@ -374,7 +378,7 @@ void TennisGame::draw_play_area()
   set_color(color::WHITE);
 
   // draw net
-  for (game_dim_t net_y = 0; net_y < GAME_HEIGHT; net_y += (net_line_length + net_line_distance))
+  for (game_dim_t net_y = 0; net_y < (GAME_HEIGHT - net_line_length - 1); net_y += (net_line_length + net_line_distance))
   {
     draw_box(
         TRANSLATE_X(net_x - (net_width / 2)),
