@@ -142,11 +142,23 @@
 // ADC
 //
 #define HAL_ADC_VREF_MV 3300
-#define HAL_ADC_RESOLUTION 10
+#define HAL_ADC_RESOLUTION 12
 
 #define GET_PIN_MAP_PIN(index) index
 #define GET_PIN_MAP_INDEX(pin) pin
 #define PARSED_PIN_INDEX(code, dval) parser.intval(code, dval)
+
+//
+// debug port disable
+// JTMS / SWDIO = PA13
+// JTCK / SWCLK = PA14
+// JTDI         = PA15
+// JTDO         = PB3
+// NJTRST       = PB4
+//
+#define JTAGSWD_RESET() PORT_DebugPortSetting(0x1F, Enable);    // enable JTDO, JTDI, NJTRST, SWDIO, SWCLK
+#define JTAG_DISABLE() PORT_DebugPortSetting(0x1C, Disable);    // disable JTDO, JTDI, NJTRST
+#define JTAGSWD_DISABLE() PORT_DebugPortSetting(0x1F, Disable); // disable JTDO, JTDI, NJTRST, SWDIO, SWCLK
 
 //
 // MarlinHAL implementation

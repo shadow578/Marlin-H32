@@ -22,9 +22,8 @@
 #pragma once
 
 #include "../../../inc/MarlinConfigPre.h"
-#include "../../dogm/marlinui_DOGM.h"
-#include "../../lcdprint.h"
 #include "../../marlinui.h"
+#include "types.h"
 
 //#define MUTE_GAMES
 
@@ -50,6 +49,12 @@
 #if ENABLED(MARLIN_SNAKE)
   #include "snake.h"
 #endif
+#if ENABLED(MARLIN_FLAPPY)
+  #include "flappy.h"
+#endif
+#if ENABLED(MARLIN_TENNIS)
+  #include "tennis.h"
+#endif
 
 // Pool game data to save SRAM
 union MarlinGameData {
@@ -64,6 +69,12 @@ union MarlinGameData {
   #endif
   #if ENABLED(MARLIN_MAZE)
     maze_data_t maze;
+  #endif
+  #if ENABLED(MARLIN_FLAPPY)
+    flappy_data_t flappy;
+  #endif
+  #if ENABLED(MARLIN_TENNIS)
+    tennis_game::state_t tennis;
   #endif
 };
 
