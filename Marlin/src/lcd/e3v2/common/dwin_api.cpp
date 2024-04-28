@@ -188,9 +188,10 @@ void dwinFrameClear(const uint16_t color) {
       const uint16_t map_columns,
       const uint16_t map_rows,
       const uint8_t *map_data) {
-    // how many bytes can we write to the send buffer?
-    // one byte is used for F_HONE, so we can write up to len(dwinSendBuf) - 1 bytes.
-    constexpr size_t send_buffer_size = (COUNT(dwinSendBuf) - 1);
+    // at how many bytes should we flush the send buffer?
+    // one byte is used (hidden) for F_HONE, and we need 4 bytes when appending a point.
+    // so we should flush the send buffer when we have less than 5 bytes left.
+    constexpr size_t flush_send_buffer_at = (COUNT(dwinSendBuf) - 1 - 4);
 
     // how long is the header of each draw command?
     // 1B CMD, 2B COLOR, 1B WIDTH, 1B HEIGHT
@@ -205,9 +206,9 @@ void dwinFrameClear(const uint16_t color) {
           // draw the bit of the byte if it's set
           if (TEST(map_byte, bit)) {
             // flush the send buffer and prepare next draw if either
-            // a) the buffer is full, or
+            // a) the buffer reached the 'should flush' state, or
             // b) this is the first point to draw
-            if (i >= send_buffer_size || i == 0)
+            if (i >= flush_send_buffer_at || i == 0)
             {
               // dispatch the current draw command
               if (i > command_header_size) dwinSend(i);
