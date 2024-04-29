@@ -15,13 +15,13 @@ namespace dwin_game {
 
   constexpr int calculate_scale()
   {
-    // use whichever is smaller: the width or height scaling factor
+    // Use whichever is smaller: the width or height scaling factor
     float scaling_factor = _MIN(
       static_cast<float>(DWIN_WIDTH) / static_cast<float>(TARGET_WIDTH),
       static_cast<float>(DWIN_HEIGHT) / static_cast<float>(TARGET_HEIGHT)
     );
 
-    // round DOWN to closest integer
+    // Round DOWN to closest integer
     return static_cast<int>(scaling_factor);
   }
 
@@ -31,14 +31,14 @@ namespace dwin_game {
   constexpr int scale = calculate_scale();
 
   /**
-   * @brief scale a game dimension to screen dimensions
+   * @brief Scale a game dimension to screen dimensions
    */
   constexpr game_dim_t screen_to_game(const screen_dim_t x) {
     return x / scale;
   }
 
   /**
-   * @brief scale a screen dimension to game dimensions
+   * @brief Scale a screen dimension to game dimensions
    */
   constexpr screen_dim_t game_to_screen(const game_dim_t x) {
     return x * scale;
@@ -59,7 +59,7 @@ constexpr game_dim_t GAME_HEIGHT = dwin_game::screen_to_game(DWIN_HEIGHT - (dwin
 constexpr game_dim_t GAME_FONT_WIDTH = dwin_game::screen_to_game(MENU_FONT_WIDTH);
 constexpr game_dim_t GAME_FONT_ASCENT = dwin_game::screen_to_game(MENU_FONT_ASCENT);
 
-// not needed on DWIN
+// DWIN screens don't page, so these macros are always true
 #define PAGE_OVER(ya) true
 #define PAGE_UNDER(yb) true
 #define PAGE_CONTAINS(ya, yb) true
