@@ -188,32 +188,32 @@ void dwinFrameClear(const uint16_t color) {
       const uint16_t map_columns,
       const uint16_t map_rows,
       const uint8_t *map_data) {
-    // at how many bytes should we flush the send buffer?
-    // one byte is used (hidden) for F_HONE, and we need 4 bytes when appending a point.
-    // so we should flush the send buffer when we have less than 5 bytes left.
+    // At how many bytes should we flush the send buffer?
+    // One byte is used (hidden) for F_HONE, and we need 4 bytes when appending a point.
+    // So we should flush the send buffer when we have less than 5 bytes left.
     constexpr size_t flush_send_buffer_at = (COUNT(dwinSendBuf) - 1 - 4);
 
-    // how long is the header of each draw command?
+    // How long is the header of each draw command?
     // 1B CMD, 2B COLOR, 1B WIDTH, 1B HEIGHT
     constexpr size_t command_header_size = 5;
 
-    // draw the point map
+    // Draw the point map
     size_t i = 0;
     for (uint16_t row = 0; row < map_rows; row++) {
       for (uint16_t col = 0; col < map_columns; col++) {
         const uint8_t map_byte = map_data[(row * map_columns) + col];
         for (uint8_t bit = 0; bit < 8; bit++) {
-          // draw the bit of the byte if it's set
+          // Draw the bit of the byte if it's set
           if (TEST(map_byte, bit)) {
-            // flush the send buffer and prepare next draw if either
-            // a) the buffer reached the 'should flush' state, or
-            // b) this is the first point to draw
+            // Flush the send buffer and prepare next draw if either
+            // a) The buffer reached the 'should flush' state, or
+            // b) This is the first point to draw
             if (i >= flush_send_buffer_at || i == 0)
             {
-              // dispatch the current draw command
+              // Dispatch the current draw command
               if (i > command_header_size) dwinSend(i);
 
-              // prepare the next draw command
+              // Prepare the next draw command
               i = 0;
               dwinByte(i, 0x02); // cmd: draw point(s)
               dwinWord(i, color);
@@ -221,7 +221,7 @@ void dwinFrameClear(const uint16_t color) {
               dwinByte(i, point_height);
             }
 
-            // append point coordinates to draw command
+            // Append point coordinates to draw command
             dwinWord(i, x + (point_width * ((8 * col) + (7 - bit)))); // x
             dwinWord(i, y + (point_height * (row)));                  // y
           }
@@ -229,7 +229,7 @@ void dwinFrameClear(const uint16_t color) {
       }
     }
 
-    // dispatch final draw command if the buffer contains any points
+    // Dispatch final draw command if the buffer contains any points
     if (i > command_header_size) dwinSend(i);
   }
 #endif
