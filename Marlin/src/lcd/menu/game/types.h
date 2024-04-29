@@ -60,19 +60,12 @@ public:
 public:
   /**
    * @brief The colors available for drawing games.
-   * @note If a screen doesn't support (a) color, it shall fall back to using WHITE.
+   * @note If a screen doesn't support (a) color, it is expected to map to the closest
+   *       available color OR white if the closest available color is (near) black.
    */
   enum class color {
-    /**
-     * @brief Black color. This is guaranteed to be the clear color on all screens.
-     */
     BLACK,
-
-    /**
-     * @brief White color. Guranteed to be white on all screens.
-     */
     WHITE,
-
     RED,
     GREEN,
     BLUE,
@@ -162,6 +155,9 @@ protected:
    * @param str The string to draw.
    * @see lcd_moveto + lcd_put_u8str
    * @note The font size is available using the GAME_FONT_WIDTH and GAME_FONT_ASCENT constants.
+   *
+   * @note On the DWIN renderer, strings may flush the screen, which may cause flickering.
+   *       Consider drawing strings after all other elements have been drawn.
    */
   static int draw_string(const game_dim_t x, const game_dim_t y, const char *str);
   static int draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const str);
@@ -173,6 +169,9 @@ protected:
    * @param value The integer to draw.
    * @see lcd_put_int
    * @note The font size is available using the GAME_FONT_WIDTH and GAME_FONT_ASCENT constants.
+   *
+   * @note On the DWIN renderer, strings may flush the screen, which may cause flickering.
+   *       Consider drawing strings after all other elements have been drawn.
    */
   static void draw_int(const game_dim_t x, const game_dim_t y, const int value);
 };
