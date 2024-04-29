@@ -51,8 +51,8 @@
 
 #define INVADER_COLOR { MarlinGame::color::GREEN, MarlinGame::color::CYAN, MarlinGame::color::YELLOW }
 #define CANNON_COLOR  MarlinGame::color::WHITE
-#define LASER_COLOR   MarlinGame::color::WHITE  // shot by player
-#define BULLET_COLOR  LASER_COLOR               // shot by invader
+#define LASER_COLOR   MarlinGame::color::WHITE  // Shot by player
+#define BULLET_COLOR  LASER_COLOR               // Shot by invader
 #define LIFE_COLOR    CANNON_COLOR
 #define UFO_COLOR MarlinGame::color::MAGENTA
 #define EXPLOSION_COLOR MarlinGame::color::RED
@@ -386,8 +386,8 @@ void InvadersGame::game_screen() {
         int8_t xx = idat.pos.x;
         for (uint8_t x = 0; x < INVADER_COLS; ++x) {
           if (TEST(idat.bugs[y], x)) {
-            constexpr color type_color[] = INVADER_COLOR;
-            set_color(type_color[type]);
+            constexpr color invader_color[] = INVADER_COLOR;
+            set_color(invader_color[type]);
             draw_bitmap(xx, yy, 2, INVADER_H, invader[type][idat.game_blink]);
           }
           xx += INVADER_COL_W;
@@ -433,22 +433,20 @@ void InvadersGame::game_screen() {
   set_color(color::WHITE);
 
   // Blink GAME OVER when game is over
-  if (!game_state) {
-    draw_game_over();
-  }
+  if (!game_state) draw_game_over();
 
   if (PAGE_UNDER(GAME_FONT_ASCENT - 1)) {
-    // Draw Score
-    //const uint8_t sx = (GAME_WIDTH - (score >= 10 ? score >= 100 ? score >= 1000 ? 4 : 3 : 2 : 1) * GAME_FONT_WIDTH) / 2;
-    constexpr uint8_t sx = 0;
-    draw_int(sx, GAME_FONT_ASCENT - 1, score);
-
     // Draw lives
     if (idat.cannons_left)
       for (uint8_t i = 1; i <= idat.cannons_left; ++i) {
         set_color(LIFE_COLOR);
         draw_bitmap(GAME_WIDTH - i * (LIFE_W), 6 - (LIFE_H), 1, LIFE_H, life);
       }
+
+    // Draw Score
+    //const uint8_t sx = (GAME_WIDTH - (score >= 10 ? score >= 100 ? score >= 1000 ? 4 : 3 : 2 : 1) * GAME_FONT_WIDTH) / 2;
+    constexpr uint8_t sx = 0;
+    draw_int(sx, GAME_FONT_ASCENT - 1, score);
   }
 
   frame_end();
