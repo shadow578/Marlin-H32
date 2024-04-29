@@ -51,8 +51,8 @@
 
 #define INVADER_COLOR { MarlinGame::color::GREEN, MarlinGame::color::CYAN, MarlinGame::color::YELLOW }
 #define CANNON_COLOR  MarlinGame::color::WHITE
-#define LASER_COLOR   MarlinGame::color::WHITE  // shot by player
-#define BULLET_COLOR  LASER_COLOR               // shot by invader
+#define LASER_COLOR   MarlinGame::color::WHITE  // Shot by player
+#define BULLET_COLOR  LASER_COLOR               // Shot by invader
 #define LIFE_COLOR    CANNON_COLOR
 #define UFO_COLOR MarlinGame::color::MAGENTA
 #define EXPLOSION_COLOR MarlinGame::color::RED

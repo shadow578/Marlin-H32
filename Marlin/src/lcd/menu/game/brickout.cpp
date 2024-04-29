@@ -144,11 +144,11 @@ void BrickoutGame::game_screen() {
       const uint8_t yy = y * BRICK_H + BRICK_TOP;
       if (PAGE_CONTAINS(yy, yy + BRICK_H - 1)) {
         for (uint8_t x = 0; x < BRICK_COLS; ++x) {
-          // cycle through colors, even if the brick is gone
-          // otherwise, bricks would change color if their neighbor is hit
+          // Cycle through colors, even if the brick is gone.
+          // Otherwise, bricks would change color if their neighbor is hit
           set_color(brick_colors[color_index++ % COUNT(brick_colors)]);
 
-          // draw brick if it's still there
+          // Draw brick if it's still there
           if (TEST(bdat.bricks[y], x)) {
             const uint8_t xx = x * BRICK_W;
             draw_box(xx, yy, BRICK_W - 1, BRICK_H - 1);
@@ -158,7 +158,7 @@ void BrickoutGame::game_screen() {
     }
   }
 
-  // everything else is white
+  // Everything else is white
   set_color(color::WHITE);
 
   // Draw paddle

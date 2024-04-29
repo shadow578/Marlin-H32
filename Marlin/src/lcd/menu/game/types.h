@@ -54,8 +54,8 @@ public:
   static void init_game(const uint8_t init_state, const screenFunc_t screen);
 
   //
-  // Render API, based on U8GLib
-  // draw functions are implemented by the screen-specific renderer
+  // Render API, based on U8GLib.
+  // draw_* functions are implemented by the screen-specific renderer
   //
 public:
   /**
