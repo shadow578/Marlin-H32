@@ -53,26 +53,19 @@ protected:
 public:
   static void init_game(const uint8_t init_state, const screenFunc_t screen);
 
-  //
-  // Render API, based on U8GLib
-  // draw functions are implemented by the screen-specific renderer
-  //
+  // Game rendering API, based on U8glib's API.
+  // See the @see comments for the U8glib API documentation corresponding to each function.
 public:
   /**
    * @brief The colors available for drawing games.
-   * @note If a screen doesn't support (a) color, it shall fall back to using WHITE.
+   * @note Renderer implementations will map these colors to the closest 
+   *       available color on the screen, as long as that color is not black.
+   *       Thus, black is guranteed to be black on all screens, but other colors may differ.
+   *       On black-and-white screens, all colors but black will be white.
    */
   enum class color {
-    /**
-     * @brief Black color. This is guaranteed to be the clear color on all screens.
-     */
     BLACK,
-
-    /**
-     * @brief White color. Guranteed to be white on all screens.
-     */
     WHITE,
-
     RED,
     GREEN,
     BLUE,
@@ -162,6 +155,9 @@ protected:
    * @param str The string to draw.
    * @see lcd_moveto + lcd_put_u8str
    * @note The font size is available using the GAME_FONT_WIDTH and GAME_FONT_ASCENT constants.
+   *
+   * @note On the DWIN renderer, strings may flush the screen, which may cause flickering.
+   *       Consider drawing strings after all other elements have been drawn.
    */
   static int draw_string(const game_dim_t x, const game_dim_t y, const char *str);
   static int draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const str);
@@ -173,6 +169,9 @@ protected:
    * @param value The integer to draw.
    * @see lcd_put_int
    * @note The font size is available using the GAME_FONT_WIDTH and GAME_FONT_ASCENT constants.
+   *
+   * @note On the DWIN renderer, strings may flush the screen, which may cause flickering.
+   *       Consider drawing strings after all other elements have been drawn.
    */
   static void draw_int(const game_dim_t x, const game_dim_t y, const int value);
 };
