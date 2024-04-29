@@ -214,17 +214,13 @@ int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const
 }
 
 void MarlinGame::draw_int(const game_dim_t x, const game_dim_t y, const int value) {
-  // TODO: lcd_put_int doesn't seem to work ?!
-  char str[12];
-  itoa(value, str, 10);
-  draw_string(x, y, str);
+  COUNT_DRAW_CALL(0);
 
-  COUNT_DRAW_CALL(1);
+  lcd_moveto_xy(
+    dwin_game::game_to_screen(x) + dwin_game::x_offset,
+    dwin_game::game_to_screen(y) + dwin_game::y_offset
+  );
 
-  //lcd_put_int(
-  //  dwin_game::game_to_screen(x) + dwin_game::x_offset,
-  //  dwin_game::game_to_screen(y) + dwin_game::y_offset,
-  //  value
-  //);
+  lcd_put_int(value);
 }
 #endif // IS_DWIN_MARLINUI && HAS_GAMES
