@@ -40,6 +40,22 @@
     "editorconfig.editorconfig"
   ],
 
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "shadow578/platform-hc32f46x": {
+          "permissions": "write-all"
+        },
+        "shadow578/framework-hc32f46x-ddl": {
+          "permissions": "write-all"
+        },
+        "shadow578/framework-arduino-hc32f46x": {
+          "permissions": "write-all"
+        }
+      }
+    }
+  }
+
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
