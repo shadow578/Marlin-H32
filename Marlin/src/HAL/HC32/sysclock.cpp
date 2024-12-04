@@ -44,43 +44,39 @@
  *  INPUT -> [/ M] -(1)-> [* N] -(2)-|-> [/ P] -> MPLL-P
  */
 constexpr stc_clk_mpll_cfg_t get_mpll_config(double input_frequency, double target_frequency) {
-    // PLL input clock divider: M in [1, 24]
-    for (uint32_t M = 1; M <= 24; M++) {
-        double f_vco_in = input_frequency / M;
+  // PLL input clock divider: M in [1, 24]
+  for (uint32_t M = 1; M <= 24; M++) {
+    double f_vco_in = input_frequency / M;
 
-        // 1 <= VCO_in <= 25 MHz
-        if (f_vco_in < 1e6 || f_vco_in > 25e6) {
-            continue;
+    // 1 <= VCO_in <= 25 MHz
+    if (f_vco_in < 1e6 || f_vco_in > 25e6) continue;
+
+    // VCO multiplier: N in [20, 480]
+    for (uint32_t N = 20; N <= 480; N++) {
+      double f_vco_out = f_vco_in * N;
+
+      // 240 <= VCO_out <= 480 MHz
+      if (f_vco_out < 240e6 || f_vco_out > 480e6) continue;
+
+      // Output "P" divider: P in [2, 16]
+      for (uint32_t P = 2; P <= 16; P++) {
+        double f_calculated_out = f_vco_out / P;
+        if (f_calculated_out == target_frequency) {
+          // Found a match, return it
+          return {
+            .PllpDiv = P,
+            .PllqDiv = P, // Don't care for Q and R
+            .PllrDiv = P, // "
+            .plln =    N,
+            .pllmDiv = M
+          };
         }
-
-        // VCO multiplier: N in [20, 480]
-        for (uint32_t N = 20; N <= 480; N++) {
-            double f_vco_out = f_vco_in * N;
-
-            // 240 <= VCO_out <= 480 MHz
-            if (f_vco_out < 240e6 || f_vco_out > 480e6) {
-                continue;
-            }
-
-            // Output "P" divider: P in [2, 16]
-            for (uint32_t P = 2; P <= 16; P++) {
-                double f_calculated_out = f_vco_out / P;
-                if (f_calculated_out == target_frequency) {
-                    // Found a match, return it
-                    return {
-                      .PllpDiv = P,
-                      .PllqDiv = P, // Don't care for Q and R
-                      .PllrDiv = P, // "
-                      .plln =    N,
-                      .pllmDiv = M,
-                    };
-                }
-            }
-        }
+      }
     }
+  }
 
-    // If no valid M, N, P found, return invalid config
-    return { 0, 0, 0, 0, 0 };
+  // If no valid M, N, P found, return invalid config
+  return { 0, 0, 0, 0, 0 };
 }
 
 /**
@@ -90,8 +86,7 @@ constexpr stc_clk_mpll_cfg_t get_mpll_config(double input_frequency, double targ
  * @return The division factor.
  */
 template <uint32_t input_freq, uint32_t target_freq>
-constexpr en_clk_sysclk_div_factor_t get_division_factor()
-{
+constexpr en_clk_sysclk_div_factor_t get_division_factor() {
   // Calculate the divider to get the target frequency
   constexpr float fdivider = static_cast<float>(input_freq) / static_cast<float>(target_freq);
   constexpr int divider = static_cast<int>(fdivider);
@@ -104,8 +99,7 @@ constexpr en_clk_sysclk_div_factor_t get_division_factor()
   static_assert((divider & (divider - 1)) == 0, "Invalid divider, not a power of 2");
 
   // return the divider
-  switch (divider)
-  {
+  switch (divider) {
     case 1:  return ClkSysclkDiv1;
     case 2:  return ClkSysclkDiv2;
     case 4:  return ClkSysclkDiv4;
@@ -119,8 +113,7 @@ constexpr en_clk_sysclk_div_factor_t get_division_factor()
 /**
  * @brief Validate the runtime clocks match the expected values.
  */
-void validate_system_clocks()
-{
+void validate_system_clocks() {
   #define CLOCK_ASSERT(expected, actual)                  \
     if (expected != actual) {                             \
       SERIAL_ECHOPGM(                                     \
@@ -165,7 +158,9 @@ void core_hook_sysclock_init() {
     #if BOARD_XTAL_FREQUENCY == 16000000
       #warning "HC32F460 with 16 MHz XTAL has not been tested."
     #endif
+
   #else // HRC (16 MHz)
+
     constexpr uint32_t mpll_input_clock = 16000000;
 
     sysclock_configure_hrc();
@@ -179,6 +174,7 @@ void core_hook_sysclock_init() {
     #if defined(BOARD_XTAL_FREQUENCY)
       #warning "No valid XTAL frequency defined, falling back to HRC."
     #endif
+
   #endif
 
   // Automagically calculate MPLL configuration
@@ -188,13 +184,13 @@ void core_hook_sysclock_init() {
 
   // Setup clock divisors
   constexpr stc_clk_sysclk_cfg_t sysClkConf = {
-      .enHclkDiv  = get_division_factor<F_SYSTEM_CLOCK, F_HCLK>(),
-      .enExclkDiv = get_division_factor<F_SYSTEM_CLOCK, F_EXCLK>(),
-      .enPclk0Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK0>(),
-      .enPclk1Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK1>(),
-      .enPclk2Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK2>(),
-      .enPclk3Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK3>(),
-      .enPclk4Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK4>(),
+    .enHclkDiv  = get_division_factor<F_SYSTEM_CLOCK, F_HCLK>(),
+    .enExclkDiv = get_division_factor<F_SYSTEM_CLOCK, F_EXCLK>(),
+    .enPclk0Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK0>(),
+    .enPclk1Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK1>(),
+    .enPclk2Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK2>(),
+    .enPclk3Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK3>(),
+    .enPclk4Div = get_division_factor<F_SYSTEM_CLOCK, F_PCLK4>(),
   };
   sysclock_set_clock_dividers(&sysClkConf);
 
