@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2023 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2024 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -23,26 +23,26 @@
 
 /**
  * HC32F460 system clock configuration.
- * 
- * With the HC32 HAL, the various peripheral clocks (including the CPU clock) are derived 
+ *
+ * With the HC32 HAL, the various peripheral clocks (including the CPU clock) are derived
  * from the main PLL (MPLL-P) output (referred to at F_SYSTEM_CLOCK).
- * 
+ *
  * F_SYSTEM_CLOCK is the target frequency of the main PLL, and the PLL is automatically configured
  * to achieve this frequency.
- * 
- * The peripheral clocks are the result of integer division of F_SYSTEM_CLOCK. 
+ *
+ * The peripheral clocks are the result of integer division of F_SYSTEM_CLOCK.
  * Their target frequencies are defined here, and the required division factors are calculated automatically.
  * Note that the division factor must be a power of 2 between 1 and 64.
  * If the target frequency is not achievable, a compile-time error will be generated.
- * 
- * Additionally, there are interdependencies between the peripheral clocks, which are described in 
+ *
+ * Additionally, there are interdependencies between the peripheral clocks, which are described in
  * Section 4.4 "Working Clock Specifications" of the HC32F460 Reference Manual.
  * With Arduino core >= 1.2.0, these interdependencies are checked at compile time.
  * On earlier versions, you are on your own.
- * 
+ *
  * For all clock frequencies, they can be checked at runtime by enabling the 'ALWAYS_VALIDATE_CLOCKS' define.
  * In MARLIN_DEV_MODE, they will also be printed to the serial console by 'MarlinHAL::HAL_clock_frequencies_dump'.
- * 
+ *
  * See https://github.com/MarlinFirmware/Marlin/pull/27099 for more information.
  */
 

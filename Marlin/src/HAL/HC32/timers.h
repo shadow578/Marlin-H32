@@ -48,7 +48,7 @@ extern Timer0 step_timer;
  *
  * See https://github.com/MarlinFirmware/Marlin/pull/27099 for more information.
  *
- * NOTE: If the 'constexpr' requirement is ever lifted, TIMER0_BASE_FREQUENCY could 
+ * NOTE: If the 'constexpr' requirement is ever lifted, TIMER0_BASE_FREQUENCY could
  * be used instead. Tho this would probably not make any noticable difference.
  */
 #define HAL_TIMER_RATE F_PCLK1
