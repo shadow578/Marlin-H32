@@ -48,7 +48,6 @@
 
 #define INVADER_RIGHT ((INVADER_COLS) * (INVADER_COL_W))
 
-
 #define INVADER_COLOR { MarlinGame::color::GREEN, MarlinGame::color::CYAN, MarlinGame::color::YELLOW }
 #define CANNON_COLOR  MarlinGame::color::WHITE
 #define LASER_COLOR   MarlinGame::color::WHITE  // Shot by player
@@ -56,7 +55,6 @@
 #define LIFE_COLOR    CANNON_COLOR
 #define UFO_COLOR MarlinGame::color::MAGENTA
 #define EXPLOSION_COLOR MarlinGame::color::RED
-
 
 // 11x8
 const unsigned char invader[3][2][16] PROGMEM = {
