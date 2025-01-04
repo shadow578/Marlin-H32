@@ -53,15 +53,15 @@ protected:
 public:
   static void init_game(const uint8_t init_state, const screenFunc_t screen);
 
-  //
-  // Render API, based on U8GLib.
-  // draw_* functions are implemented by the screen-specific renderer
-  //
+  // Game rendering API, based on U8glib's API.
+  // See the @see comments for the U8glib API documentation corresponding to each function.
 public:
   /**
    * @brief The colors available for drawing games.
-   * @note If a screen doesn't support (a) color, it is expected to map to the closest
-   *       available color OR white if the closest available color is (near) black.
+   * @note Renderer implementations will map these colors to the closest 
+   *       available color on the screen, as long as that color is not black.
+   *       Thus, black is guranteed to be black on all screens, but other colors may differ.
+   *       On black-and-white screens, all colors but black will be white.
    */
   enum class color {
     BLACK,

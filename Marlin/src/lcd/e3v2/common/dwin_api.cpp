@@ -198,16 +198,15 @@ void dwinFrameClear(const uint16_t color) {
     constexpr size_t flush_send_buffer_at = (COUNT(dwinSendBuf) - 1 - 4);
 
     // How long is the header of each draw command?
-    // 1B CMD, 2B COLOR, 1B WIDTH, 1B HEIGHT
+    // => 1B CMD, 2B COLOR, 1B WIDTH, 1B HEIGHT
     constexpr size_t command_header_size = 5;
 
-    // Draw the point map
     size_t i = 0;
     for (uint16_t row = 0; row < map_rows; row++) {
       for (uint16_t col = 0; col < map_columns; col++) {
         const uint8_t map_byte = map_data[(row * map_columns) + col];
         for (uint8_t bit = 0; bit < 8; bit++) {
-          // Draw the bit of the byte if it's set
+          // Draw a point at this position?
           if (TEST(map_byte, bit)) {
             // Flush the send buffer and prepare next draw if either
             // a) The buffer reached the 'should flush' state, or
