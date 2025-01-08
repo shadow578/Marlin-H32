@@ -48,13 +48,15 @@
 
 #define INVADER_RIGHT ((INVADER_COLS) * (INVADER_COL_W))
 
-#define INVADER_COLOR { MarlinGame::color::GREEN, MarlinGame::color::CYAN, MarlinGame::color::YELLOW }
-#define CANNON_COLOR  MarlinGame::color::WHITE
-#define LASER_COLOR   MarlinGame::color::WHITE  // Shot by player
-#define BULLET_COLOR  LASER_COLOR               // Shot by invader
-#define LIFE_COLOR    CANNON_COLOR
-#define UFO_COLOR MarlinGame::color::MAGENTA
-#define EXPLOSION_COLOR MarlinGame::color::RED
+#if IS_DWIN_MARLINUI
+  #define INVADER_COLOR { MarlinGame::color::GREEN, MarlinGame::color::CYAN, MarlinGame::color::YELLOW }
+  #define CANNON_COLOR  MarlinGame::color::WHITE
+  #define LASER_COLOR   MarlinGame::color::WHITE  // Shot by player
+  #define BULLET_COLOR  LASER_COLOR               // Shot by invader
+  #define LIFE_COLOR    CANNON_COLOR
+  #define UFO_COLOR MarlinGame::color::MAGENTA
+  #define EXPLOSION_COLOR MarlinGame::color::RED
+#endif
 
 // 11x8
 const unsigned char invader[3][2][16] PROGMEM = {
@@ -384,8 +386,10 @@ void InvadersGame::game_screen() {
         int8_t xx = idat.pos.x;
         for (uint8_t x = 0; x < INVADER_COLS; ++x) {
           if (TEST(idat.bugs[y], x)) {
-            constexpr color invader_color[] = INVADER_COLOR;
-            set_color(invader_color[type]);
+            #if IS_DWIN_MARLINUI
+              constexpr color invader_color[] = INVADER_COLOR;
+              set_color(invader_color[type]);
+            #endif
             draw_bitmap(xx, yy, 2, INVADER_H, invader[type][idat.game_blink]);
           }
           xx += INVADER_COL_W;
@@ -397,38 +401,39 @@ void InvadersGame::game_screen() {
 
   // Draw UFO
   if (idat.ufov && PAGE_UNDER(UFO_H + 2)) {
-    set_color(UFO_COLOR);
+    TERN_(IS_DWIN_MARLINUI, set_color(UFO_COLOR));
     draw_bitmap(idat.ufox, 2, 2, UFO_H, ufo);
   }
 
   // Draw cannon
   if (game_state && PAGE_CONTAINS(CANNON_Y, CANNON_Y + CANNON_H - 1) && (game_state < 2 || (game_state & 0x02))) {
-    set_color(CANNON_COLOR);
+    TERN_(IS_DWIN_MARLINUI, set_color(CANNON_COLOR));
     draw_bitmap(idat.cannon_x, CANNON_Y, 2, CANNON_H, cannon);
   }
 
   // Draw laser
   if (idat.laser.v && PAGE_CONTAINS(idat.laser.y, idat.laser.y + LASER_H - 1)) {
-    set_color(LASER_COLOR);
+    TERN_(IS_DWIN_MARLINUI, set_color(LASER_COLOR));
     draw_vline(idat.laser.x, idat.laser.y, LASER_H);
   }
 
   // Draw invader bullets
   for (uint8_t i = 0; i < COUNT(idat.bullet); ++i) {
     if (idat.bullet[i].v && PAGE_CONTAINS(idat.bullet[i].y - (SHOT_H - 1), idat.bullet[i].y)) {
-      set_color(BULLET_COLOR);
+      TERN_(IS_DWIN_MARLINUI, set_color(BULLET_COLOR));
       draw_vline(idat.bullet[i].x, idat.bullet[i].y - (SHOT_H - 1), SHOT_H);
     }
   }
 
   // Draw explosion
   if (idat.explod.v && PAGE_CONTAINS(idat.explod.y, idat.explod.y + 7 - 1)) {
-    set_color(EXPLOSION_COLOR);
+    TERN_(IS_DWIN_MARLINUI, set_color(EXPLOSION_COLOR));
     draw_bitmap(idat.explod.x, idat.explod.y, 2, 7, explosion);
     --idat.explod.v;
   }
 
-  set_color(color::WHITE);
+  // Everything else is white
+  TERN_(IS_DWIN_MARLINUI, set_color(color::WHITE));
 
   // Blink GAME OVER when game is over
   if (!game_state) draw_game_over();
@@ -437,7 +442,7 @@ void InvadersGame::game_screen() {
     // Draw lives
     if (idat.cannons_left)
       for (uint8_t i = 1; i <= idat.cannons_left; ++i) {
-        set_color(LIFE_COLOR);
+        TERN_(IS_DWIN_MARLINUI, set_color(LIFE_COLOR));
         draw_bitmap(GAME_WIDTH - i * (LIFE_W), 6 - (LIFE_H), 1, LIFE_H, life);
       }
 

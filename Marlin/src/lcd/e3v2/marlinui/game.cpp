@@ -24,7 +24,7 @@
 #if IS_DWIN_MARLINUI && HAS_GAMES
 
 // Enable performance counters (draw call count, frame timing) for debugging
-#define GAME_PERFORMANCE_COUNTERS 1
+//#define GAME_PERFORMANCE_COUNTERS
 
 #include "../../menu/game/types.h" // includes e3v2/marlinui/game.h
 #include "../../lcdprint.h"
@@ -32,6 +32,7 @@
 #include "marlinui_dwin.h"
 
 #if ENABLED(GAME_PERFORMANCE_COUNTERS)
+
   typedef struct {
     /**
      * Number of draw calls sent to the LCD
@@ -50,10 +51,15 @@
     millis_t frame_wait_millis;
   } dwin_game_perf_t;
 
-  static dwin_game_perf_t dwin_game_perf;  
-#endif
+  static dwin_game_perf_t dwin_game_perf;
 
-#define COUNT_DRAW_CALLS(n) TERN_(GAME_PERFORMANCE_COUNTERS, dwin_game_perf.draw_calls += n)
+  #define COUNT_DRAW_CALLS(n) dwin_game_perf.draw_calls += n
+
+#else // !GAME_PERFORMANCE_COUNTERS
+
+  #define COUNT_DRAW_CALLS(...) NOOP
+
+#endif // !GAME_PERFORMANCE_COUNTERS
 
 void MarlinGame::frame_start() {
   // Clear the screen before each frame
@@ -109,39 +115,22 @@ void MarlinGame::frame_end() {
     // Restore previous font settings
     dwin_font.fg = fg;
     dwin_font.solid = solid;
-  #endif
+  #endif // GAME_PERFORMANCE_COUNTERS
 }
 
 void MarlinGame::set_color(const color color) {
-  switch(color)
-  {
-    case color::BLACK:
-      dwin_font.fg = COLOR_BG_BLACK;
-      break;
-    case color::WHITE:
+  switch (color) {
     default:
-      dwin_font.fg = COLOR_WHITE;
-      break;
+    case color::WHITE:  dwin_font.fg = COLOR_WHITE; break;
+    case color::BLACK:  dwin_font.fg = COLOR_BG_BLACK; break;
 
     // https://rgbcolorpicker.com/565/table
-    case color::RED:
-      dwin_font.fg = RGB(0x1F, 0x00, 0x00);
-      break;
-    case color::GREEN:
-      dwin_font.fg = RGB(0x00, 0x3F, 0x00);
-      break;
-    case color::BLUE:
-      dwin_font.fg = RGB(0x00, 0x00, 0x1F);
-      break;
-    case color::YELLOW:
-      dwin_font.fg = RGB(0x1F, 0x3F, 0x00);
-      break;
-    case color::CYAN:
-      dwin_font.fg = RGB(0x00, 0x3F, 0x1F);
-      break;
-    case color::MAGENTA:
-      dwin_font.fg = RGB(0x1F, 0x00, 0x1F);
-      break;
+    case color::RED:    dwin_font.fg = RGB(0x1F, 0x00, 0x00); break;
+    case color::GREEN:  dwin_font.fg = RGB(0x00, 0x3F, 0x00); break;
+    case color::BLUE:   dwin_font.fg = RGB(0x00, 0x00, 0x1F); break;
+    case color::YELLOW: dwin_font.fg = RGB(0x1F, 0x3F, 0x00); break;
+    case color::CYAN:   dwin_font.fg = RGB(0x00, 0x3F, 0x1F); break;
+    case color::MAGENTA:dwin_font.fg = RGB(0x1F, 0x00, 0x1F); break;
   }
 }
 
@@ -199,6 +188,7 @@ void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_
   // So instead, we have to fall back to drawing points manually.
 
   #if DISABLED(TJC_DISPLAY)
+
     // DWIN T5UI actually supports drawing multiple points in one go using the 0x02 'draw point' command, ever since kernel 1.2.
     // So we use that to draw the bitmap as a series of points, which is faster than drawing rectangles using draw_pixel.
     dwinDrawPointMap(
@@ -213,7 +203,9 @@ void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_
     );
 
     COUNT_DRAW_CALLS(1);
-  #else
+
+  #else // TJC_DISPLAY
+
     // TJC displays don't seem to support the 0x02 'draw point' command, so instead we have to draw the bitmap
     // as a series of rectangles using draw_pixel.
     // This will absolutely suck for performance, but it's the best we can do on these screens.
@@ -229,7 +221,8 @@ void MarlinGame::draw_bitmap(const game_dim_t x, const game_dim_t y, const game_
         }
       }
     }
-  #endif
+
+  #endif // TJC_DISPLAY
 }
 
 int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, const char* str) {
@@ -240,10 +233,7 @@ int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, const char* 
     dwin_game::game_to_screen(y) + dwin_game::y_offset
   );
 
-  return lcd_put_u8str_max_P(
-    str,
-    PIXEL_LEN_NOLIMIT
-  );
+  return lcd_put_u8str_max_P(str, PIXEL_LEN_NOLIMIT);
 }
 
 int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const str) {
@@ -260,4 +250,5 @@ void MarlinGame::draw_int(const game_dim_t x, const game_dim_t y, const int valu
 
   lcd_put_int(value);
 }
+
 #endif // IS_DWIN_MARLINUI && HAS_GAMES

@@ -20,6 +20,7 @@
  *
  */
 #pragma once
+
 #include "marlinui_DOGM.h"
 #include "../lcdprint.h"
 

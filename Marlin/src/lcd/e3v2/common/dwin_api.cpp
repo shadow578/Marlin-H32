@@ -158,6 +158,7 @@ void dwinFrameClear(const uint16_t color) {
 }
 
 #if DISABLED(TJC_DISPLAY)
+
   // Draw a point
   //  color: point color
   //  width: point width   0x01-0x0F
@@ -184,14 +185,12 @@ void dwinFrameClear(const uint16_t color) {
   //  map: point bitmap. 2D array of points, 1 bit per point
   // Note: somewhat similar to U8G's drawBitmap() function, see https://github.com/olikraus/u8glib/wiki/userreference#drawbitmap
   void dwinDrawPointMap(
-      const uint16_t color,
-      const uint8_t point_width,
-      const uint8_t point_height,
-      const uint16_t x,
-      const uint16_t y,
-      const uint16_t map_columns,
-      const uint16_t map_rows,
-      const uint8_t *map_data) {
+    const uint16_t color,
+    const uint8_t point_width, const uint8_t point_height,
+    const uint16_t x, const uint16_t y,
+    const uint16_t map_columns, const uint16_t map_rows,
+    const uint8_t *map_data
+  ) {
     // At how many bytes should we flush the send buffer?
     // One byte is used (hidden) for F_HONE, and we need 4 bytes when appending a point.
     // So we should flush the send buffer when we have less than 5 bytes left.
@@ -211,8 +210,7 @@ void dwinFrameClear(const uint16_t color) {
             // Flush the send buffer and prepare next draw if either
             // a) The buffer reached the 'should flush' state, or
             // b) This is the first point to draw
-            if (i >= flush_send_buffer_at || i == 0)
-            {
+            if (i >= flush_send_buffer_at || i == 0) {
               // Dispatch the current draw command
               if (i > command_header_size) dwinSend(i);
 
@@ -235,7 +233,8 @@ void dwinFrameClear(const uint16_t color) {
     // Dispatch final draw command if the buffer contains any points
     if (i > command_header_size) dwinSend(i);
   }
-#endif
+
+#endif // !TJC_DISPLAY
 
 // Draw a line
 //  color: Line segment color

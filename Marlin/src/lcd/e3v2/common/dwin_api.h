@@ -175,13 +175,11 @@ inline void dwinDrawBox(uint8_t mode, uint16_t color, uint16_t xStart, uint16_t 
 #if DISABLED(TJC_DISPLAY)
   void dwinDrawPointMap(
     const uint16_t color,
-    const uint8_t point_width,
-    const uint8_t point_height,
-    const uint16_t x,
-    const uint16_t y,
-    const uint16_t map_columns,
-    const uint16_t map_rows,
-    const uint8_t *map_data);
+    const uint8_t point_width, const uint8_t point_height,
+    const uint16_t x, const uint16_t y,
+    const uint16_t map_columns, const uint16_t map_rows,
+    const uint8_t *map_data
+  );
 #endif
 
 // Move a screen area

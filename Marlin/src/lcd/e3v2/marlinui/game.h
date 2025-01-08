@@ -20,7 +20,7 @@
  *
  */
 #pragma once
-#include <stdint.h>
+
 #include "../marlinui/marlinui_dwin.h"
 
 typedef uint8_t game_dim_t;
@@ -29,13 +29,12 @@ typedef const uint8_t* pgm_bitmap_t;
 
 namespace dwin_game {
   /**
-   * @brief Target the renderer at 128x64 pixels to match UG8 screens
+   * @brief Target the renderer at 128x64 pixels to match U8G screens
    */
   constexpr screen_dim_t TARGET_WIDTH = 128;
   constexpr screen_dim_t TARGET_HEIGHT = 64;
 
-  constexpr int calculate_scale()
-  {
+  constexpr int calculate_scale() {
     // Use whichever is smaller: the width or height scaling factor
     float scaling_factor = _MIN(
       static_cast<float>(DWIN_WIDTH) / static_cast<float>(TARGET_WIDTH),

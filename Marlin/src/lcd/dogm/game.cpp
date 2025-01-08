@@ -25,20 +25,17 @@
 
 #include "../menu/game/types.h" // includes dogm/game.h
 
-void MarlinGame::frame_start() {}
+void MarlinGame::frame_start() {
+  set_color(color::WHITE);
+}
 
 void MarlinGame::frame_end() {}
 
 void MarlinGame::set_color(const color color) {
-  switch(color)
-  {
-    case color::BLACK:
-      u8g.setColorIndex(0);
-      break;
-    case color::WHITE:
+  switch (color) {
     default:
-      u8g.setColorIndex(1);
-      break;
+    case color::WHITE: u8g.setColorIndex(1); break;
+    case color::BLACK: u8g.setColorIndex(0); break;
   }
 }
 
@@ -79,4 +76,5 @@ int MarlinGame::draw_string(const game_dim_t x, const game_dim_t y, FSTR_P const
 void MarlinGame::draw_int(const game_dim_t x, const game_dim_t y, const int value) {
   lcd_put_int(x, y, value);
 }
+
 #endif // HAS_MARLINUI_U8GLIB && HAS_GAMES

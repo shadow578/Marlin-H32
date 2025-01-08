@@ -137,22 +137,32 @@ void BrickoutGame::game_screen() {
   frame_start();
 
   // Draw bricks, cycling through colors for each brick
-  const color brick_colors[] = { color::RED, color::CYAN, color::GREEN, color::YELLOW, color::MAGENTA, color::BLUE };
-  int color_index = 0;
+  #if IS_DWIN_MARLINUI
+    const color brick_colors[] = { color::RED, color::CYAN, color::GREEN, color::YELLOW, color::MAGENTA, color::BLUE };
+    int color_index = 0;
+  #endif
   if (PAGE_CONTAINS(BRICK_TOP, BRICK_BOT)) {
     for (uint8_t y = 0; y < BRICK_ROWS; ++y) {
       const uint8_t yy = y * BRICK_H + BRICK_TOP;
       if (PAGE_CONTAINS(yy, yy + BRICK_H - 1)) {
         for (uint8_t x = 0; x < BRICK_COLS; ++x) {
-          // Cycle through colors, even if the brick is gone.
-          // Otherwise, bricks would change color if their neighbor is hit
-          set_color(brick_colors[color_index++ % COUNT(brick_colors)]);
+          #if IS_DWIN_MARLINUI
+            // Cycle through colors, even if the brick is gone.
+            // Otherwise, bricks would change color if their neighbor is hit
+            set_color(brick_colors[color_index++ % COUNT(brick_colors)]);
+          #endif
 
           // Draw brick if it's still there
           if (TEST(bdat.bricks[y], x)) {
             const uint8_t xx = x * BRICK_W;
-            if (PAGE_CONTAINS(yy, yy + BRICK_H - 1))
-              draw_box(xx, yy, BRICK_W - 1, BRICK_H - 1);
+            #if IS_DWIN_MARLINUI
+              if (PAGE_CONTAINS(yy, yy + BRICK_H - 1))
+                draw_box(xx, yy, BRICK_W - 1, BRICK_H - 1);
+            #else
+              for (uint8_t v = 0; v < BRICK_H - 1; ++v)
+                if (PAGE_CONTAINS(yy + v, yy + v))
+                  u8g.drawHLine(xx, yy + v, BRICK_W - 1);
+            #endif
           }
         }
       }
@@ -160,7 +170,7 @@ void BrickoutGame::game_screen() {
   }
 
   // Everything else is white
-  set_color(color::WHITE);
+  TERN_(IS_DWIN_MARLINUI, set_color(color::WHITE));
 
   // Draw paddle
   if (PAGE_CONTAINS(PADDLE_Y-1, PADDLE_Y)) {
