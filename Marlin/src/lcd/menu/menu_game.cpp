@@ -42,6 +42,10 @@ void menu_game() {
   #if ENABLED(MARLIN_MAZE)
     SUBMENU(MSG_MAZE, maze.enter_game);
   #endif
+
+  SUBMENU(MSG_BLOCKS, blocks_game.enter_game);
+  SUBMENU(MSG_DINO, dino_game.enter_game);
+
   END_MENU();
 }
 

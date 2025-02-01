@@ -838,6 +838,8 @@ namespace LanguageNarrow_en {
   LSTR MSG_INVADERS                       = _UxGT("Invaders");
   LSTR MSG_SNAKE                          = _UxGT("Sn4k3");
   LSTR MSG_MAZE                           = _UxGT("Maze");
+  LSTR MSG_BLOCKS                         = _UxGT("Blocks");
+  LSTR MSG_DINO                           = _UxGT("Dino");
 
   // Direct Stepping
   LSTR MSG_BAD_PAGE                       = _UxGT("Bad page index");

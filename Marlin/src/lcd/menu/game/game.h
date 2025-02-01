@@ -50,6 +50,9 @@
   #include "snake.h"
 #endif
 
+#include "blocks/blocks.h"
+#include "dino/dino.h"
+
 // Pool game data to save SRAM
 union MarlinGameData {
   #if ENABLED(MARLIN_BRICKOUT)
@@ -64,6 +67,9 @@ union MarlinGameData {
   #if ENABLED(MARLIN_MAZE)
     maze_data_t maze;
   #endif
+
+  BlocksGame::state_t blocks;
+  DinoGame::state_t dino;
 };
 
 extern MarlinGameData marlin_game_data;
